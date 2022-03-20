@@ -19,7 +19,7 @@ public class Pokemon{
 	private String racaPokemon;
     private Double peso;
     private Utils sexo;
-	private Integer id;
+	private Integer idPokemon;
     private String nome;
     private Integer level;
     private Dificuldades dificuldade;

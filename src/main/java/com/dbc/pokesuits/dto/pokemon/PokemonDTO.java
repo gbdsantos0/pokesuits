@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=false)
 public class PokemonDTO extends PokemonCreateDTO {
 	@ApiModelProperty(name = "Id do Pokemon")
-	private Long idPokemon;
+	private Integer idPokemon;
 }
