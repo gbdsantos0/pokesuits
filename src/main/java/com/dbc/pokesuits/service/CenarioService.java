@@ -88,7 +88,7 @@ public class CenarioService {
             log.info("Pokemon capturado com sucesso");
             return pokemonDTO;
         }else {
-            if (r.nextDouble(100) > (30 - ultimoPokemonEncontrado.getDificuldade().getChance())+(contador * 2)) {
+            if (r.nextInt(100) > (30 - ultimoPokemonEncontrado.getDificuldade().getChance())+(contador * 2)) {
                 //contagem para chance do pokemon escapar
                 contador++;
                 log.info("Pokemon não capturado");
@@ -118,9 +118,9 @@ public class CenarioService {
                 //raca conforme a base
                 .racaPokemon(pokemonBaseDTO.getRacaPokemon())
                 //peso no intervalo de peso do pokemon
-                .peso(r.nextDouble(pokemonBaseDTO.getPesoMaximo()-pokemonBaseDTO.getPesoMinimo())+pokemonBaseDTO.getPesoMinimo())
+                .peso(r.nextInt((int)(pokemonBaseDTO.getPesoMaximo()-pokemonBaseDTO.getPesoMinimo()))+pokemonBaseDTO.getPesoMinimo()+((double)r.nextInt(100)/100))
                 //sexo de acordo com a chance de ser macho
-                .sexo(r.nextDouble(100)<=pokemonBaseDTO.getPorcentagemMacho()? Utils.MASCULINO:Utils.FEMININO)
+                .sexo(r.nextInt(100)<=pokemonBaseDTO.getPorcentagemMacho()? Utils.MASCULINO:Utils.FEMININO)
                 //apelido nulo por enquanto
                 .nome(null)
                 //level igual ao calculado pelo local ou o minimo do pokemon encontrado
