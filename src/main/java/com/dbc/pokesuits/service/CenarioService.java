@@ -97,6 +97,7 @@ public class CenarioService {
                 ultimoPokemonEncontrado = null;
                 contador = 0;
                 log.info("Pokemon escapou");
+                throw new InvalidCenarioException("O Pokemon escapou!");
             }
         }
 
