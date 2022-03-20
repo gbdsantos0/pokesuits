@@ -60,4 +60,17 @@ public class CenarioController {
         log.info("Pokemon capturado com sucesso");
         return pokemonDTO;
     }
+
+    @ApiOperation(value = "Mostra o cenário atual")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Retorna o cenário atual"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
+    })
+    @GetMapping
+    public CenarioDTO cenarioAtual() throws Exception{
+        CenarioDTO cenarioDTO = cenarioService.cenarioAtual();
+        log.info("Cenário retornado");
+        return cenarioDTO;
+    }
 }

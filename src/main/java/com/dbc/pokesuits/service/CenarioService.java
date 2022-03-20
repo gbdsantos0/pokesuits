@@ -220,4 +220,9 @@ public class CenarioService {
         return cenarioDTO;
     }
 
+    public  CenarioDTO cenarioAtual() throws Exception{
+        CenarioDTO cenarioDTO = objectMapper.convertValue(cenarioRepository.getById(cenarioAtual), CenarioDTO.class);
+        return cenarioDTO;
+    }
+
 }
