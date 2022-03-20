@@ -36,11 +36,11 @@ public class PokemonRepository {
 	
 	public Optional<Pokemon> getByid(Integer id) {
     	return 	 listPokemons.stream()
-                .filter(poke -> poke.getId().equals(id))
+                .filter(poke -> poke.getIdPokemon().equals(id))
                 .findFirst();
     }
     public Pokemon create(Pokemon pokemon){
-    	pokemon.setId(COUNTER.incrementAndGet());
+    	pokemon.setIdPokemon(COUNTER.incrementAndGet());
         listPokemons.add(pokemon);
     	return pokemon;
     }
