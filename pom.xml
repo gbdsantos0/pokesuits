@@ -12,10 +12,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pokesuits</name>
 	<description>Projeto final do módulo Spring</description>
-	<properties>
-		<!--para deploy, comentar-->
+	<!--<properties>
+		&lt;!&ndash;para deploy, comentar&ndash;&gt;
 		<java.version>17</java.version>
-	</properties>
+	</properties>-->
 
 	<dependencies>
 
