@@ -109,7 +109,7 @@ public class CenarioService {
         PokemonBaseDTO pokemonBaseDTO;
         pokemonBaseDTO = this.selecionarPokemon();
         contador = 0;
-        int randLevel = r.nextInt(8)+cenarioRepository.listAll().get(cenarioAtual).getLevelMedio()-4;//variacao de 4 levels pra cima ou pra baixo
+        int randLevel = r.nextInt(8)+cenarioRepository.listAll().get(cenarioAtual-1).getLevelMedio()-4;//variacao de 4 levels pra cima ou pra baixo
         //garantir que não ha niveis nogativos
         if(randLevel<1){
             randLevel=1;
