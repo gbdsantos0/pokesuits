@@ -3,34 +3,41 @@ package com.dbc.pokesuits.dto.mochila;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 public class MochilaCreateDTO {
 
-    @ApiModelProperty(value="quantidade de Great Balls")
+    @ApiModelProperty(value="quantidade de GreatBalls")
     @NotNull
-    @Size(min=0, max=99)
+    @Min(0)
+    @Max(99)
     private int quantidadeGreatBalls;
 
-    @ApiModelProperty(value="quantidade de Heavy Balls")
+    @ApiModelProperty(value="quantidade de HeavyBalls")
     @NotNull
-    @Size(min=0, max=99)
+    @Min(0)
+    @Max(99)
     private int quantidadeHeavyBalls;
 
-    @ApiModelProperty(value="quantidade de Master Balls")
+    @ApiModelProperty(value="quantidade de MasterBalls")
     @NotNull
-    @Size(min=0, max=99)
+    @Min(0)
+    @Max(99)
     private int quantidadeMasterBalls;
 
-    @ApiModelProperty(value="quantidade de Net Balls")
+    @ApiModelProperty(value="quantidade de NetBalls")
     @NotNull
-    @Size(min=0, max=99)
+    @Min(0)
+    @Max(99)
     private int quantidadeNetBalls;
 
-    @ApiModelProperty(value="quantidade dePoke Balls")
+    @ApiModelProperty(value="quantidade de PokeBalls")
     @NotNull
-    @Size(min=0, max=99)
+    @Min(0)
+    @Max(99)
     private int quantidadePokeBalls;
 }
