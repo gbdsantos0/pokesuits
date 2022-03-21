@@ -135,7 +135,7 @@ public class CenarioService {
         return ultimoPokemonEncontrado;
     }
 
-    public PokemonBaseDTO selecionarPokemon() throws Exception{
+    private PokemonBaseDTO selecionarPokemon() throws Exception{
         if(cenarioRepository.getById(cenarioAtual).getIdPokemonsDisponiveis().isEmpty()){
             throw new InvalidCenarioException("Lista de pokemons do cenário atual vazia");
         }
