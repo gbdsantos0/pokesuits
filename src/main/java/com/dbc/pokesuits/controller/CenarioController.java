@@ -48,7 +48,7 @@ public class CenarioController {
         return pokemonCreateDTO;
     }
 
-    @ApiOperation(value = "Tentativa de capturar um pokemon encontrado (deve ser passado no corpo por JSON)")
+    @ApiOperation(value = "Tentativa de capturar o último pokemon encontrado")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Retorna o Pokemon capturado"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
