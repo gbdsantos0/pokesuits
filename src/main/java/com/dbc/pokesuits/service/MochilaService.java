@@ -132,12 +132,12 @@ public class MochilaService {
         return mochilaDTO;
     }
 
-    public MochilaCompletaDTO getMochilaCompleta(Integer id) throws RegraDeNegocioException {
+    public MochilaCompletaDTO getMochilaCompleta(Integer id) throws Exception {
         MochilaEntity mochila = getById(id);
         
 
         MochilaCompletaDTO mochilaDTO = objectMapper.convertValue(mochila, MochilaCompletaDTO.class);
-        mochilaDTO.setTreinador(objectMapper.convertValue(mochila.getTreinador(), TreinadorDTO.class));
+        mochilaDTO.setTreinador(objectMapper.convertValue(treinadorService.getById(mochila.getTreinador().getIdTreinador()), TreinadorDTO.class));
         mochilaDTO.setPokemons(mochila.getPokemons().stream()
                 .map(pokemon -> {
                 	PokemonDTO convertValue = objectMapper.convertValue(pokemon, PokemonDTO.class);

@@ -36,7 +36,7 @@ public class MochilaController {
     }
 
     @GetMapping("/{idMochila}")
-    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) throws RegraDeNegocioException {
+    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) throws Exception {
         return mochilaService.getMochilaCompleta(id);
     }
 
