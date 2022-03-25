@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
+import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,13 @@ public class MochilaService {
         return mochilaRepository.findAll().stream()
                 .map(m -> objectMapper.convertValue(m,MochilaDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public MochilaDTO create(MochilaCreateDTO mochila) {
+        MochilaEntity mochilaEntity = objectMapper.convertValue(mochila, MochilaEntity.class);
+        MochilaEntity mochilaCriada = mochilaRepository.save(mochilaEntity);
+
+        return objectMapper.convertValue(mochilaCriada, MochilaDTO.class);
     }
 
     public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{

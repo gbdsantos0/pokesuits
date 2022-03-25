@@ -2,14 +2,17 @@ package com.dbc.pokesuits.controller;
 
 
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
+import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.service.MochilaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -36,6 +39,11 @@ public class MochilaController {
         return mochilaService.getMochilaCompleta(id);
     }
 
+    @PostMapping
+    @Validated
+    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila) {
+        return mochilaService.create(mochila);
+    }
 
     @ApiOperation(value = "Retornar uma mochila com quantidade de pokebola atualizada!")
     @ApiResponses(value = {
