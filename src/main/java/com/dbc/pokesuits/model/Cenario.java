@@ -1,4 +1,4 @@
-package com.dbc.pokesuits.model.cenario;
+package com.dbc.pokesuits.model;
 
 import java.util.List;
 

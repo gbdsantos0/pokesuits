@@ -1,4 +1,4 @@
-package com.dbc.pokesuits.model.entity;
+package com.dbc.pokesuits.entity;
 
 import javax.validation.constraints.NotNull;
 

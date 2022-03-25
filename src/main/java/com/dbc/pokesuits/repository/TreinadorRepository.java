@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Repository;
 
+import com.dbc.pokesuits.entity.Treinador;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.model.entity.Treinador;
 
 @Repository
 public class TreinadorRepository {
@@ -25,13 +25,13 @@ public class TreinadorRepository {
                 .build());
     }
 
-    public Treinador create(Treinador treinador){
+    public Treinador saveAndFlush(Treinador treinador){
         treinador.setIdTreinador(COUNTER.incrementAndGet());
         listaTreinadores.add(treinador);
         return treinador;
     }
 
-    public List<Treinador> list(){
+    public List<Treinador> findAll(){
         return listaTreinadores;
     }
 
@@ -44,7 +44,7 @@ public class TreinadorRepository {
         treinadorRecuperado.setSexo(treinadorAtualizar.getSexo());
         return treinadorRecuperado;
     }
-    public Treinador delete(Integer id)throws Exception{
+    public Treinador deleteById(Integer id)throws Exception{
         return listaTreinadores.stream()
                 .filter(t-> t.getIdTreinador()==(id))
                 .findFirst()

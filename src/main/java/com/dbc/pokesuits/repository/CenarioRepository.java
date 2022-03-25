@@ -2,7 +2,8 @@ package com.dbc.pokesuits.repository;
 
 import com.dbc.pokesuits.enums.TiposTerreno;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.model.cenario.Cenario;
+import com.dbc.pokesuits.model.Cenario;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

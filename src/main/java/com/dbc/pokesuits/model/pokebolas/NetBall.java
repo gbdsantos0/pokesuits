@@ -3,7 +3,6 @@ package com.dbc.pokesuits.model.pokebolas;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.enums.TipoPokemon;
-import com.dbc.pokesuits.model.interfaces.Pokebola;
 
 public class NetBall implements Pokebola {
     //Testa se o pokemon é do tipo WATER ou BUG para retornar 3x chance

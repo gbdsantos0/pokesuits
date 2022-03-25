@@ -8,7 +8,6 @@ import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.model.interfaces.Pokebola;
 import com.dbc.pokesuits.model.pokebolas.*;
 import com.dbc.pokesuits.repository.CenarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

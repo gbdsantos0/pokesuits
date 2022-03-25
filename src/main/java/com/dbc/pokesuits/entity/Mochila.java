@@ -1,4 +1,4 @@
-package com.dbc.pokesuits.model.objetos;
+package com.dbc.pokesuits.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

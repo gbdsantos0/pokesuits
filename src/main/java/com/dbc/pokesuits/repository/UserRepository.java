@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.dbc.pokesuits.entity.User;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-import com.dbc.pokesuits.model.entity.User;
 
 @Repository
 public class UserRepository {
@@ -27,13 +27,13 @@ public class UserRepository {
                 .filter(user -> user.getId().equals(id))
                 .findFirst();
     }
-    public User create(User user){
+    public User saveAndFlush(User user){
     	user.setId(COUNTER.incrementAndGet());
     	listUsers.add(user);
     	return user;
     }
 
-    public List<User> list() {
+    public List<User> findAll() {
         return listUsers;
     }
 
@@ -50,7 +50,7 @@ public class UserRepository {
         return userRecuperado;
     }
 
-    public User delete(Integer id) throws RegraDeNegocioException{
+    public User deleteById(Integer id) throws RegraDeNegocioException{
     	
     	Optional<User> userById = this.getByid(id);
     	if(userById.isEmpty())throw new RegraDeNegocioException("Não Existe esse usuario");
@@ -60,7 +60,7 @@ public class UserRepository {
 		return userRecuperado;
     }
 
-    public List<User> listByName(String nome) {
+    public List<User> findByName(String nome) {
         return listUsers.stream()
                 .filter(user -> user.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .collect(Collectors.toList());

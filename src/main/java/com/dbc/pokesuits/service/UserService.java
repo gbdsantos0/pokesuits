@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.user.UserCreateDTO;
 import com.dbc.pokesuits.dto.user.UserDTO;
+import com.dbc.pokesuits.entity.User;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-import com.dbc.pokesuits.model.entity.User;
 import com.dbc.pokesuits.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,7 +22,7 @@ public class UserService {
 	private ObjectMapper objectMapper;
 	
 	public List<UserDTO> ListarUsers() {
-		return userRepository.list()
+		return userRepository.findAll()
 				.stream()
 				.map(user -> objectMapper.convertValue(user, UserDTO.class))
 				.collect(Collectors.toList());
@@ -32,7 +32,7 @@ public class UserService {
 		
 		User userConvertido = objectMapper.convertValue(createDTO, User.class);
 		
-		User userAtualizado = userRepository.create(userConvertido);
+		User userAtualizado = userRepository.saveAndFlush(userConvertido);
 		
 		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
 		
@@ -41,7 +41,7 @@ public class UserService {
 
 	public UserDTO RemoverUser(int id) throws RegraDeNegocioException {
 		
-		User userRemovido = userRepository.delete(id);
+		User userRemovido = userRepository.deleteById(id);
 		
 		UserDTO userDTO = objectMapper.convertValue(userRemovido, UserDTO.class);
 		

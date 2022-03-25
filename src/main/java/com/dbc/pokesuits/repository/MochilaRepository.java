@@ -1,12 +1,13 @@
 package com.dbc.pokesuits.repository;
 
-import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.model.objetos.Mochila;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.stereotype.Repository;
+
+import com.dbc.pokesuits.entity.Mochila;
+import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 
 @Repository
 public class MochilaRepository {
@@ -27,13 +28,8 @@ public class MochilaRepository {
                 .build());
     }
 
-//public Mochila create(Mochila mochila){
-//        mochila.setIdMochila(COUNTER.incrementAndGet());
-//        listaMochilas.add(mochila);
-//        return mochila;
 
-
-    public List<Mochila> list(){
+    public List<Mochila> findAll(){
         return listaMochilas;
     }
 

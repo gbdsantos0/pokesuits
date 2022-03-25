@@ -1,4 +1,4 @@
-package com.dbc.pokesuits.model.interfaces;
+package com.dbc.pokesuits.model.pokebolas;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 

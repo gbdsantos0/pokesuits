@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.dbc.pokesuits.entity.Pokemon;
 import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-import com.dbc.pokesuits.model.entity.Pokemon;
 
 @Repository
 public class PokemonRepository {
@@ -39,13 +39,13 @@ public class PokemonRepository {
                 .filter(poke -> poke.getIdPokemon().equals(id))
                 .findFirst();
     }
-    public Pokemon create(Pokemon pokemon){
+    public Pokemon save(Pokemon pokemon){
     	pokemon.setIdPokemon(COUNTER.incrementAndGet());
         listPokemons.add(pokemon);
     	return pokemon;
     }
 
-    public List<Pokemon> list() {
+    public List<Pokemon> findAll() {
         return listPokemons;
     }
 
@@ -69,7 +69,7 @@ public class PokemonRepository {
         return pokemonRecuperado;
     }
 
-    public Pokemon delete(Integer id) throws RegraDeNegocioException{
+    public Pokemon deleteById(Integer id) throws RegraDeNegocioException{
     	
     	Optional<Pokemon> pokemonById = this.getByid(id);
     	if(pokemonById.isEmpty())throw new RegraDeNegocioException("Não Existe um Pokemon com o ID Passado");
@@ -79,7 +79,7 @@ public class PokemonRepository {
 		return pokemonRecuperado;
     }
 
-    public List<Pokemon> listByName(String nome) {
+    public List<Pokemon> findByNameContainsIgnoreCase(String nome) {
         return listPokemons.stream()
                 .filter(pokemon -> pokemon.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .collect(Collectors.toList());
