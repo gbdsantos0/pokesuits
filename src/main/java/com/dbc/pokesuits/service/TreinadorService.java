@@ -3,6 +3,7 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,18 @@ import lombok.extern.java.Log;
 public class TreinadorService {
     @Autowired
     private TreinadorRepository treinadorRepository;
-
+    @Autowired
+    private UserService userService;
     @Autowired
     private ObjectMapper objectMapper;
 
-    public TreinadorDTO create(TreinadorCreateDTO treinadorCreate)throws Exception{
+    public TreinadorDTO create(TreinadorCreateDTO treinadorCreate, Integer idUser)throws Exception{
         log.info("chamou o método crate do Treinador!");
+        //busca usuario
+        UserEntity userEntity= objectMapper.convertValue(userService.getById(idUser), UserEntity.class);
         TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);
+        //seta usuario
+        treinador.setUser(userEntity);
         TreinadorEntity treinadorCriado = treinadorRepository.saveAndFlush(treinador);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);
         return treinadorDTO;

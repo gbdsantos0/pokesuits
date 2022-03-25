@@ -59,4 +59,8 @@ public class UserService {
 		
 		return userDTO;
 	}
+
+	public UserDTO getById(Integer idUser){
+		return objectMapper.convertValue(userRepository.getById(idUser), UserDTO.class);
+	}
 }
