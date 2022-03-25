@@ -3,16 +3,14 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.entity.UserEntity;
-import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
 import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.entity.TreinadorEntity;
-import com.dbc.pokesuits.repository.MochilaRepository;
+import com.dbc.pokesuits.entity.UserEntity;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.TreinadorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +33,6 @@ public class TreinadorService {
         //busca usuario
         UserEntity userEntity = userService.getById(idUser);
         TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);
-        treinador.setMochila(mochilaService.getById(treinadorCreate.getIdMochila()));
         //seta usuario
         treinador.setUser(userEntity);
         TreinadorEntity treinadorCriado = treinadorRepository.save(treinador);
@@ -62,16 +59,15 @@ public class TreinadorService {
 
     public TreinadorDTO delete(Integer id) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
-        TreinadorEntity treinadorDeletado = treinadorRepository.getById(id);
+        TreinadorEntity treinadorDeletado = getById(id);
         treinadorRepository.deleteById(id);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
         return treinadorDTO;
     }
 
-    public TreinadorDTO getById(Integer id)throws Exception{
+    public TreinadorEntity getById(Integer id)throws Exception{
         log.info("chamou o método getById do Treinador!");
         TreinadorEntity treinadorChamado = treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorChamado, TreinadorDTO.class);
-        return treinadorDTO;
+        return treinadorChamado;
     }
 }

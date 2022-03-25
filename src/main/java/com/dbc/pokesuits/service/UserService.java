@@ -41,7 +41,7 @@ public class UserService {
 
 	public UserDTO RemoverUser(int id) throws RegraDeNegocioException {
 		
-		UserEntity userRemovido = userRepository.getById(id);
+		UserEntity userRemovido = getById(id);
 		
 		userRepository.deleteById(id);
 		
