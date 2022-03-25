@@ -5,6 +5,7 @@ import com.dbc.pokesuits.dto.cenario.CenarioDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
@@ -46,7 +47,7 @@ public class CenarioService {
 
     public PokemonDTO capturar(String tipoPokebola, Integer idTreinador) throws Exception{
         Random r = new Random();
-        TreinadorDTO treinadorDTO = treinadorService.getById(idTreinador);
+        TreinadorEntity treinadorEntity = treinadorService.getById(idTreinador);
 
         Pokebola pokebola;
 
@@ -74,11 +75,11 @@ public class CenarioService {
                 throw new InvalidCenarioException("Tipo de pokebola inválida, favor utilizar uma das disponíveis (PokeBall, GreatBall, NetBall, HeavyBall ou MasterBall)");
         }
         //jogar pokebola
-        mochilaService.usarPokebola(treinadorDTO.getIdMochila(),tipoPokebola);
+        mochilaService.usarPokebola(treinadorEntity.getMochila().getIdMochila(),tipoPokebola);
         //testar chance
         if(r.nextInt(100) <= pokebola.calcularChance(ultimoPokemonEncontrado)){
             //alterar idMochila para qual o pokemon pertence agora
-            ultimoPokemonEncontrado.setIdMochila(treinadorDTO.getIdMochila());
+            ultimoPokemonEncontrado.setIdMochila(treinadorEntity.getMochila().getIdMochila());
             //adicionar o pokemon na lista de pokemons
             PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(ultimoPokemonEncontrado);
             //limpando ultimo encontro
