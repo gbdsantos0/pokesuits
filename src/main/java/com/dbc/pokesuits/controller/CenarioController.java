@@ -1,19 +1,21 @@
 package com.dbc.pokesuits.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.dbc.pokesuits.dto.cenario.CenarioDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
-import com.dbc.pokesuits.model.entity.Treinador;
 import com.dbc.pokesuits.service.CenarioService;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/cenario")
