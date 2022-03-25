@@ -136,7 +136,12 @@ public class MochilaService {
         MochilaEntity mochila = getById(id);
         
 
-        MochilaCompletaDTO mochilaDTO = objectMapper.convertValue(mochila, MochilaCompletaDTO.class);
+        MochilaCompletaDTO mochilaDTO = new MochilaCompletaDTO();
+        mochilaDTO.setQuantidadeGreatBalls(mochila.getQuantidadeGreatBalls());
+        mochilaDTO.setQuantidadeHeavyBalls(mochila.getQuantidadeHeavyBalls());
+        mochilaDTO.setQuantidadeMasterBalls(mochila.getQuantidadeMasterBalls());
+        mochilaDTO.setQuantidadeNetBalls(mochila.getQuantidadeNetBalls());
+        mochilaDTO.setQuantidadePokeBalls(mochila.getQuantidadePokeBalls());
         mochilaDTO.setTreinador(objectMapper.convertValue(treinadorService.getById(mochila.getTreinador().getIdTreinador()), TreinadorDTO.class));
         mochilaDTO.setPokemons(mochila.getPokemons().stream()
                 .map(pokemon -> {
