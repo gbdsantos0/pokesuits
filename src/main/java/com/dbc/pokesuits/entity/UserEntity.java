@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class User {
+public class UserEntity {
 	
 	private Integer id;
 	private String nome;

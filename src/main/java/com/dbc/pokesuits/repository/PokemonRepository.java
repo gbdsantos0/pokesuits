@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.dbc.pokesuits.entity.Pokemon;
+import com.dbc.pokesuits.entity.PokemonEntity;
 import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
@@ -18,42 +18,42 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 @Repository
 public class PokemonRepository {
 	
-	private ArrayList<Pokemon> listPokemons = new ArrayList<>();
+	private ArrayList<PokemonEntity> listPokemons = new ArrayList<>();
 	private AtomicInteger COUNTER = new AtomicInteger();
 	
 	public PokemonRepository() {
-		listPokemons.add(new Pokemon("bulbosauro",(100.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
+		listPokemons.add(new PokemonEntity("bulbosauro",(100.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
 				, Dificuldades.FACIL,TipoPokemon.BUG,null,Raridades.RARO,1));
-		listPokemons.add(new Pokemon("superbulbosauro",(200.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
+		listPokemons.add(new PokemonEntity("superbulbosauro",(200.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
 				, Dificuldades.FACIL,TipoPokemon.BUG,null,Raridades.RARO,1));
-		listPokemons.add(new Pokemon("hyperbulbosauro",(300.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
+		listPokemons.add(new PokemonEntity("hyperbulbosauro",(300.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
 				, Dificuldades.FACIL,TipoPokemon.BUG,null,Raridades.RARO,1));
-		listPokemons.add(new Pokemon("megabulbosauro",(400.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
+		listPokemons.add(new PokemonEntity("megabulbosauro",(400.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
 				, Dificuldades.FACIL,TipoPokemon.BUG,null,Raridades.RARO,1));
-		listPokemons.add(new Pokemon("ultimatebulbosauro",(500.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
+		listPokemons.add(new PokemonEntity("ultimatebulbosauro",(500.1), Utils.MASCULINO, COUNTER.incrementAndGet(), "bobao", 10
 				, Dificuldades.FACIL,TipoPokemon.BUG,null,Raridades.RARO,1));
 	}
 	
-	public Optional<Pokemon> getByid(Integer id) {
+	public Optional<PokemonEntity> getByid(Integer id) {
     	return 	 listPokemons.stream()
                 .filter(poke -> poke.getIdPokemon().equals(id))
                 .findFirst();
     }
-    public Pokemon save(Pokemon pokemon){
+    public PokemonEntity save(PokemonEntity pokemon){
     	pokemon.setIdPokemon(COUNTER.incrementAndGet());
         listPokemons.add(pokemon);
     	return pokemon;
     }
 
-    public List<Pokemon> findAll() {
+    public List<PokemonEntity> findAll() {
         return listPokemons;
     }
 
-    public Pokemon update(Integer id, Pokemon pokemon) throws RegraDeNegocioException{
+    public PokemonEntity update(Integer id, PokemonEntity pokemon) throws RegraDeNegocioException{
     	
-    	Optional<Pokemon> pokemonById = this.getByid(id);
+    	Optional<PokemonEntity> pokemonById = this.getByid(id);
     	if(pokemonById.isEmpty())throw new RegraDeNegocioException("Não Existe um Pokemon com o ID Passado");
-    	Pokemon pokemonRecuperado = pokemonById.get();
+    	PokemonEntity pokemonRecuperado = pokemonById.get();
 
         pokemonRecuperado.setDificuldade(pokemon.getDificuldade());
         pokemonRecuperado.setIdMochila(pokemon.getIdMochila());
@@ -69,17 +69,17 @@ public class PokemonRepository {
         return pokemonRecuperado;
     }
 
-    public Pokemon deleteById(Integer id) throws RegraDeNegocioException{
+    public PokemonEntity deleteById(Integer id) throws RegraDeNegocioException{
     	
-    	Optional<Pokemon> pokemonById = this.getByid(id);
+    	Optional<PokemonEntity> pokemonById = this.getByid(id);
     	if(pokemonById.isEmpty())throw new RegraDeNegocioException("Não Existe um Pokemon com o ID Passado");
-    	Pokemon pokemonRecuperado = pokemonById.get();
+    	PokemonEntity pokemonRecuperado = pokemonById.get();
     	
         listPokemons.remove(pokemonRecuperado);
 		return pokemonRecuperado;
     }
 
-    public List<Pokemon> findByNameContainsIgnoreCase(String nome) {
+    public List<PokemonEntity> findByNameContainsIgnoreCase(String nome) {
         return listPokemons.stream()
                 .filter(pokemon -> pokemon.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .collect(Collectors.toList());

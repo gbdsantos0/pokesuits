@@ -6,19 +6,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Repository;
 
-import com.dbc.pokesuits.entity.Mochila;
+import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 
 @Repository
 public class MochilaRepository {
-    private static final List<Mochila> listaMochilas = new ArrayList<>();
+    private static final List<MochilaEntity> listaMochilas = new ArrayList<>();
     private AtomicInteger COUNTER = new AtomicInteger();
 
 
 
     public MochilaRepository(){
-        listaMochilas.add(new Mochila(COUNTER.incrementAndGet(),1,1,1,1,20));
-        listaMochilas.add(Mochila.builder()
+        listaMochilas.add(new MochilaEntity(COUNTER.incrementAndGet(),1,1,1,1,20));
+        listaMochilas.add(MochilaEntity.builder()
                         .idMochila(COUNTER.incrementAndGet())
                         .quantidadeGreatBalls(2)
                         .quantidadeHeavyBalls(2)
@@ -29,18 +29,18 @@ public class MochilaRepository {
     }
 
 
-    public List<Mochila> findAll(){
+    public List<MochilaEntity> findAll(){
         return listaMochilas;
     }
 
-    public Mochila getById(Integer id)throws Exception{
+    public MochilaEntity getById(Integer id)throws Exception{
         return listaMochilas.stream()
                 .filter(mochila -> mochila.getIdMochila()==(id))
                 .findFirst().orElseThrow(()->new InvalidCenarioException("Não existe mochila com este ID!"));
     }
 
-    public Mochila update(Integer id, Mochila mochilaAtualizada)throws Exception{
-        Mochila mochilaRecuperada = listaMochilas.stream()
+    public MochilaEntity update(Integer id, MochilaEntity mochilaAtualizada)throws Exception{
+        MochilaEntity mochilaRecuperada = listaMochilas.stream()
                 .filter(mochila -> mochila.getIdMochila()==(id))
                 .findFirst()
                 .orElseThrow(()->new InvalidCenarioException("Mochila não encontrada!"));

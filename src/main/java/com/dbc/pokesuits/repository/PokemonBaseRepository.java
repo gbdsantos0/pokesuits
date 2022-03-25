@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.dbc.pokesuits.entity.PokemonBase;
 import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
+import com.dbc.pokesuits.model.PokemonBase;
 
 @Repository
 public class PokemonBaseRepository {

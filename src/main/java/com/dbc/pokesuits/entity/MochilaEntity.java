@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 @Data
-public class Mochila {
+public class MochilaEntity {
 //    private ArrayList<Pokemon> bag;
     private int idMochila;
     @NotNull

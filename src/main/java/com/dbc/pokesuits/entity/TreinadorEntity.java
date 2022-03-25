@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class Treinador{
+public class TreinadorEntity{
 
     private int idTreinador;
     private int idMochila;

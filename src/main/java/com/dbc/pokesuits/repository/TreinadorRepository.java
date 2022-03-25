@@ -6,18 +6,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Repository;
 
-import com.dbc.pokesuits.entity.Treinador;
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 
 @Repository
 public class TreinadorRepository {
-    private static List<Treinador> listaTreinadores = new ArrayList<>();
+    private static List<TreinadorEntity> listaTreinadores = new ArrayList<>();
     private AtomicInteger COUNTER = new AtomicInteger();
 
     public TreinadorRepository(){
-        listaTreinadores.add(new Treinador(COUNTER.incrementAndGet(),1,"Ash", Utils.MASCULINO));
-        listaTreinadores.add(Treinador.builder()
+        listaTreinadores.add(new TreinadorEntity(COUNTER.incrementAndGet(),1,"Ash", Utils.MASCULINO));
+        listaTreinadores.add(TreinadorEntity.builder()
                 .idTreinador(COUNTER.incrementAndGet())
                 .idMochila(2)
                 .nome("Suits Man")
@@ -25,18 +25,18 @@ public class TreinadorRepository {
                 .build());
     }
 
-    public Treinador saveAndFlush(Treinador treinador){
+    public TreinadorEntity saveAndFlush(TreinadorEntity treinador){
         treinador.setIdTreinador(COUNTER.incrementAndGet());
         listaTreinadores.add(treinador);
         return treinador;
     }
 
-    public List<Treinador> findAll(){
+    public List<TreinadorEntity> findAll(){
         return listaTreinadores;
     }
 
-    public Treinador update(Integer id, Treinador treinadorAtualizar) throws Exception{
-        Treinador treinadorRecuperado = listaTreinadores.stream()
+    public TreinadorEntity update(Integer id, TreinadorEntity treinadorAtualizar) throws Exception{
+        TreinadorEntity treinadorRecuperado = listaTreinadores.stream()
                 .filter(t-> t.getIdTreinador()==(id))
                 .findFirst()
                 .orElseThrow(()->new InvalidCenarioException("Treinador não existe!"));
@@ -44,14 +44,14 @@ public class TreinadorRepository {
         treinadorRecuperado.setSexo(treinadorAtualizar.getSexo());
         return treinadorRecuperado;
     }
-    public Treinador deleteById(Integer id)throws Exception{
+    public TreinadorEntity deleteById(Integer id)throws Exception{
         return listaTreinadores.stream()
                 .filter(t-> t.getIdTreinador()==(id))
                 .findFirst()
                 .orElseThrow(()->new InvalidCenarioException("Treinador não existe!"));
     }
 
-    public Treinador getById(Integer id)throws Exception{
+    public TreinadorEntity getById(Integer id)throws Exception{
         return listaTreinadores.stream()
                 .filter(treinador -> treinador.getIdTreinador()==(id))
                 .findFirst()

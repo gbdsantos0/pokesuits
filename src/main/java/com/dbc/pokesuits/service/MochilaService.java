@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
-import com.dbc.pokesuits.entity.Mochila;
+import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.repository.MochilaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +29,7 @@ public class MochilaService {
     }
 
     public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{
-        Mochila mochila = mochilaRepository.getById(id);
+        MochilaEntity mochila = mochilaRepository.getById(id);
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)){
             case "greatball":
@@ -75,7 +75,7 @@ public class MochilaService {
 
 
     public MochilaDTO usarPokebola(Integer id, String tipoPokebola) throws Exception {
-        Mochila mochila = mochilaRepository.getById(id);
+        MochilaEntity mochila = mochilaRepository.getById(id);
         switch (tipoPokebola.toLowerCase(Locale.ROOT)) {
             case "greatball":
                 if(mochila.getQuantidadeGreatBalls()-1<0){

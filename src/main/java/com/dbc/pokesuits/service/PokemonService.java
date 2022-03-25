@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
-import com.dbc.pokesuits.entity.Pokemon;
+import com.dbc.pokesuits.entity.PokemonEntity;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,9 +30,9 @@ public class PokemonService {
 
 	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) {
 		
-		Pokemon PokemonConvertido = objectMapper.convertValue(createDTO, Pokemon.class);
+		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		
-		Pokemon pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
+		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		
@@ -41,7 +41,7 @@ public class PokemonService {
 
 	public PokemonDTO removerPokemon(int id) throws RegraDeNegocioException {
 		
-		Pokemon pokemonRemovido = pokemonRepository.deleteById(id);
+		PokemonEntity pokemonRemovido = pokemonRepository.deleteById(id);
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
 		
@@ -49,9 +49,9 @@ public class PokemonService {
 	}
 
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
-		Pokemon PokemonConvertido = objectMapper.convertValue(createDTO, Pokemon.class);
+		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		
-		Pokemon pokemonAtualizado = pokemonRepository.update(id, PokemonConvertido);
+		PokemonEntity pokemonAtualizado = pokemonRepository.update(id, PokemonConvertido);
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		

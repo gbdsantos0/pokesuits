@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class Pokemon{
+public class PokemonEntity{
 	
 	private String racaPokemon;
     private Double peso;

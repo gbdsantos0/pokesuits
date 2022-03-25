@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
 import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
-import com.dbc.pokesuits.entity.Treinador;
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.repository.TreinadorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,16 +25,16 @@ public class TreinadorService {
 
     public TreinadorDTO create(TreinadorCreateDTO treinadorCreate)throws Exception{
         log.info("chamou o método crate do Treinador!");
-        Treinador treinador = objectMapper.convertValue(treinadorCreate, Treinador.class);
-        Treinador treinadorCriado = treinadorRepository.saveAndFlush(treinador);
+        TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);
+        TreinadorEntity treinadorCriado = treinadorRepository.saveAndFlush(treinador);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);
         return treinadorDTO;
     }
 
     public TreinadorDTO update(Integer id, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
-        Treinador treinador = objectMapper.convertValue(treinadorAtualizar, Treinador.class);
-        Treinador treinadorAtualizado = treinadorRepository.saveAndFlush(treinador);
+        TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);
+        TreinadorEntity treinadorAtualizado = treinadorRepository.saveAndFlush(treinador);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);
         return treinadorDTO;
     }
@@ -49,14 +49,14 @@ public class TreinadorService {
 
     public TreinadorDTO delete(Integer id) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
-        Treinador treinadorDeletado = treinadorRepository.deleteById(id);
+        TreinadorEntity treinadorDeletado = treinadorRepository.deleteById(id);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
         return treinadorDTO;
     }
 
     public TreinadorDTO getById(Integer id)throws Exception{
         log.info("chamou o método getById do Treinador!");
-        Treinador treinadorChamado = treinadorRepository.getById(id);
+        TreinadorEntity treinadorChamado = treinadorRepository.getById(id);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorChamado, TreinadorDTO.class);
         return treinadorDTO;
     }
