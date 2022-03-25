@@ -27,9 +27,9 @@ public class TreinadorController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PostMapping
-    public TreinadorDTO create(@Valid @RequestBody TreinadorCreateDTO treinador)throws Exception{
-        return treinadorService.create(treinador);
+    @PostMapping("/{idUser}")
+    public TreinadorDTO create(@Valid @RequestBody TreinadorCreateDTO treinador, @PathVariable("idUser") Integer idUser)throws Exception{
+        return treinadorService.create(treinador, idUser);
     }
 
 
