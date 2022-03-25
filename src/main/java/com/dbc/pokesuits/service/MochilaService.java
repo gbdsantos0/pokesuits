@@ -151,7 +151,7 @@ public class MochilaService {
                 .collect(Collectors.toList())
         );
         mochilaDTO.setIdTreinador(mochila.getIdTreinador());
-
+        mochilaDTO.setIdMochila(mochila.getIdMochila());
         return mochilaDTO;
     }
     

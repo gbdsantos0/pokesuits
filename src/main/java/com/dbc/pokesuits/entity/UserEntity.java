@@ -42,7 +42,7 @@ public class UserEntity {
 	@Column(name = "username")
 	private String username;
 	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<TreinadorEntity> treinadores;
 	
 }

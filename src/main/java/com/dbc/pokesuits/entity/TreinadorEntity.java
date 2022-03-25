@@ -34,7 +34,7 @@ public class TreinadorEntity{
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "treinador", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(mappedBy = "treinador", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MochilaEntity> mochilas;
 
     @JsonIgnore
