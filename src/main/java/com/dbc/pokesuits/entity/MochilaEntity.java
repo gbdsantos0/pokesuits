@@ -24,7 +24,10 @@ public class MochilaEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOCHILA_SEQ")
     @SequenceGenerator(name = "MOCHILA_SEQ", sequenceName = "seq_mochila", allocationSize = 1)
     @Column(name = "id_mochila")
-    private int idMochila;
+    private Integer idMochila;
+
+    @Column(name = "id_treinador", insertable = false, updatable = false)
+    private Integer idTreinador;
 
     @Column(name = "quantidadegreatballs")
     private int quantidadeGreatBalls;

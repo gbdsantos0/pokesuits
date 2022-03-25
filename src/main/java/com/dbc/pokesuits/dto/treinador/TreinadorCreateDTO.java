@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class TreinadorCreateDTO {
-    @ApiModelProperty(value="id da mochila")
-    private Integer idMochila;
     @NotNull
     @ApiModelProperty(value="nome do treinador")
     private String nome;

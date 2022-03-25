@@ -8,5 +8,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class MochilaDTO extends MochilaCreateDTO {
     @ApiModelProperty(value = "id da mochila")
-    private int idMochila;
+    private Integer idMochila;
+    @ApiModelProperty(value = "id do treinador")
+    private Integer idTreinador;
 }
