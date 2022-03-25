@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +18,11 @@ import com.dbc.pokesuits.repository.MochilaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
+@AllArgsConstructor
 public class MochilaService {
 
-    @Autowired
-    private MochilaRepository mochilaRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final MochilaRepository mochilaRepository;
+    private final ObjectMapper objectMapper;
 
 
     public List<MochilaDTO> listAll(){
@@ -68,9 +71,8 @@ public class MochilaService {
                 throw new InvalidCenarioException("A pokebola escolhida não existe!");
         }
 
-        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaRepository.update(id,mochila), MochilaDTO.class);
-                return mochilaDTO;
-
+        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaRepository.save(mochila), MochilaDTO.class);
+        return mochilaDTO;
     }
 
 
@@ -110,8 +112,21 @@ public class MochilaService {
             default:
                 throw new InvalidCenarioException("A pokebola escolhida não existe!");
         }
-        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaRepository.update(id,mochila), MochilaDTO.class);
+
+        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaRepository.save(mochila), MochilaDTO.class);
         return mochilaDTO;
     }
 
+    public MochilaCompletaDTO getMochilaCompleta(Integer id) {
+        MochilaEntity mochila = mochilaRepository.getById(id);
+
+        MochilaCompletaDTO mochilaDTO = objectMapper.convertValue(mochila, MochilaCompletaDTO.class);
+        mochilaDTO.setTreinador(objectMapper.convertValue(mochila.getTreinador(), TreinadorDTO.class));
+        mochilaDTO.setPokemons(mochila.getPokemons().stream()
+                .map(pokemon -> objectMapper.convertValue(pokemon, PokemonDTO.class))
+                .collect(Collectors.toList())
+        );
+
+        return mochilaDTO;
+    }
 }

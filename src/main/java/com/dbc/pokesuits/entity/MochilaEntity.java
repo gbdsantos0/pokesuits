@@ -38,11 +38,11 @@ public class MochilaEntity {
     private int quantidadePokeBalls;
 
     @JsonIgnore
-    @OneToMany(mappedBy="mochila", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(mappedBy="mochila", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<PokemonEntity> pokemons;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "mochila")
+    @OneToOne(mappedBy = "mochila", fetch = FetchType.LAZY)
     private TreinadorEntity treinador;
 }
 

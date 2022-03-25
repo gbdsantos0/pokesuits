@@ -1,6 +1,7 @@
 package com.dbc.pokesuits.controller;
 
 
+import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.service.MochilaService;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,11 @@ public class MochilaController {
     @GetMapping
     public List<MochilaDTO> listAll(){
         return mochilaService.listAll();
+    }
+
+    @GetMapping("/{idMochila}")
+    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) {
+        return mochilaService.getMochilaCompleta(id);
     }
 
 
