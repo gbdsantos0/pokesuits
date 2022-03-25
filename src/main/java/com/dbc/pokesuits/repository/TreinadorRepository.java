@@ -1,14 +1,14 @@
 package com.dbc.pokesuits.repository;
 
-import com.dbc.pokesuits.enums.Utils;
-import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.model.entity.Treinador;
-import io.swagger.models.auth.In;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.stereotype.Repository;
+
+import com.dbc.pokesuits.enums.Utils;
+import com.dbc.pokesuits.exceptions.InvalidCenarioException;
+import com.dbc.pokesuits.model.entity.Treinador;
 
 @Repository
 public class TreinadorRepository {

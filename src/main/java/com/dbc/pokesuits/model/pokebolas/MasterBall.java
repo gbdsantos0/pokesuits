@@ -1,7 +1,6 @@
 package com.dbc.pokesuits.model.pokebolas;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
-import com.dbc.pokesuits.model.entity.Pokemon;
 import com.dbc.pokesuits.model.interfaces.Pokebola;
 
 public class MasterBall implements Pokebola {

@@ -1,15 +1,14 @@
 package com.dbc.pokesuits.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
 import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
-import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.model.entity.PokemonBase;
-import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class PokemonBaseRepository {
