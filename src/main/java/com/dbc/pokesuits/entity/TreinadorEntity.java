@@ -33,8 +33,6 @@ public class TreinadorEntity{
     @SequenceGenerator(name = "seq_treinador", sequenceName = "seq_treinador", allocationSize = 1)
     @Column(name = "id_treinador")
     private Integer idTreinador;
-    @Column(name = "id_mochila", insertable = false, updatable = false)
-    private Integer idMochila;
     @Column(name = "id_user", insertable = false, updatable = false)
     private Integer idUser;
     @Column(name = "nome")
