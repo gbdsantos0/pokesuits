@@ -3,6 +3,7 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,11 @@ import lombok.extern.java.Log;
 
 @Service
 @Log
+@RequiredArgsConstructor
 public class TreinadorService {
-    @Autowired
-    private TreinadorRepository treinadorRepository;
-    @Autowired
-    private MochilaService mochilaService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final TreinadorRepository treinadorRepository;
+    private final UserService userService;
+    private final ObjectMapper objectMapper;
 
     public TreinadorDTO create(TreinadorCreateDTO treinadorCreate, Integer idUser)throws Exception{
         log.info("chamou o método crate do Treinador!");
