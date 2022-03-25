@@ -12,6 +12,6 @@ import java.util.Set;
 @Data
 public class MochilaCompletaDTO extends MochilaDTO {
 
-    private TreinadorDTO treinador;
+//    private TreinadorDTO treinador;
     private List<PokemonDTO> pokemons;
 }
