@@ -47,7 +47,7 @@ public class MochilaService {
     }
 
     public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{
-        MochilaEntity mochila = mochilaRepository.getById(id);
+        MochilaEntity mochila = getById(id);
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)){
             case "greatball":
@@ -92,7 +92,7 @@ public class MochilaService {
 
 
     public MochilaDTO usarPokebola(Integer id, String tipoPokebola) throws Exception {
-        MochilaEntity mochila = mochilaRepository.getById(id);
+        MochilaEntity mochila = getById(id);
         switch (tipoPokebola.toLowerCase(Locale.ROOT)) {
             case "greatball":
                 if(mochila.getQuantidadeGreatBalls()-1<0){

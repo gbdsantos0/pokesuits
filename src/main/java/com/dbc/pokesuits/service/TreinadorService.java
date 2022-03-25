@@ -36,7 +36,7 @@ public class TreinadorService {
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);
         return treinadorDTO;
     }
-
+    //todo arrumar os puts
     public TreinadorDTO update(Integer id, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
         TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);
