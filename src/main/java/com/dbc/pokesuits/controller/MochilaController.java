@@ -40,10 +40,10 @@ public class MochilaController {
         return mochilaService.getMochilaCompleta(id);
     }
 
-    @PostMapping
+    @PostMapping("{idTreinador}")
     @Validated
-    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila) {
-        return mochilaService.create(mochila);
+    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("idTreinador") Integer idTreinador) throws Exception {
+        return mochilaService.create(mochila, idTreinador);
     }
 
     @ApiOperation(value = "Retornar uma mochila com quantidade de pokebola atualizada!")

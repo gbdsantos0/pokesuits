@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
@@ -25,6 +26,7 @@ public class MochilaService {
 
     private final MochilaRepository mochilaRepository;
     private final ObjectMapper objectMapper;
+    private final TreinadorService treinadorService;
 
 
     public List<MochilaDTO> listAll(){
@@ -33,8 +35,12 @@ public class MochilaService {
                 .collect(Collectors.toList());
     }
 
-    public MochilaDTO create(MochilaCreateDTO mochila) {
+    public MochilaDTO create(MochilaCreateDTO mochila, Integer idTreinador) throws Exception {
         MochilaEntity mochilaEntity = objectMapper.convertValue(mochila, MochilaEntity.class);
+        //buscando treinador
+        TreinadorEntity treinador = treinadorService.getById(idTreinador);
+        mochilaEntity.setTreinador(treinador);
+
         MochilaEntity mochilaCriada = mochilaRepository.save(mochilaEntity);
 
         return objectMapper.convertValue(mochilaCriada, MochilaDTO.class);
