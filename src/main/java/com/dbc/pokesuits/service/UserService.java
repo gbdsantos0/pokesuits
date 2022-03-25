@@ -41,7 +41,9 @@ public class UserService {
 
 	public UserDTO RemoverUser(int id) throws RegraDeNegocioException {
 		
-		UserEntity userRemovido = userRepository.deleteById(id);
+		UserEntity userRemovido = userRepository.getById(id);
+		
+		userRepository.deleteById(id);
 		
 		UserDTO userDTO = objectMapper.convertValue(userRemovido, UserDTO.class);
 		
@@ -51,7 +53,7 @@ public class UserService {
 	public UserDTO editarUser(UserCreateDTO createDTO, Integer id) throws RegraDeNegocioException{
 		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
 		
-		UserEntity userAtualizado = userRepository.update(id, userConvertido);
+		UserEntity userAtualizado = userRepository.save(userConvertido);
 		
 		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
 		

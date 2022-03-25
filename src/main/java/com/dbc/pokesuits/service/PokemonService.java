@@ -41,8 +41,10 @@ public class PokemonService {
 
 	public PokemonDTO removerPokemon(int id) throws RegraDeNegocioException {
 		
-		PokemonEntity pokemonRemovido = pokemonRepository.deleteById(id);
+		PokemonEntity pokemonRemovido = pokemonRepository.getById(id);
 		
+		pokemonRepository.deleteById(id);
+				
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
 		
 		return pokemonDTO;
@@ -51,7 +53,7 @@ public class PokemonService {
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		
-		PokemonEntity pokemonAtualizado = pokemonRepository.update(id, PokemonConvertido);
+		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		
