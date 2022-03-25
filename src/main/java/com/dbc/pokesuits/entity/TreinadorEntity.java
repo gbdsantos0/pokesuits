@@ -1,16 +1,6 @@
 package com.dbc.pokesuits.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import com.dbc.pokesuits.enums.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,8 +34,8 @@ public class TreinadorEntity{
 
 
     @JsonIgnore
-    @OneToOne(mappedBy = "treinador", fetch = FetchType.LAZY)
-    private MochilaEntity mochila;
+    @OneToMany(mappedBy = "treinador", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private Set<MochilaEntity> mochilas;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

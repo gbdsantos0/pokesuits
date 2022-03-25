@@ -1,11 +1,7 @@
 package com.dbc.pokesuits.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dbc.pokesuits.dto.cenario.CenarioDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
@@ -57,8 +53,8 @@ public class CenarioController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
     })
     @PostMapping("/capturar/{idTreinador}/{pokebola}")//TODO ADICIONAR REQUESTINFO PARA CASO DE NAO CONSEGUIR CAPTURAR
-    public PokemonDTO capturarPokemon(@PathVariable("pokebola") String nomePokebola, @PathVariable("idTreinador") Integer idTreinador) throws Exception{//todo adicionar o treinadorDTO
-        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idTreinador);
+    public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola, @PathVariable("idTreinador") Integer idTreinador, @RequestParam(value = "idMochila") Integer idMochila) throws Exception{//todo adicionar o treinadorDTO
+        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idTreinador, idMochila);
         log.info("Pokemon capturado com sucesso");
         return pokemonDTO;
     }
