@@ -49,7 +49,7 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PostMapping
-	public PokemonDTO AdicionarPokemon(@Valid @RequestBody PokemonCreateDTO pokemon){
+	public PokemonDTO AdicionarPokemon(@Valid @RequestBody PokemonCreateDTO pokemon) throws RegraDeNegocioException{
 		return pokemonService.adicionarPokemon(pokemon);
 	}
 	

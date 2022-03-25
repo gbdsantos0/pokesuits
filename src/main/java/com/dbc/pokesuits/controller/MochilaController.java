@@ -4,6 +4,7 @@ package com.dbc.pokesuits.controller;
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.service.MochilaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,7 +36,7 @@ public class MochilaController {
     }
 
     @GetMapping("/{idMochila}")
-    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) {
+    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) throws RegraDeNegocioException {
         return mochilaService.getMochilaCompleta(id);
     }
 

@@ -1,7 +1,7 @@
 package com.dbc.pokesuits.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,12 +25,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
+@Entity(name = "pokemon")
 public class PokemonEntity{
 	
 	@Id
 	@Column(name = "id_pokemon")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bobobo")
-	@SequenceGenerator(name = "bobobo", sequenceName = "seq_pokemon", initialValue = 1)
+	@SequenceGenerator(name = "bobobo", sequenceName = "seq_pokemon", allocationSize = 1)
 	private Integer idPokemon;
 	@Column(name = "racapokemon")
 	private String racaPokemon;
@@ -51,8 +52,8 @@ public class PokemonEntity{
 	@Column(name = "raridade")
     private Raridades raridade;
 	@JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_mochila", referencedColumnName = "id_mochila")
-    private MochilaEntity mochila;
+    private MochilaEntity mochilaPokemon;
     
 }

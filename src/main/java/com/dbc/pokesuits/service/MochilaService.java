@@ -4,19 +4,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
-import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
-import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
-import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
+import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.MochilaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -125,16 +126,24 @@ public class MochilaService {
         return mochilaDTO;
     }
 
-    public MochilaCompletaDTO getMochilaCompleta(Integer id) {
-        MochilaEntity mochila = mochilaRepository.getById(id);
+    public MochilaCompletaDTO getMochilaCompleta(Integer id) throws RegraDeNegocioException {
+        MochilaEntity mochila = getById(id);
+        
 
         MochilaCompletaDTO mochilaDTO = objectMapper.convertValue(mochila, MochilaCompletaDTO.class);
         mochilaDTO.setTreinador(objectMapper.convertValue(mochila.getTreinador(), TreinadorDTO.class));
         mochilaDTO.setPokemons(mochila.getPokemons().stream()
-                .map(pokemon -> objectMapper.convertValue(pokemon, PokemonDTO.class))
+                .map(pokemon -> {
+                	PokemonDTO convertValue = objectMapper.convertValue(pokemon, PokemonDTO.class);
+                	return convertValue;
+                })
                 .collect(Collectors.toList())
         );
 
         return mochilaDTO;
+    }
+    
+    public MochilaEntity getById(Integer id) throws RegraDeNegocioException {
+    	return mochilaRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado Não Existe"));
     }
 }

@@ -19,6 +19,8 @@ public class PokemonService {
 	@Autowired
 	private PokemonRepository pokemonRepository;
 	@Autowired
+    private MochilaService mochilaService;
+	@Autowired
 	private ObjectMapper objectMapper;
 	
 	public List<PokemonDTO> listarPokemons() {
@@ -28,9 +30,10 @@ public class PokemonService {
 				.collect(Collectors.toList());
 	}
 
-	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) {
+	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) throws RegraDeNegocioException {
 		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
+		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));
 		
 		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
@@ -41,7 +44,7 @@ public class PokemonService {
 
 	public PokemonDTO removerPokemon(int id) throws RegraDeNegocioException {
 		
-		PokemonEntity pokemonRemovido = pokemonRepository.getById(id);
+		PokemonEntity pokemonRemovido = pokemonRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
 		
 		pokemonRepository.deleteById(id);
 				
@@ -51,7 +54,11 @@ public class PokemonService {
 	}
 
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
+		pokemonRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
+		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
+		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));
+		PokemonConvertido.setIdPokemon(id);
 		
 		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		

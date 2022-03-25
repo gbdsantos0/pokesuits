@@ -1,12 +1,25 @@
 package com.dbc.pokesuits.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +51,7 @@ public class MochilaEntity {
     private int quantidadePokeBalls;
 
     @JsonIgnore
-    @OneToMany(mappedBy="mochila", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="mochilaPokemon", cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<PokemonEntity> pokemons;
 
     @JsonIgnore

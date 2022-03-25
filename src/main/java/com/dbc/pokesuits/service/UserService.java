@@ -60,7 +60,7 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserDTO getById(Integer idUser){
-		return objectMapper.convertValue(userRepository.getById(idUser), UserDTO.class);
+	public UserEntity getById(Integer idUser) throws RegraDeNegocioException{
+		return userRepository.findById(idUser).orElseThrow(() -> new RegraDeNegocioException("O id passadso não Existe"));
 	}
 }
