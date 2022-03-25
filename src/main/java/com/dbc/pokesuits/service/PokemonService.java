@@ -26,7 +26,11 @@ public class PokemonService {
 	public List<PokemonDTO> listarPokemons() {
 		return pokemonRepository.findAll()
 				.stream()
-				.map(pokemon -> objectMapper.convertValue(pokemon, PokemonDTO.class))
+				.map(pokemon -> {
+					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);
+					pokemonDTO.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
+					return pokemonDTO;
+				})
 				.collect(Collectors.toList());
 	}
 

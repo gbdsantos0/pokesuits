@@ -145,10 +145,12 @@ public class MochilaService {
         mochilaDTO.setPokemons(mochila.getPokemons().stream()
                 .map(pokemon -> {
                 	PokemonDTO convertValue = objectMapper.convertValue(pokemon, PokemonDTO.class);
+                    convertValue.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
                 	return convertValue;
                 })
                 .collect(Collectors.toList())
         );
+        mochilaDTO.setIdTreinador(mochila.getIdTreinador());
 
         return mochilaDTO;
     }
