@@ -42,9 +42,9 @@ public class TreinadorEntity{
     @Column(name = "sexo")
     private Utils sexo;
 
+
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_mochila", referencedColumnName = "id_mochila")
+    @OneToOne(mappedBy = "treinador", fetch = FetchType.LAZY)
     private MochilaEntity mochila;
 
     @JsonIgnore
