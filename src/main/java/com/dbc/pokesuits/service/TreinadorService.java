@@ -34,6 +34,7 @@ public class TreinadorService {
     public TreinadorDTO update(Integer id, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
         TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);
+        treinador.setIdTreinador(id);
         TreinadorEntity treinadorAtualizado = treinadorRepository.saveAndFlush(treinador);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);
         return treinadorDTO;
@@ -49,7 +50,8 @@ public class TreinadorService {
 
     public TreinadorDTO delete(Integer id) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
-        TreinadorEntity treinadorDeletado = treinadorRepository.deleteById(id);
+        TreinadorEntity treinadorDeletado = treinadorRepository.getById(id);
+        treinadorRepository.deleteById(id);
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
         return treinadorDTO;
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.dbc.pokesuits.entity.TreinadorEntity;
@@ -11,8 +12,8 @@ import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 
 @Repository
-public class TreinadorRepository {
-    private static List<TreinadorEntity> listaTreinadores = new ArrayList<>();
+public interface TreinadorRepository extends JpaRepository<TreinadorEntity, Integer> {
+    /*private static List<TreinadorEntity> listaTreinadores = new ArrayList<>();
     private AtomicInteger COUNTER = new AtomicInteger();
 
     public TreinadorRepository(){
@@ -56,5 +57,5 @@ public class TreinadorRepository {
                 .filter(treinador -> treinador.getIdTreinador()==(id))
                 .findFirst()
                 .orElseThrow(()-> new InvalidCenarioException("Treinador não existe!"));
-    }
+    }*/
 }
