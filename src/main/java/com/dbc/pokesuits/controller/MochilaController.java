@@ -41,8 +41,8 @@ public class MochilaController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @GetMapping("/{idMochila}")
-    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) throws Exception {
+    @GetMapping("/{id_mochila}")
+    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("id_mochila") Integer id) throws Exception {
         return mochilaService.getMochilaCompleta(id);
     }
     
@@ -52,9 +52,9 @@ public class MochilaController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PostMapping("{idTreinador}")
+    @PostMapping("{id_treinador}")
     @Validated
-    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("idTreinador") Integer idTreinador) throws Exception {
+    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("id_treinador") Integer idTreinador) throws Exception {
         return mochilaService.create(mochila, idTreinador);
     }
 
@@ -64,10 +64,10 @@ public class MochilaController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PutMapping("/{idMochila}")
-    public MochilaDTO adicionarPokebola(@PathVariable("idMochila")Integer id,
-                                        @RequestParam String tipoPokebola,
-                                        @RequestParam Integer quantidadeAdicionada) throws Exception {
+    @PutMapping("/{id_mochila}")
+    public MochilaDTO adicionarPokebola(@PathVariable("id_mochila")Integer id,
+                                        @RequestParam(value = "tipo_pokebola") String tipoPokebola,
+                                        @RequestParam(value = "quantidade_adicionada") Integer quantidadeAdicionada) throws Exception {
         return mochilaService.adicionarPokebola(id,tipoPokebola,quantidadeAdicionada);
     }
 

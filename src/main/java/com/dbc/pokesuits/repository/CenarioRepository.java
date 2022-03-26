@@ -22,7 +22,7 @@ public class CenarioRepository {
                 .idCenario(COUNTER.incrementAndGet())
                 .terreno(TiposTerreno.CHAO)
                 .levelMedio(1)
-                .idPokemonsDisponiveis(List.of())
+                .idPokemonsDisponiveis(new ArrayList<>())
                 .build());
         listaCenarios.add(Cenario.builder()//GRAMA (BULBASAUR E EVOS)
                 .idCenario(COUNTER.incrementAndGet())

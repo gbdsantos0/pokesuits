@@ -119,7 +119,7 @@ public class CenarioService {
         pokemonBaseDTO = this.selecionarPokemon();
         contador = 0;
         int randLevel = r.nextInt(8)+cenarioRepository.listAll().get(cenarioAtual-1).getLevelMedio()-4;//variacao de 4 levels pra cima ou pra baixo
-        //garantir que não ha niveis nogativos
+        //garantir que não ha niveis negativos
         if(randLevel<1){
             randLevel=1;
         }
@@ -232,6 +232,12 @@ public class CenarioService {
     public  CenarioDTO cenarioAtual() throws Exception{
         CenarioDTO cenarioDTO = objectMapper.convertValue(cenarioRepository.getById(cenarioAtual), CenarioDTO.class);
         return cenarioDTO;
+    }
+
+    public List<CenarioDTO> listAll(){
+        return cenarioRepository.listAll().stream()
+                .map(cenario -> objectMapper.convertValue(cenario, CenarioDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

@@ -21,21 +21,21 @@ public class TreinadorController {
     private TreinadorService treinadorService;
 
 
-    @ApiOperation(value = "Retornar um novo treinador!")
+    @ApiOperation(value = "Cria e retorna um novo treinador")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "criou um treinador!"),
+            @ApiResponse(code = 200, message = "Treinador criado com sucesso"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PostMapping("/{idUser}")
-    public TreinadorDTO create(@Valid @RequestBody TreinadorCreateDTO treinador, @PathVariable("idUser") Integer idUser)throws Exception{
+    @PostMapping("/{id_user}")
+    public TreinadorDTO create(@Valid @RequestBody TreinadorCreateDTO treinador, @PathVariable("id_user") Integer idUser)throws Exception{
         return treinadorService.create(treinador, idUser);
     }
 
 
-    @ApiOperation(value = "Retornar uma lista de treinadores!")
+    @ApiOperation(value = "Retorna uma lista de treinadores")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "lista de treinadores!"),
+            @ApiResponse(code = 200, message = "Lista de treinadores retornada com sucesso"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
@@ -45,41 +45,41 @@ public class TreinadorController {
     }
 
 
-    @ApiOperation(value = "Retornar um treinador atualizado!")
+    @ApiOperation(value = "Atualiza e retorna um treinador")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Atualizou um treinador!"),
+            @ApiResponse(code = 200, message = "Treinador atualizado com sucesso"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PutMapping("/{idTreinador}")
-    public TreinadorDTO update(@PathVariable("idTreinador") Integer id,
+    @PutMapping("/{id_treinador}")
+    public TreinadorDTO update(@PathVariable("id_treinador") Integer idTreinador,
                                @Valid @RequestBody TreinadorCreateDTO treinadorAtualizar)throws Exception{
-        return treinadorService.update(id,treinadorAtualizar);
+        return treinadorService.update(idTreinador,treinadorAtualizar);
     }
 
 
 
-    @ApiOperation(value = "Retornar um treinador deletado!")
+    @ApiOperation(value = "Deleta e retorna um treinador")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "deletou um treinador!"),
+            @ApiResponse(code = 200, message = "Treinador removido do banco com sucesso"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @DeleteMapping("/{idTreinador}")
-    public TreinadorDTO delete(@PathVariable("idTreinador") Integer id) throws Exception{
+    @DeleteMapping("/{id_treinador}")
+    public TreinadorDTO delete(@PathVariable("id_treinador") Integer id) throws Exception{
         return treinadorService.delete(id);
     }
 
 
 
-//    @ApiOperation(value = "Retornar um treinador pelo seu id!")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "listar um treinador pelo seu id!"),
-//            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
-//            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
-//    })
-//    @GetMapping("/{idTreinador}")
-//    public TreinadorDTO getById(@PathVariable("idTreinador") Integer id) throws Exception{
-//        return treinadorService.getById(id);
-//    }
+    @ApiOperation(value = "Retorna um treinador pelo seu ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Treinador retornado com sucesso"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+    })
+    @GetMapping("/{id_treinador}")
+    public TreinadorDTO getById(@PathVariable("id_treinador") Integer idTreinador) throws Exception{
+        return treinadorService.getTreinadorDTOById(idTreinador);
+    }
 }

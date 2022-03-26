@@ -6,14 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
@@ -60,9 +53,9 @@ public class PokemonController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
-	@DeleteMapping(path = "/{id}")
-	public void RemoverPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
-		pokemonService.removerPokemon(id);
+	@DeleteMapping(path = "/{id_pokemon}")
+	public void RemoverPokemon(@PathVariable("id_pokemon") int idPokemon) throws RegraDeNegocioException {
+		pokemonService.removerPokemon(idPokemon);
 	}
 	
 	@ApiOperation(value = "Recebe um id e um pokemon")
@@ -72,8 +65,8 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PutMapping
-	public PokemonDTO editarPokemon(@Valid @RequestBody PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
-		return pokemonService.editarPokemon(createDTO, id);
+	public PokemonDTO editarPokemon(@Valid @RequestBody PokemonCreateDTO createDTO, @RequestParam(value = "id_pokemon") Integer idPokemon) throws RegraDeNegocioException {
+		return pokemonService.editarPokemon(createDTO, idPokemon);
 	}
 	
 	
