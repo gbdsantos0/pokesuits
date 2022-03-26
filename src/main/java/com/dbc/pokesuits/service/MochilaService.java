@@ -131,7 +131,6 @@ public class MochilaService {
         return mochilaDTO;
     }
 
-    //todo adicionar get do treinador
     public MochilaCompletaDTO getMochilaCompleta(Integer id) throws Exception {
         MochilaEntity mochila = getById(id);
         
