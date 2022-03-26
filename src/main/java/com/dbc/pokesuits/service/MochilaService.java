@@ -11,7 +11,6 @@ import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
-import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
