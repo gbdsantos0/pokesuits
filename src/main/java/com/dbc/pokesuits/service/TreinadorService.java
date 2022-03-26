@@ -3,8 +3,6 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
@@ -15,6 +13,7 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.TreinadorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 @Service
