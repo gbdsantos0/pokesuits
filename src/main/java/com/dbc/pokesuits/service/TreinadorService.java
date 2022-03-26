@@ -26,44 +26,46 @@ public class TreinadorService {
 
     public TreinadorDTO create(TreinadorCreateDTO treinadorCreate, Integer idUser)throws Exception{
         log.info("chamou o método crate do Treinador!");
-        //busca usuario
-        UserEntity userEntity = userService.getById(idUser);
-        TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);
-        //seta usuario
-        treinador.setUser(userEntity);
-        TreinadorEntity treinadorCriado = treinadorRepository.save(treinador);
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);
+        UserEntity userEntity = userService.getById(idUser);//busca usuario
+        TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);//converte para TreinadorEntity
+        treinador.setUser(userEntity);//seta usuario
+        TreinadorEntity treinadorCriado = treinadorRepository.save(treinador);//salva treinador no banco
+        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);//converte para dto para retorno
         return treinadorDTO;
     }
-    //todo arrumar os puts
-    public TreinadorDTO update(Integer id, TreinadorCreateDTO treinadorAtualizar) throws Exception{
+    //todo consertar parte de dar update no id do user, talvez um DTO novo?
+    public TreinadorDTO update(Integer idTreinador, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
-        TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);
-        treinador.setIdTreinador(id);
-        TreinadorEntity treinadorAtualizado = treinadorRepository.saveAndFlush(treinador);
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);
+        TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);//converte para TreinadorEntity
+        treinador.setIdTreinador(idTreinador);//seta ID para definir qual dado do banco alterar
+        TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinador);//insere alteracao no banco
+        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);//converte o treinador para dto
         return treinadorDTO;
     }
 
     public List<TreinadorDTO> list(){
         log.info("chamou o método list do Treinador!");
-        return treinadorRepository.findAll()
-                .stream()
-                .map(treinador -> objectMapper.convertValue(treinador, TreinadorDTO.class))
-                .collect(Collectors.toList());
+        return treinadorRepository.findAll().stream()//busca todos os dados e chama stream
+                .map(treinador -> objectMapper.convertValue(treinador, TreinadorDTO.class))//mapeia para TreinadorDTO
+                .collect(Collectors.toList());//coleta
     }
 
+    //todo talvez haja necessidade de chamar outro delete em caso de nao poder usar cascata.
     public TreinadorDTO delete(Integer id) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
-        TreinadorEntity treinadorDeletado = getById(id);
-        treinadorRepository.deleteById(id);
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
+        TreinadorEntity treinadorDeletado = getById(id);//busca a entrada no banco para retorno
+        treinadorRepository.deleteById(id);//deleta o dado do banco
+        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);//converte o dado retornado do banco para TreinadorDTO
         return treinadorDTO;
     }
 
     public TreinadorEntity getById(Integer id)throws Exception{
         log.info("chamou o método getById do Treinador!");
-        TreinadorEntity treinadorChamado = treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));
+        TreinadorEntity treinadorChamado = treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));//recebe TreinadorEntity do banco
         return treinadorChamado;
+    }
+
+    public TreinadorDTO getTreinadorDTOById(Integer idTreinador) throws Exception {
+        return objectMapper.convertValue(getById(idTreinador), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
     }
 }

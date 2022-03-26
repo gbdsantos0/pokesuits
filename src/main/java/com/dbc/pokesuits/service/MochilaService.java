@@ -11,7 +11,6 @@ import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
-import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
@@ -132,20 +131,25 @@ public class MochilaService {
         return mochilaDTO;
     }
 
-    public MochilaCompletaDTO getMochilaCompleta(Integer id) throws RegraDeNegocioException {
+    public MochilaCompletaDTO getMochilaCompleta(Integer id) throws Exception {
         MochilaEntity mochila = getById(id);
         
-
-        MochilaCompletaDTO mochilaDTO = objectMapper.convertValue(mochila, MochilaCompletaDTO.class);
-        mochilaDTO.setTreinador(objectMapper.convertValue(mochila.getTreinador(), TreinadorDTO.class));
+        MochilaCompletaDTO mochilaDTO = new MochilaCompletaDTO();
+        mochilaDTO.setQuantidadeGreatBalls(mochila.getQuantidadeGreatBalls());
+        mochilaDTO.setQuantidadeHeavyBalls(mochila.getQuantidadeHeavyBalls());
+        mochilaDTO.setQuantidadeMasterBalls(mochila.getQuantidadeMasterBalls());
+        mochilaDTO.setQuantidadeNetBalls(mochila.getQuantidadeNetBalls());
+        mochilaDTO.setQuantidadePokeBalls(mochila.getQuantidadePokeBalls());
         mochilaDTO.setPokemons(mochila.getPokemons().stream()
                 .map(pokemon -> {
                 	PokemonDTO convertValue = objectMapper.convertValue(pokemon, PokemonDTO.class);
+                    convertValue.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
                 	return convertValue;
                 })
                 .collect(Collectors.toList())
         );
-
+        mochilaDTO.setIdTreinador(mochila.getIdTreinador());
+        mochilaDTO.setIdMochila(mochila.getIdMochila());
         return mochilaDTO;
     }
     

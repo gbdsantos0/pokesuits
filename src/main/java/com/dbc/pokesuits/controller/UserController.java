@@ -6,14 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dbc.pokesuits.dto.user.UserCreateDTO;
 import com.dbc.pokesuits.dto.user.UserDTO;
@@ -58,9 +51,9 @@ public class UserController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
-	@DeleteMapping(path = "/{id}")
-	public void RemoverPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
-		userService.RemoverUser(id);
+	@DeleteMapping(path = "/{id_user}")
+	public void RemoverPokemon(@PathVariable("id_user") int idUser) throws RegraDeNegocioException {
+		userService.RemoverUser(idUser);
 	}
 	@ApiOperation(value = "Recebe um User e um ID")
     @ApiResponses(value = {
@@ -69,8 +62,9 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PutMapping
-	public UserDTO editarPokemon(@Valid @RequestBody UserCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
-		return userService.editarUser(createDTO, id);
+	public UserDTO editarPokemon(@Valid @RequestBody UserCreateDTO createDTO,
+								 @RequestParam(value = "id_user")Integer idUser) throws RegraDeNegocioException {
+		return userService.editarUser(createDTO, idUser);
 	}
 	
 }

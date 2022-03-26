@@ -16,6 +16,7 @@ import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.model.pokebolas.GreatBall;
 import com.dbc.pokesuits.model.pokebolas.HeavyBall;
 import com.dbc.pokesuits.model.pokebolas.MasterBall;
@@ -51,7 +52,7 @@ public class CenarioService {
     private int contador=0;
 
 
-    public PokemonDTO capturar(String tipoPokebola, Integer idTreinador) throws Exception{
+    public PokemonDTO capturar(String tipoPokebola, Integer idTreinador, Integer idMochila) throws Exception{
         Random r = new Random();
         TreinadorEntity treinadorEntity = treinadorService.getById(idTreinador);
 
@@ -81,11 +82,19 @@ public class CenarioService {
                 throw new InvalidCenarioException("Tipo de pokebola inválida, favor utilizar uma das disponíveis (PokeBall, GreatBall, NetBall, HeavyBall ou MasterBall)");
         }
         //jogar pokebola
-        mochilaService.usarPokebola(treinadorEntity.getMochila().getIdMochila(),tipoPokebola);
+        mochilaService.usarPokebola(treinadorEntity.getMochilas().stream()
+                .filter(mochilaEntity -> mochilaEntity.getIdMochila().equals(idMochila))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Mochila não encontrada ou não relacionada à este treinador"))
+                .getIdMochila(),tipoPokebola);
         //testar chance
         if(r.nextInt(100) <= pokebola.calcularChance(ultimoPokemonEncontrado)){
             //alterar idMochila para qual o pokemon pertence agora
-            ultimoPokemonEncontrado.setIdMochila(treinadorEntity.getMochila().getIdMochila());
+            ultimoPokemonEncontrado.setIdMochila(treinadorEntity.getMochilas().stream()
+                    .filter(mochilaEntity -> mochilaEntity.getIdMochila().equals(idMochila))
+                    .findFirst()
+                    .orElseThrow(() -> new RegraDeNegocioException("Mochila não encontrada ou não relacionada à este treinador"))
+                    .getIdMochila());
             //adicionar o pokemon na lista de pokemons
             PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(ultimoPokemonEncontrado);
             //limpando ultimo encontro
@@ -116,7 +125,7 @@ public class CenarioService {
         pokemonBaseDTO = this.selecionarPokemon();
         contador = 0;
         int randLevel = r.nextInt(8)+cenarioRepository.listAll().get(cenarioAtual-1).getLevelMedio()-4;//variacao de 4 levels pra cima ou pra baixo
-        //garantir que não ha niveis nogativos
+        //garantir que não ha niveis negativos
         if(randLevel<1){
             randLevel=1;
         }
@@ -229,6 +238,12 @@ public class CenarioService {
     public  CenarioDTO cenarioAtual() throws Exception{
         CenarioDTO cenarioDTO = objectMapper.convertValue(cenarioRepository.getById(cenarioAtual), CenarioDTO.class);
         return cenarioDTO;
+    }
+
+    public List<CenarioDTO> listAll(){
+        return cenarioRepository.listAll().stream()
+                .map(cenario -> objectMapper.convertValue(cenario, CenarioDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

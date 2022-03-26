@@ -1,5 +1,9 @@
 package com.dbc.pokesuits.entity;
 
+
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.dbc.pokesuits.enums.Utils;
@@ -41,8 +45,8 @@ public class TreinadorEntity{
 
 
     @JsonIgnore
-    @OneToOne(mappedBy = "treinador", fetch = FetchType.LAZY)
-    private MochilaEntity mochila;
+    @OneToMany(mappedBy = "treinador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MochilaEntity> mochilas;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
