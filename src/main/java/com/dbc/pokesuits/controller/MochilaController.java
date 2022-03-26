@@ -35,11 +35,23 @@ public class MochilaController {
         return mochilaService.listAll();
     }
 
+    @ApiOperation(value = "Retorna uma mochila pelo id, com todos seus pokemons")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Retornou a mochila com sucesso!"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+    })
     @GetMapping("/{idMochila}")
     public MochilaCompletaDTO getMochilaCompleta(@PathVariable("idMochila") Integer id) throws Exception {
         return mochilaService.getMochilaCompleta(id);
     }
-
+    
+    @ApiOperation(value = "Recebe uma mochila e adiciona a um treinador")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+    })
     @PostMapping("{idTreinador}")
     @Validated
     public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("idTreinador") Integer idTreinador) throws Exception {
