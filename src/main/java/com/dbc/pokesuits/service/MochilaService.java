@@ -35,7 +35,14 @@ public class MochilaService {
     	
     	Page<MochilaEntity> mochilas = mochilaRepository.findAll(pageable);
     	
-    	return mochilas.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class));
+    	Page<MochilaDTO> mochilasDTO = mochilas.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class));
+    	// Serve para setar o id do treinador e mochilas, senão retorna null, só funcionou com forEach mesmo
+    	mochilasDTO.forEach(mochila -> {
+    		mochila.setIdMochila(mochila.getIdMochila());
+    		mochila.setIdTreinador(mochila.getIdTreinador());
+    	});
+    	
+    	return mochilasDTO;
     }
 
     public MochilaDTO create(MochilaCreateDTO mochila, Integer idTreinador) throws Exception {
