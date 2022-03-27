@@ -3,6 +3,10 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
@@ -33,11 +37,10 @@ public class TreinadorService {
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);//converte para dto para retorno
         return treinadorDTO;
     }
-    //todo consertar parte de dar update no id do user, talvez um DTO novo?
+
     public TreinadorDTO update(Integer idTreinador, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
-        TreinadorEntity treinadorEntity = treinadorRepository.findById(idTreinador)//busca treinador no banco para verificar se existe para atualizar
-                .orElseThrow(()->new RegraDeNegocioException("ID não encontrado para o treinador"));//caso de treinador nao encontrado pelo id
+        TreinadorEntity treinadorEntity = treinadorRepository.getById(idTreinador);//busca treinador no banco para verificar se existe para atualizar
         treinadorEntity.setNome(treinadorAtualizar.getNome());//seta nome
         treinadorEntity.setSexo(treinadorAtualizar.getSexo());//seta sexo
         TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinadorEntity);//insere alteracao no banco
@@ -46,14 +49,15 @@ public class TreinadorService {
         return treinadorDTO;
     }
 
-    public List<TreinadorDTO> list(){
+    public Page<TreinadorDTO> list(Integer pagina){
         log.info("chamou o método list do Treinador!");
-        return treinadorRepository.findAll().stream()//busca todos os dados e chama stream
+        Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
+        List<TreinadorDTO> treinadorDTOList = treinadorRepository.findAll(pageable).stream()//busca todos os dados e chama stream
                 .map(treinador -> objectMapper.convertValue(treinador, TreinadorDTO.class))//mapeia para TreinadorDTO
                 .collect(Collectors.toList());//coleta
+        return new PageImpl<>(treinadorDTOList);
     }
 
-    //todo talvez haja necessidade de chamar outro delete em caso de nao poder usar cascata.
     public TreinadorDTO delete(Integer id) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
         TreinadorEntity treinadorDeletado = getById(id);//busca a entrada no banco para retorno
@@ -69,6 +73,7 @@ public class TreinadorService {
     }
 
     public TreinadorDTO getTreinadorDTOById(Integer idTreinador) throws Exception {
+        log.info("chamou o método getTreinadorDTOById do Treinador!");
         return objectMapper.convertValue(getById(idTreinador), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
     }
 }
