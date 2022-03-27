@@ -56,6 +56,7 @@ public class PokemonService {
 		log.info("Persistido o Pokemon de ID: ", PokemonConvertido.getIdPokemon());
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
+		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
 		
 		return pokemonDTO;
 	}
@@ -70,6 +71,7 @@ public class PokemonService {
 		log.info("Persistido as mudanças no Pokemon de ID: ", id);
 				
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
+		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
 		
 		return pokemonDTO;
 	}
@@ -88,6 +90,7 @@ public class PokemonService {
 		log.info("Persistido as mudanças no Pokemon de ID: ", PokemonConvertido.getIdPokemon());
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
+		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
 		
 		return pokemonDTO;
 	}
