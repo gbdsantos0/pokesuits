@@ -1,10 +1,11 @@
 package com.dbc.pokesuits.service;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.entity.TreinadorEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
@@ -12,6 +13,7 @@ import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.MochilaRepository;
@@ -28,10 +30,12 @@ public class MochilaService {
     private final TreinadorService treinadorService;
 
 
-    public List<MochilaDTO> listAll(){
-        return mochilaRepository.findAll().stream()
-                .map(m -> objectMapper.convertValue(m,MochilaDTO.class))
-                .collect(Collectors.toList());
+    public Page<MochilaDTO> listAll(Integer pagina) {
+    	Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
+    	
+    	Page<MochilaEntity> mochilas = mochilaRepository.findAll(pageable);
+    	
+    	return mochilas.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class));
     }
 
     public MochilaDTO create(MochilaCreateDTO mochila, Integer idTreinador) throws Exception {

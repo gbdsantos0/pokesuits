@@ -1,21 +1,18 @@
 package com.dbc.pokesuits.controller;
 
-
 import com.dbc.pokesuits.dto.mochila.MochilaCompletaDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
-import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.service.MochilaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/mochila")
@@ -31,8 +28,8 @@ public class MochilaController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
     @GetMapping
-    public List<MochilaDTO> listAll(){
-        return mochilaService.listAll();
+    public Page<MochilaDTO> listAll(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
+        return mochilaService.listAll(pagina);
     }
 
     @ApiOperation(value = "Retorna uma mochila pelo id, com todos seus pokemons")
