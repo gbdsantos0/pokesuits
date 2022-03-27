@@ -1,7 +1,5 @@
 package com.dbc.pokesuits.controller;
 
-<<<<<<< HEAD
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
