@@ -35,6 +35,7 @@ public class TreinadorService {
         treinador.setUser(userEntity);//seta usuario
         TreinadorEntity treinadorCriado = treinadorRepository.save(treinador);//salva treinador no banco
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorCriado,TreinadorDTO.class);//converte para dto para retorno
+        treinadorDTO.setIdUser(idUser);//setando id user para retorno
         return treinadorDTO;
     }
 
