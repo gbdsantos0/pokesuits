@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class CenarioService {
     private MochilaService mochilaService;
 
     //todo sempre lembrar de setar como null após pokemon fugir, ser capturado ou o treinador sair do encontro
-    private PokemonCreateDTO ultimoPokemonEncontrado;
+    private PokemonGeradoDTO ultimoPokemonEncontrado;
     //cenario atual
     private Integer cenarioAtual=1;
     //contador para chance de fugir
@@ -89,14 +90,16 @@ public class CenarioService {
                 .getIdMochila(),tipoPokebola);
         //testar chance
         if(r.nextInt(100) <= pokebola.calcularChance(ultimoPokemonEncontrado)){
+            //mapeando pokemon para adicionar na mochila
+            PokemonCreateDTO pokemonCreateDTO = objectMapper.convertValue(ultimoPokemonEncontrado, PokemonCreateDTO.class);
             //alterar idMochila para qual o pokemon pertence agora
-            ultimoPokemonEncontrado.setIdMochila(treinadorEntity.getMochilas().stream()
+            pokemonCreateDTO.setIdMochila(treinadorEntity.getMochilas().stream()
                     .filter(mochilaEntity -> mochilaEntity.getIdMochila().equals(idMochila))
                     .findFirst()
                     .orElseThrow(() -> new RegraDeNegocioException("Mochila não encontrada ou não relacionada à este treinador"))
                     .getIdMochila());
             //adicionar o pokemon na lista de pokemons
-            PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(ultimoPokemonEncontrado);
+            PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(pokemonCreateDTO);
             //limpando ultimo encontro
             ultimoPokemonEncontrado = null;
             contador = 0;
@@ -119,7 +122,7 @@ public class CenarioService {
         throw new InvalidCenarioException("Pokemon não capturado");//todo informar alguma outra coisa ao inves de uma excessao?
     };
 
-    public PokemonCreateDTO gerarPokemon() throws Exception{
+    public PokemonGeradoDTO gerarPokemon() throws Exception{
         Random r = new Random();
         PokemonBaseDTO pokemonBaseDTO;
         pokemonBaseDTO = this.selecionarPokemon();
@@ -130,15 +133,13 @@ public class CenarioService {
             randLevel=1;
         }
 
-        ultimoPokemonEncontrado = PokemonCreateDTO.builder()
+        ultimoPokemonEncontrado = PokemonGeradoDTO.builder()
                 //raca conforme a base
                 .racaPokemon(pokemonBaseDTO.getRacaPokemon())
                 //peso no intervalo de peso do pokemon
                 .peso(r.nextInt((int)(pokemonBaseDTO.getPesoMaximo()-pokemonBaseDTO.getPesoMinimo()))+pokemonBaseDTO.getPesoMinimo()+((double)r.nextInt(100)/100))
                 //sexo de acordo com a chance de ser macho
                 .sexo(r.nextInt(100)<=pokemonBaseDTO.getPorcentagemMacho()? Utils.MASCULINO:Utils.FEMININO)
-                //apelido nulo por enquanto
-                .nome(null)
                 //level igual ao calculado pelo local ou o minimo do pokemon encontrado
                 .level(Math.max(randLevel,pokemonBaseDTO.getLevelMinimo()))
                 //outras informacoes iguais ao pokemon base

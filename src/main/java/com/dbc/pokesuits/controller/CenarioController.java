@@ -1,5 +1,6 @@
 package com.dbc.pokesuits.controller;
 
+import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,10 +43,10 @@ public class CenarioController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
     })
     @GetMapping("/gerar-pokemon")
-    public PokemonCreateDTO gerarPokemon() throws Exception{
-        PokemonCreateDTO pokemonCreateDTO = cenarioService.gerarPokemon();
+    public PokemonGeradoDTO gerarPokemon() throws Exception{
+        PokemonGeradoDTO pokemonGeradoDTO = cenarioService.gerarPokemon();
         log.info("Pokemon gerado com sucesso pelo cenário");
-        return pokemonCreateDTO;
+        return pokemonGeradoDTO;
     }
 
     @ApiOperation(value = "Tentativa de capturar o último pokemon encontrado")
