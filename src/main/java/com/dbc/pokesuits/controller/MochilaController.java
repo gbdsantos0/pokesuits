@@ -59,7 +59,7 @@ public class MochilaController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @PostMapping("{id_treinador}")
+    @PostMapping("/{id_treinador}")
     @Validated
     public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("id_treinador") Integer idTreinador) throws Exception {
         return mochilaService.create(mochila, idTreinador);
