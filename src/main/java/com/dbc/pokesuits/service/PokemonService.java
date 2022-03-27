@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
@@ -26,16 +30,20 @@ public class PokemonService {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	public List<PokemonDTO> listarPokemons() {
+	public Page<PokemonDTO> listarPokemons(Integer pagina) {
 		log.info("Chamado metodo listarPokemons;");
-		return pokemonRepository.findAll()
+		
+		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
+		
+		List<PokemonDTO> collect = pokemonRepository.findAll(pageable)
 				.stream()
 				.map(pokemon -> {
 					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);
 					pokemonDTO.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
 					return pokemonDTO;
-				})
-				.collect(Collectors.toList());
+				}).collect(Collectors.toList());
+		
+		return new PageImpl<>(collect);
 	}
 
 	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) throws RegraDeNegocioException {
@@ -86,7 +94,7 @@ public class PokemonService {
 	}
 	
 	public PokemonEntity getById(Integer idPokemon) throws RegraDeNegocioException{
-		log.info("Chamado metodo getById;");
-		return pokemonRepository.findById(idPokemon).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
+		log.info("Chamado metodo getById do Pokemon;");
+		return pokemonRepository.findById(idPokemon).orElseThrow(()-> new RegraDeNegocioException("O ID do Pokemon Passado não existe"));
 	}
 }
