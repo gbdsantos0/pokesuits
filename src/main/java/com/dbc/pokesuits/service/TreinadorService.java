@@ -36,10 +36,13 @@ public class TreinadorService {
     //todo consertar parte de dar update no id do user, talvez um DTO novo?
     public TreinadorDTO update(Integer idTreinador, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
-        TreinadorEntity treinador = objectMapper.convertValue(treinadorAtualizar, TreinadorEntity.class);//converte para TreinadorEntity
-        treinador.setIdTreinador(idTreinador);//seta ID para definir qual dado do banco alterar
-        TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinador);//insere alteracao no banco
+        TreinadorEntity treinadorEntity = treinadorRepository.findById(idTreinador)//busca treinador no banco para verificar se existe para atualizar
+                .orElseThrow(()->new RegraDeNegocioException("ID não encontrado para o treinador"));//caso de treinador nao encontrado pelo id
+        treinadorEntity.setNome(treinadorAtualizar.getNome());//seta nome
+        treinadorEntity.setSexo(treinadorAtualizar.getSexo());//seta sexo
+        TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinadorEntity);//insere alteracao no banco
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);//converte o treinador para dto
+
         return treinadorDTO;
     }
 
