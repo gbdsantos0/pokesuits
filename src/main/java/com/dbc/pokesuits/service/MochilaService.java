@@ -1,9 +1,11 @@
 package com.dbc.pokesuits.service;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,35 +22,35 @@ import com.dbc.pokesuits.repository.MochilaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class MochilaService {
 
     private final MochilaRepository mochilaRepository;
     private final ObjectMapper objectMapper;
     private final TreinadorService treinadorService;
 
-
     public Page<MochilaDTO> listAll(Integer pagina) {
+    	log.info("Chamado metodo listAll");
+    	
     	Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
     	
-    	Page<MochilaEntity> mochilas = mochilaRepository.findAll(pageable);
-    	
-    	Page<MochilaDTO> mochilasDTO = mochilas.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class));
-    	// Serve para setar o id do treinador e mochilas, senão retorna null, só funcionou com forEach mesmo
-    	// o metodo map que um objeto Page herda, serve apenas para conversao
-    	mochilasDTO.forEach(mochila -> {
-    		mochila.setIdMochila(mochila.getIdMochila());
-    		mochila.setIdTreinador(mochila.getIdTreinador());
-    	});
-    	
-    	return mochilasDTO;
+    	List<MochilaDTO> mochilas = mochilaRepository.findAll(pageable)
+    			.stream()
+				.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class))
+				.collect(Collectors.toList());
+    
+    	return new PageImpl<>(mochilas);
     }
 
     public MochilaDTO create(MochilaCreateDTO mochila, Integer idTreinador) throws Exception {
+    	log.info("Chamado metodo create");
+
         MochilaEntity mochilaEntity = objectMapper.convertValue(mochila, MochilaEntity.class);
-        //buscando treinador
+        
         TreinadorEntity treinador = treinadorService.getById(idTreinador);
         mochilaEntity.setTreinador(treinador);
 
@@ -58,7 +60,9 @@ public class MochilaService {
     }
 
     public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{
-        MochilaEntity mochila = getById(id);
+    	log.info("Chamado metodo adicionarPokebola");
+
+    	MochilaEntity mochila = getById(id);
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)){
             case "greatball":
@@ -101,8 +105,9 @@ public class MochilaService {
         return mochilaDTO;
     }
 
-
     public MochilaDTO usarPokebola(Integer id, String tipoPokebola) throws Exception {
+    	log.info("Chamado metodo usarPokebola");
+
         MochilaEntity mochila = getById(id);
         switch (tipoPokebola.toLowerCase(Locale.ROOT)) {
             case "greatball":
@@ -144,6 +149,8 @@ public class MochilaService {
     }
 
     public MochilaCompletaDTO getMochilaCompleta(Integer id) throws Exception {
+    	log.info("Chamado metodo getMochilaCompleta");
+    	
         MochilaEntity mochila = getById(id);
         
         MochilaCompletaDTO mochilaDTO = new MochilaCompletaDTO();
@@ -162,6 +169,7 @@ public class MochilaService {
         );
         mochilaDTO.setIdTreinador(mochila.getIdTreinador());
         mochilaDTO.setIdMochila(mochila.getIdMochila());
+        
         return mochilaDTO;
     }
     
