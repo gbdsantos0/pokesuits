@@ -7,11 +7,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/treinador")
@@ -40,8 +40,8 @@ public class TreinadorController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
     @GetMapping
-    public List<TreinadorDTO> list(){
-        return treinadorService.list();
+    public Page<TreinadorDTO> list(@RequestParam(value = "pagina", required = false) Integer pagina){
+        return treinadorService.list(pagina);
     }
 
 
