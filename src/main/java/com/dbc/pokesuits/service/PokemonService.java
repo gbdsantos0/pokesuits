@@ -67,13 +67,15 @@ public class PokemonService {
 		
 		PokemonEntity pokemonRemovido = pokemonRepository.getById(id);
 		
+		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
+		pokemonDTO.setIdMochila(pokemonRemovido.getMochilaPokemon().getIdMochila());
+		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
+		
 		pokemonRepository.deleteById(id);
 		
 		log.info("Persistido as mudanças no Pokemon de ID: ", id);
 				
-		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
-		pokemonDTO.setIdMochila(pokemonRemovido.getMochilaPokemon().getIdMochila());
-		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
+		
 		
 		return pokemonDTO;
 	}
