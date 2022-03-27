@@ -65,7 +65,7 @@ public class PokemonService {
 	public PokemonDTO removerPokemon(Integer id) throws RegraDeNegocioException {
 		log.info("Chamado metodo removerPokemon;");
 		
-		PokemonEntity pokemonRemovido = pokemonRepository.getById(id);
+		PokemonEntity pokemonRemovido = getById(id);
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
 		pokemonDTO.setIdMochila(pokemonRemovido.getMochilaPokemon().getIdMochila());
@@ -83,7 +83,7 @@ public class PokemonService {
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
 		log.info("Chamado metodo editarPokemon;");
 		
-		pokemonRepository.getById(id);
+		getById(id);
 		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));

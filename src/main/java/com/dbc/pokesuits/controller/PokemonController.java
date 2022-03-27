@@ -61,8 +61,8 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@DeleteMapping(path = "/{id_pokemon}")
-	public void RemoverPokemon(@PathVariable("id_pokemon") Integer idPokemon) throws RegraDeNegocioException {
-		pokemonService.removerPokemon(idPokemon);
+	public PokemonDTO RemoverPokemon(@PathVariable("id_pokemon") Integer idPokemon) throws RegraDeNegocioException {
+		return pokemonService.removerPokemon(idPokemon);
 	}
 	
 	@ApiOperation(value = "Recebe um id e um pokemon")
