@@ -3,7 +3,6 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,16 +16,16 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserService {
 
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private ObjectMapper objectMapper;
+	private final UserRepository userRepository;
+	private final ObjectMapper objectMapper;
 	
 	public Page<UserDTO> ListarUsers(Integer pagina) {
 		log.info("Chamado metodo ListarUsers;");

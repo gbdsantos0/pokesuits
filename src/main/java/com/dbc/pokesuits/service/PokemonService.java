@@ -3,7 +3,6 @@ package com.dbc.pokesuits.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,18 +16,17 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class PokemonService {
 
-	@Autowired
-	private PokemonRepository pokemonRepository;
-	@Autowired
-    private MochilaService mochilaService;
-	@Autowired
-	private ObjectMapper objectMapper;
+	private final PokemonRepository pokemonRepository;
+    private final MochilaService mochilaService;
+	private final ObjectMapper objectMapper;
 	
 	public Page<PokemonDTO> listarPokemons(Integer pagina) {
 		log.info("Chamado metodo listarPokemons;");
@@ -40,6 +38,7 @@ public class PokemonService {
 				.map(pokemon -> {
 					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);
 					pokemonDTO.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
+					if(pokemon.getNome() == null)pokemonDTO.setNome("Não Nomeado");
 					return pokemonDTO;
 				}).collect(Collectors.toList());
 		
