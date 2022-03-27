@@ -1,13 +1,16 @@
 package com.dbc.pokesuits.dto.mochila;
 
+import java.util.List;
+
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class MochilaCompletaDTO extends MochilaDTO {
 
 //    private TreinadorDTO treinador;
