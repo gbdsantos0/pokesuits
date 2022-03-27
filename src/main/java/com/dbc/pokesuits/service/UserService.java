@@ -13,7 +13,10 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
 public class UserService {
 
 	@Autowired
@@ -22,6 +25,7 @@ public class UserService {
 	private ObjectMapper objectMapper;
 	
 	public List<UserDTO> ListarUsers() {
+		log.info("Chamado metodo ListarUsers;");
 		return userRepository.findAll()
 				.stream()
 				.map(user -> objectMapper.convertValue(user, UserDTO.class))

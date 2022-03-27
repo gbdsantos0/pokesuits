@@ -13,7 +13,10 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
 public class PokemonService {
 
 	@Autowired
@@ -24,6 +27,7 @@ public class PokemonService {
 	private ObjectMapper objectMapper;
 	
 	public List<PokemonDTO> listarPokemons() {
+		log.info("Chamado metodo listarPokemons;");
 		return pokemonRepository.findAll()
 				.stream()
 				.map(pokemon -> {
@@ -35,22 +39,28 @@ public class PokemonService {
 	}
 
 	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) throws RegraDeNegocioException {
+		log.info("Chamado metodo adicionarPokemon;");
 		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));
 		
 		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
+		log.info("Persistido o Pokemon de ID: ", PokemonConvertido.getIdPokemon());
+		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		
 		return pokemonDTO;
 	}
 
-	public PokemonDTO removerPokemon(int id) throws RegraDeNegocioException {
+	public PokemonDTO removerPokemon(Integer id) throws RegraDeNegocioException {
+		log.info("Chamado metodo removerPokemon;");
 		
-		PokemonEntity pokemonRemovido = pokemonRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
+		PokemonEntity pokemonRemovido = pokemonRepository.getById(id);
 		
 		pokemonRepository.deleteById(id);
+		
+		log.info("Persistido as mudanças no Pokemon de ID: ", id);
 				
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
 		
@@ -58,7 +68,9 @@ public class PokemonService {
 	}
 
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
-		pokemonRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
+		log.info("Chamado metodo editarPokemon;");
+		
+		pokemonRepository.getById(id);
 		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));
@@ -66,8 +78,15 @@ public class PokemonService {
 		
 		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
+		log.info("Persistido as mudanças no Pokemon de ID: ", PokemonConvertido.getIdPokemon());
+		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		
 		return pokemonDTO;
+	}
+	
+	public PokemonEntity getById(Integer idPokemon) throws RegraDeNegocioException{
+		log.info("Chamado metodo getById;");
+		return pokemonRepository.findById(idPokemon).orElseThrow(()-> new RegraDeNegocioException("O id Passado não existe"));
 	}
 }
