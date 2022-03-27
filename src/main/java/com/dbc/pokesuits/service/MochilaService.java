@@ -37,6 +37,7 @@ public class MochilaService {
     	
     	Page<MochilaDTO> mochilasDTO = mochilas.map(mochila -> objectMapper.convertValue(mochila, MochilaDTO.class));
     	// Serve para setar o id do treinador e mochilas, senão retorna null, só funcionou com forEach mesmo
+    	// o metodo map que um objeto Page herda, serve apenas para conversao
     	mochilasDTO.forEach(mochila -> {
     		mochila.setIdMochila(mochila.getIdMochila());
     		mochila.setIdTreinador(mochila.getIdTreinador());
