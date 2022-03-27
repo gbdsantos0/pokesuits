@@ -55,8 +55,11 @@ public class MochilaService {
         mochilaEntity.setTreinador(treinador);
 
         MochilaEntity mochilaCriada = mochilaRepository.save(mochilaEntity);
+        
+        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaCriada, MochilaDTO.class);
+        mochilaDTO.setIdTreinador(idTreinador);
 
-        return objectMapper.convertValue(mochilaCriada, MochilaDTO.class);
+        return mochilaDTO;
     }
 
     public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{

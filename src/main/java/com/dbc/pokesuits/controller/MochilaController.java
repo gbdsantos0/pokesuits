@@ -53,7 +53,7 @@ public class MochilaController {
         return mochilaService.getMochilaCompleta(id);
     }
     
-    @ApiOperation(value = "Recebe uma mochila e adiciona a um treinador")
+    @ApiOperation(value = "Adiciona uma mochila a um treinador")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
@@ -65,7 +65,7 @@ public class MochilaController {
         return mochilaService.create(mochila, idTreinador);
     }
 
-    @ApiOperation(value = "Retornar uma mochila com quantidade de pokebola atualizada!")
+    @ApiOperation(value = "Retorna uma mochila com quantidade de pokebola atualizada!")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Atualizou a quantidade de pokebolas de uma mochila!"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
