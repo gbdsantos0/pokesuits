@@ -1,11 +1,11 @@
 package com.dbc.pokesuits.controller;
 
-
-import java.util.List;
+<<<<<<< HEAD
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +40,8 @@ public class MochilaController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
     @GetMapping
-    public List<MochilaDTO> listAll(){
-        return mochilaService.listAll();
+    public Page<MochilaDTO> listAll(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
+        return mochilaService.listAll(pagina);
     }
 
     @ApiOperation(value = "Retorna uma mochila pelo id, com todos seus pokemons")
