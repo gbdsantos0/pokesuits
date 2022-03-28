@@ -52,7 +52,7 @@ public class CenarioService {
     //contador para chance de fugir
     private int contador=0;
 
-
+    //todo remover o idTreinador, pois a mochila pode buscar ele
     public PokemonDTO capturar(String tipoPokebola, Integer idTreinador, Integer idMochila) throws Exception{
         Random r = new Random();
         TreinadorEntity treinadorEntity = treinadorService.getById(idTreinador);
