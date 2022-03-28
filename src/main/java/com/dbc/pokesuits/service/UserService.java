@@ -1,5 +1,6 @@
 package com.dbc.pokesuits.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,7 @@ public class UserService {
 		log.info("Criado o User de ID: ", userAtualizado.getId());
 		
 		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
+		userDTO.setTreinadores(new ArrayList<TreinadorCreateDTO>());
 		
 		return userDTO;
 	}
