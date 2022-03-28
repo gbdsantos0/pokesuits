@@ -43,7 +43,6 @@ public class TreinadorEntity{
     @Column(name = "sexo")
     private Utils sexo;
 
-
     @JsonIgnore
     @OneToMany(mappedBy = "treinador", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MochilaEntity> mochilas;

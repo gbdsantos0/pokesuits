@@ -4,16 +4,12 @@ import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
 import com.dbc.pokesuits.enums.Utils;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
