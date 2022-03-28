@@ -100,6 +100,7 @@ public class CenarioService {
                     .getIdMochila());
             //adicionar o pokemon na lista de pokemons
             PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(pokemonCreateDTO);
+            pokemonDTO.setNome("Não nomeado");
             //limpando ultimo encontro
             ultimoPokemonEncontrado = null;
             contador = 0;
