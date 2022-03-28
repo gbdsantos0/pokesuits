@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
 import com.dbc.pokesuits.dto.user.UserCreateDTO;
 import com.dbc.pokesuits.dto.user.UserDTO;
 import com.dbc.pokesuits.entity.UserEntity;
@@ -34,7 +35,15 @@ public class UserService {
 		
 		List<UserDTO> collect = userRepository.findAll(pageable)
 				.stream()
-				.map(user -> objectMapper.convertValue(user, UserDTO.class))
+				.map(user -> {
+					UserDTO convertValue = objectMapper.convertValue(user, UserDTO.class);
+					convertValue.setTreinadores(user.getTreinadores()
+							.stream()
+							.map(treinador -> objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
+							.toList()
+					);
+					return convertValue;
+				})
 				.collect(Collectors.toList());
 		
 		 return new PageImpl<>(collect);
@@ -59,6 +68,11 @@ public class UserService {
 		UserEntity userRemovido = getById(id);
 		
 		UserDTO userDTO = objectMapper.convertValue(userRemovido, UserDTO.class);
+		userDTO.setTreinadores(userRemovido.getTreinadores()
+				.stream()
+				.map(treinador -> objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
+				.toList()
+				);
 		
 		userRepository.deleteById(id);
 		log.info("Removido o User de ID: ", userDTO.getId());

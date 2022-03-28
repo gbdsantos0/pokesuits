@@ -1,6 +1,6 @@
 package com.dbc.pokesuits.dto.user;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
 
@@ -18,6 +18,6 @@ public class UserDTO extends UserCreateDTO {
 	@ApiModelProperty(value = "ID do User")
 	private Integer id;
 	@ApiModelProperty(value = "IDs dos Treinadores Pokemon")
-	private ArrayList<TreinadorCreateDTO> treinadores;
+	private List<TreinadorCreateDTO> treinadores;
 	
 }
