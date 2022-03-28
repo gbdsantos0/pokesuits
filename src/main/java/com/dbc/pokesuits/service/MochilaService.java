@@ -166,6 +166,7 @@ public class MochilaService {
                 .map(pokemon -> {
                 	PokemonDTO convertValue = objectMapper.convertValue(pokemon, PokemonDTO.class);
                     convertValue.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
+                    if(pokemon.getNome() == null) convertValue.setNome("Não Nomeado");
                 	return convertValue;
                 })
                 .collect(Collectors.toList())
