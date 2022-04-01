@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,17 +32,14 @@ import lombok.extern.java.Log;
 
 @Service
 @Log
+@RequiredArgsConstructor
 public class CenarioService {
-    @Autowired
-    private CenarioRepository cenarioRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private PokemonBaseService pokemonBaseService;
-    @Autowired
-    private PokemonService pokemonService;
-    @Autowired
-    private MochilaService mochilaService;
+    private final CenarioRepository cenarioRepository;
+    private final ObjectMapper objectMapper;
+    private final PokemonBaseService pokemonBaseService;
+    private final PokemonService pokemonService;
+    private final MochilaService mochilaService;
+    private final UserService userService;
 
     //todo sempre lembrar de setar como null após pokemon fugir, ser capturado ou o treinador sair do encontro
     private PokemonGeradoDTO ultimoPokemonEncontrado;
@@ -49,10 +48,13 @@ public class CenarioService {
     //contador para chance de fugir
     private int contador=0;
 
-    //todo remover o idTreinador, pois a mochila pode buscar ele
-    public PokemonDTO capturar(String tipoPokebola, Integer idMochila) throws Exception{
+
+    public PokemonDTO capturar(String tipoPokebola, Integer idUser) throws Exception{
         Random r = new Random();
-        MochilaEntity mochila = mochilaService.getById(idMochila);
+
+        UserEntity userEntity = userService.getById(idUser);
+
+        MochilaEntity mochila = userEntity.getTreinador().getMochila();
 
         Pokebola pokebola;
 

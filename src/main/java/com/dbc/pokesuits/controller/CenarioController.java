@@ -3,6 +3,7 @@ package com.dbc.pokesuits.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,8 +61,8 @@ public class CenarioController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
     })
     @PostMapping("/capturar-pokemon/{pokebola}")//TODO ADICIONAR REQUESTINFO PARA CASO DE NAO CONSEGUIR CAPTURAR
-    public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola, @RequestParam(value = "id_mochila") Integer idMochila) throws Exception{
-        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idMochila);
+    public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola) throws Exception{
+        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
         log.info("Pokemon capturado com sucesso");
         return pokemonDTO;
     }

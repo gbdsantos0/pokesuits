@@ -39,9 +39,12 @@ public class TreinadorService {
         return treinadorDTO;
     }
 
-    public TreinadorDTO update(Integer idTreinador, TreinadorCreateDTO treinadorAtualizar) throws Exception{
+    public TreinadorDTO update(Integer idUser, TreinadorCreateDTO treinadorAtualizar) throws Exception{
         log.info("chamou o método update do Treinador!");
-        TreinadorEntity treinadorEntity = treinadorRepository.getById(idTreinador);//busca treinador no banco para verificar se existe para atualizar
+
+        UserEntity userEntity = userService.getById(idUser);
+
+        TreinadorEntity treinadorEntity = userEntity.getTreinador();//busca treinador no banco para verificar se existe para atualizar
         treinadorEntity.setNome(treinadorAtualizar.getNome());//seta nome
         treinadorEntity.setSexo(treinadorAtualizar.getSexo());//seta sexo
         TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinadorEntity);//insere alteracao no banco
@@ -67,6 +70,17 @@ public class TreinadorService {
         return treinadorDTO;
     }
 
+    public TreinadorDTO deleteByIdUser(Integer idUser) throws Exception{
+        log.info("chamou o metodo delete do Treinador!");
+
+        UserEntity userEntity = userService.getById(idUser);
+
+        TreinadorEntity treinadorDeletado = userEntity.getTreinador();//busca a entrada no banco para retorno
+        treinadorRepository.deleteById(treinadorDeletado.getIdTreinador());//deleta o dado do banco
+        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);//converte o dado retornado do banco para TreinadorDTO
+        return treinadorDTO;
+    }
+
     public TreinadorEntity getById(Integer id)throws Exception{
         log.info("chamou o método getById do Treinador!");
         TreinadorEntity treinadorChamado = treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));//recebe TreinadorEntity do banco
@@ -76,5 +90,13 @@ public class TreinadorService {
     public TreinadorDTO getTreinadorDTOById(Integer idTreinador) throws Exception {
         log.info("chamou o método getTreinadorDTOById do Treinador!");
         return objectMapper.convertValue(getById(idTreinador), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
+    }
+
+    public TreinadorDTO getTreinadorDTOByIdUser(Integer idUser) throws Exception {
+        log.info("chamou o método getTreinadorDTOById do Treinador!");
+
+        UserEntity userEntity = userService.getById(idUser);
+
+        return objectMapper.convertValue(userEntity.getTreinador(), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
     }
 }
