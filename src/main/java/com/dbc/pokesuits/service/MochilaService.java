@@ -190,12 +190,18 @@ public class MochilaService {
         
         return mochilaDTO;
     }
+
+    public void deletarMochilaLogado(Integer idUser) throws RegraDeNegocioException {
+        log.info("Chamado metodo deleteMochilaLogado");
+        MochilaEntity mochila = this.getMochilaPeloIdUser(idUser);
+        this.mochilaRepository.deleteById(mochila.getIdMochila());
+    }
     
     public MochilaEntity getById(Integer id) throws RegraDeNegocioException {
     	return mochilaRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado Não Existe"));
     }
 
-    private MochilaEntity getMochilaPeloIdUser(Integer idUser) throws RegraDeNegocioException {
+    public MochilaEntity getMochilaPeloIdUser(Integer idUser) throws RegraDeNegocioException {
         TreinadorEntity treinadorEntity = userService.getById(idUser).getTreinador();
 
         if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
