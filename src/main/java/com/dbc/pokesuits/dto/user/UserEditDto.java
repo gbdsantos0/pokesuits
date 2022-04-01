@@ -3,8 +3,6 @@ package com.dbc.pokesuits.dto.user;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.dbc.pokesuits.config.validation.ValidPassword;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class UserCreateDTO {
+public class UserEditDto {
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Nome do Usuário")
@@ -23,11 +21,5 @@ public class UserCreateDTO {
 	@Email
 	@ApiModelProperty(value = "Email Do Usuário")
 	private String email;
-	@ValidPassword
-	@ApiModelProperty(value = "Senha Do Usuário")
-	private String password;
-	@NotEmpty
-	@ApiModelProperty(value = "Username do Usuário")
-	private String username;
 	
 }
