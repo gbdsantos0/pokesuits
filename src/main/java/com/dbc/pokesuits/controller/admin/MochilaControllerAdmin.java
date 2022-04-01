@@ -25,8 +25,8 @@ import io.swagger.annotations.ApiResponses;
 
 
 @RestController
-@RequestMapping("/mochila")
-public class MochilaController {
+@RequestMapping("/mochila-admin")
+public class MochilaControllerAdmin {
 
     @Autowired
     private MochilaService mochilaService;
@@ -53,17 +53,17 @@ public class MochilaController {
         return mochilaService.getMochilaCompleta(id);
     }
     
-    @ApiOperation(value = "Adiciona uma mochila a um treinador")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
-            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
-    })
-    @PostMapping("/{id_treinador}")
-    @Validated
-    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("id_treinador") Integer idTreinador) throws Exception {
-        return mochilaService.create(mochila, idTreinador);
-    }
+//    @ApiOperation(value = "Adiciona uma mochila a um treinador")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
+//            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+//            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+//    })
+//    @PostMapping("/{id_treinador}")
+//    @Validated
+//    public MochilaDTO criarMochila(@Valid @RequestBody MochilaCreateDTO mochila, @PathVariable("id_treinador") Integer idTreinador) throws Exception {
+//        return mochilaService.create(mochila, idTreinador);
+//    }
 
     @ApiOperation(value = "Retorna uma mochila com quantidade de pokebola atualizada!")
     @ApiResponses(value = {
