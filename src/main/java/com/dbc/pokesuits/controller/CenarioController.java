@@ -59,7 +59,7 @@ public class CenarioController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
     })
-    @PostMapping("/capturar-pokemon/{id_treinador}/{pokebola}")//TODO ADICIONAR REQUESTINFO PARA CASO DE NAO CONSEGUIR CAPTURAR
+    @PostMapping("/capturar-pokemon/{pokebola}")//TODO ADICIONAR REQUESTINFO PARA CASO DE NAO CONSEGUIR CAPTURAR
     public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola, @RequestParam(value = "id_mochila") Integer idMochila) throws Exception{
         PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idMochila);
         log.info("Pokemon capturado com sucesso");

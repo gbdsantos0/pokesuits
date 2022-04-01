@@ -5,20 +5,18 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
-import com.dbc.pokesuits.entity.MochilaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.cenario.CenarioDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
 import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
-import com.dbc.pokesuits.entity.TreinadorEntity;
+import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
-import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.model.pokebolas.GreatBall;
 import com.dbc.pokesuits.model.pokebolas.HeavyBall;
 import com.dbc.pokesuits.model.pokebolas.MasterBall;
@@ -42,8 +40,6 @@ public class CenarioService {
     @Autowired
     private PokemonService pokemonService;
     @Autowired
-    private TreinadorService treinadorService;
-    @Autowired
     private MochilaService mochilaService;
 
     //todo sempre lembrar de setar como null após pokemon fugir, ser capturado ou o treinador sair do encontro
@@ -57,7 +53,6 @@ public class CenarioService {
     public PokemonDTO capturar(String tipoPokebola, Integer idMochila) throws Exception{
         Random r = new Random();
         MochilaEntity mochila = mochilaService.getById(idMochila);
-        TreinadorEntity treinadorEntity = treinadorService.getById(mochila.getIdTreinador());
 
         Pokebola pokebola;
 

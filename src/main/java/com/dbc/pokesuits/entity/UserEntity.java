@@ -3,7 +3,6 @@ package com.dbc.pokesuits.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,8 +50,10 @@ public class UserEntity implements UserDetails {
 	@Column(name = "username")
 	private String username;
 	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<TreinadorEntity> treinadores;
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private TreinadorEntity treinador;	
+	
+	
 	@ManyToMany
     @JoinTable(
             name = "USER_REGRA",

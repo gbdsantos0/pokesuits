@@ -49,7 +49,7 @@ public class MochilaEntity {
     private Set<PokemonEntity> pokemons;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_treinador", referencedColumnName = "id_treinador")
     private TreinadorEntity treinador;
 }

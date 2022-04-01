@@ -1,4 +1,4 @@
-package com.dbc.pokesuits.controller;
+package com.dbc.pokesuits.controller.admin;
 
 import javax.validation.Valid;
 
