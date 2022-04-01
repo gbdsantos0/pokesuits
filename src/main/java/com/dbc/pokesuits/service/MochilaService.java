@@ -223,4 +223,5 @@ public class MochilaService {
     public void deletarMochilaPeloId(Integer id) throws RegraDeNegocioException {
         MochilaEntity mochila = this.getById(id);
         this.mochilaRepository.deleteById(mochila.getIdMochila());
+    }
 }
