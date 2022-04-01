@@ -1,13 +1,16 @@
 package com.dbc.pokesuits.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.entity.RegraEntity;
+import com.dbc.pokesuits.enums.NomesRegras;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
@@ -28,6 +31,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final ObjectMapper objectMapper;
+	private final RegraService regraService;
 	
 	public Page<UserDTO> listarUsers(Integer pagina) {
 		log.info("Chamado metodo ListarUsers;");
@@ -38,11 +42,11 @@ public class UserService {
 				.stream()
 				.map(user -> {
 					UserDTO convertValue = objectMapper.convertValue(user, UserDTO.class);
-					convertValue.setTreinadores(user.getTreinadores()
+					/*convertValue.setTreinadores(user.getTreinadores()
 							.stream()
 							.map(treinador -> objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
-							.toList()
-					);
+							.collect(Collectors.toList())
+					);*/
 					return convertValue;
 				})
 				.collect(Collectors.toList());
@@ -50,16 +54,39 @@ public class UserService {
 		 return new PageImpl<>(collect);
 	}
 
-	public UserDTO adicionarUser(UserCreateDTO createDTO) {
+	public UserDTO adicionarUser(UserCreateDTO createDTO, List<NomesRegras> nomesRegrasList) throws Exception {
 		log.info("Chamado metodo AdicionarUser;");
 		
-		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
-		
-		UserEntity userAtualizado = userRepository.save(userConvertido);
-		log.info("Criado o User de ID: ", userAtualizado.getId());
+//		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
+
+		//verificando se o usuario ja existe
+		Optional<UserEntity> usuarioExistente = userRepository.findByUsername(createDTO.getUsername());
+		if(usuarioExistente.isPresent()){
+			throw new RegraDeNegocioException("Usuário já cadastrado no sistema");
+		}
+
+		//buscando grupos
+		Set<RegraEntity> regraEntitySet = new HashSet<>();
+
+		for(NomesRegras nomesRegras:nomesRegrasList){
+			RegraEntity regraEntity = regraService.getById(nomesRegras.getIdRegra());
+			regraEntitySet.add(regraEntity);
+		}
+
+
+		//setando usuario
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUsername(createDTO.getUsername());
+		userEntity.setEmail(createDTO.getEmail());
+		userEntity.setNome(createDTO.getNome());
+		userEntity.setPassword(new BCryptPasswordEncoder().encode(createDTO.getPassword()));
+		userEntity.setRegras(regraEntitySet);
+
+		UserEntity userAtualizado = userRepository.save(userEntity);
+		log.info("Criado o User de ID: "+ userAtualizado.getId());
 		
 		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
-		userDTO.setTreinadores(new ArrayList<TreinadorCreateDTO>());
+//		userDTO.setTreinadores(new ArrayList<TreinadorCreateDTO>());
 		
 		return userDTO;
 	}
@@ -70,14 +97,14 @@ public class UserService {
 		UserEntity userRemovido = getById(id);
 		
 		UserDTO userDTO = objectMapper.convertValue(userRemovido, UserDTO.class);
-		userDTO.setTreinadores(userRemovido.getTreinadores()
+		/*userDTO.setTreinadores(userRemovido.getTreinadores()
 				.stream()
 				.map(treinador -> objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
-				.toList()
-				);
+				.collect(Collectors.toList())
+				);*/
 		
 		userRepository.deleteById(id);
-		log.info("Removido o User de ID: ", userDTO.getId());
+		log.info("Removido o User de ID: "+ userDTO.getId());
 		
 		
 		return userDTO;
@@ -89,7 +116,7 @@ public class UserService {
 		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
 		
 		UserEntity userAtualizado = userRepository.save(userConvertido);
-		log.info("Persistido as mudanças no User de ID: ", userAtualizado.getId());
+		log.info("Persistido as mudanças no User de ID: "+ userAtualizado.getId());
 		
 		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
 		
@@ -99,5 +126,9 @@ public class UserService {
 	public UserEntity getById(Integer idUser) throws RegraDeNegocioException{
 		log.info("Chamado metodo getById do User");
 		return userRepository.findById(idUser).orElseThrow(() -> new RegraDeNegocioException("O ID do User passadso não Existe"));
+	}
+
+	public Optional<UserEntity> findByUsername(String username){
+		return userRepository.findByUsername(username);
 	}
 }

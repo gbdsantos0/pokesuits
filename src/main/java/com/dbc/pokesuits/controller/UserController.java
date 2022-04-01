@@ -2,6 +2,7 @@ package com.dbc.pokesuits.controller;
 
 import javax.validation.Valid;
 
+import com.dbc.pokesuits.enums.NomesRegras;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,8 @@ import com.dbc.pokesuits.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/User")
@@ -48,8 +51,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PostMapping
-	public UserDTO adicionarUser(@Valid @RequestBody UserCreateDTO pokemon){
-		return userService.adicionarUser(pokemon);
+	public UserDTO adicionarUser(@Valid @RequestBody UserCreateDTO pokemon, @RequestParam("regras") List<NomesRegras> nomesRegrasList) throws Exception {
+		return userService.adicionarUser(pokemon, nomesRegrasList);
 	}
 	
 	@ApiOperation(value = "Remove um Users")

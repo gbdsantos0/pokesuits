@@ -1,7 +1,9 @@
 package com.dbc.pokesuits.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,26 +60,36 @@ public class UserEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_regra")
     )
     private Set<RegraEntity> regras;
+
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.username;
+	}
 	
 	@Override
 	public List<RegraEntity> getAuthorities() {
-		return regras.stream().toList();
+		return new ArrayList<>(regras);
 	}
 	@Override
 	public boolean isAccountNonExpired() {
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isAccountNonLocked() {
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isEnabled() {
-		return false;
+		return true;
 	}
 	
 }
