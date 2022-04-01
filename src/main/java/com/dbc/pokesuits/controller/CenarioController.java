@@ -60,8 +60,8 @@ public class CenarioController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
     })
     @PostMapping("/capturar-pokemon/{id_treinador}/{pokebola}")//TODO ADICIONAR REQUESTINFO PARA CASO DE NAO CONSEGUIR CAPTURAR
-    public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola, @PathVariable("id_treinador") Integer idTreinador, @RequestParam(value = "id_mochila") Integer idMochila) throws Exception{//todo adicionar o treinadorDTO
-        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idTreinador, idMochila);
+    public PokemonDTO capturarPokemon(@RequestParam(value = "pokebola") String nomePokebola, @RequestParam(value = "id_mochila") Integer idMochila) throws Exception{
+        PokemonDTO pokemonDTO = cenarioService.capturar(nomePokebola, idMochila);
         log.info("Pokemon capturado com sucesso");
         return pokemonDTO;
     }

@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
+import com.dbc.pokesuits.entity.MochilaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,9 +54,10 @@ public class CenarioService {
     private int contador=0;
 
     //todo remover o idTreinador, pois a mochila pode buscar ele
-    public PokemonDTO capturar(String tipoPokebola, Integer idTreinador, Integer idMochila) throws Exception{
+    public PokemonDTO capturar(String tipoPokebola, Integer idMochila) throws Exception{
         Random r = new Random();
-        TreinadorEntity treinadorEntity = treinadorService.getById(idTreinador);
+        MochilaEntity mochila = mochilaService.getById(idMochila);
+        TreinadorEntity treinadorEntity = treinadorService.getById(mochila.getIdTreinador());
 
         Pokebola pokebola;
 
@@ -83,21 +85,13 @@ public class CenarioService {
                 throw new InvalidCenarioException("Tipo de pokebola inválida, favor utilizar uma das disponíveis (PokeBall, GreatBall, NetBall, HeavyBall ou MasterBall)");
         }
         //jogar pokebola
-        mochilaService.usarPokebola(treinadorEntity.getMochilas().stream()
-                .filter(mochilaEntity -> mochilaEntity.getIdMochila().equals(idMochila))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Mochila não encontrada ou não relacionada à este treinador"))
-                .getIdMochila(),tipoPokebola);
+        mochilaService.usarPokebola(mochila.getIdMochila(),tipoPokebola);
         //testar chance
         if(r.nextInt(100) <= pokebola.calcularChance(ultimoPokemonEncontrado)){
             //mapeando pokemon para adicionar na mochila
             PokemonCreateDTO pokemonCreateDTO = objectMapper.convertValue(ultimoPokemonEncontrado, PokemonCreateDTO.class);
             //alterar idMochila para qual o pokemon pertence agora
-            pokemonCreateDTO.setIdMochila(treinadorEntity.getMochilas().stream()
-                    .filter(mochilaEntity -> mochilaEntity.getIdMochila().equals(idMochila))
-                    .findFirst()
-                    .orElseThrow(() -> new RegraDeNegocioException("Mochila não encontrada ou não relacionada à este treinador"))
-                    .getIdMochila());
+            pokemonCreateDTO.setIdMochila(mochila.getIdMochila());
             //adicionar o pokemon na lista de pokemons
             PokemonDTO pokemonDTO = pokemonService.adicionarPokemon(pokemonCreateDTO);
             pokemonDTO.setNome("Não nomeado");
