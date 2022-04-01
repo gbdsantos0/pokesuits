@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,7 +77,16 @@ public class MochilaController {
         return mochilaService.adicionarPokebola(Integer.parseInt((String) userb), tipoPokebola, quantidadeAdicionada);
     }
 
-    
-    
-    
+    @ApiOperation(value = "Deleta a mochila do usuário logado!")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deletou a mochila do usuário logado!"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+    })
+    @DeleteMapping
+    public void deletaMochilaLogado() throws Exception {
+        Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        this.mochilaService.deletarMochilaLogado(Integer.parseInt((String) userb));
+    }
+
 }
