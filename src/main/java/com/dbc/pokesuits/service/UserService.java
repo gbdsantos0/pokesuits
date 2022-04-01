@@ -29,7 +29,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final ObjectMapper objectMapper;
 	
-	public Page<UserDTO> ListarUsers(Integer pagina) {
+	public Page<UserDTO> listarUsers(Integer pagina) {
 		log.info("Chamado metodo ListarUsers;");
 		
 		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
@@ -50,7 +50,7 @@ public class UserService {
 		 return new PageImpl<>(collect);
 	}
 
-	public UserDTO AdicionarUser(UserCreateDTO createDTO) {
+	public UserDTO adicionarUser(UserCreateDTO createDTO) {
 		log.info("Chamado metodo AdicionarUser;");
 		
 		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
@@ -64,7 +64,7 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserDTO RemoverUser(int id) throws RegraDeNegocioException {
+	public UserDTO removerUser(int id) throws RegraDeNegocioException {
 		log.info("Chamado metodo RemoverUser;");
 		
 		UserEntity userRemovido = getById(id);

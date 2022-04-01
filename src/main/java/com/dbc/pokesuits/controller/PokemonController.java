@@ -38,7 +38,7 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@GetMapping
-	public Page<PokemonDTO> ListarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
+	public Page<PokemonDTO> listarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
 		return pokemonService.listarPokemons(pagina);
 	}
 	
@@ -49,7 +49,7 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PostMapping
-	public PokemonDTO AdicionarPokemon(@Valid @RequestBody PokemonCreateDTO pokemon) throws RegraDeNegocioException{
+	public PokemonDTO adicionarPokemon(@Valid @RequestBody PokemonCreateDTO pokemon) throws RegraDeNegocioException{
 		return pokemonService.adicionarPokemon(pokemon);
 	}
 	
@@ -61,7 +61,7 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@DeleteMapping(path = "/{id_pokemon}")
-	public PokemonDTO RemoverPokemon(@PathVariable("id_pokemon") Integer idPokemon) throws RegraDeNegocioException {
+	public PokemonDTO removerPokemon(@PathVariable("id_pokemon") Integer idPokemon) throws RegraDeNegocioException {
 		return pokemonService.removerPokemon(idPokemon);
 	}
 	

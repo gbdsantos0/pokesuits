@@ -1,5 +1,6 @@
 package com.dbc.pokesuits.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,8 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,8 +32,9 @@ import lombok.Setter;
 @Setter
 @Builder
 @Entity(name = "user_pokesuits")
-public class UserEntity {
+public class UserEntity implements UserDetails {
 	
+	private static final long serialVersionUID = 7969341792926187301L;
 	@Id
 	@Column(name = "id_user")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bobo")
@@ -44,5 +51,33 @@ public class UserEntity {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<TreinadorEntity> treinadores;
+	@ManyToMany
+    @JoinTable(
+            name = "USER_REGRA",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_regra")
+    )
+    private Set<RegraEntity> regras;
+	
+	@Override
+	public List<RegraEntity> getAuthorities() {
+		return regras.stream().toList();
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return false;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return false;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
+	}
+	@Override
+	public boolean isEnabled() {
+		return false;
+	}
 	
 }

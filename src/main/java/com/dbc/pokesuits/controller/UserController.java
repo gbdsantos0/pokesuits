@@ -38,8 +38,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@GetMapping
-	public Page<UserDTO> ListarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
-		return userService.ListarUsers(pagina);
+	public Page<UserDTO> listarUser(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
+		return userService.listarUsers(pagina);
 	}
 	@ApiOperation(value = "Recebe um User")
     @ApiResponses(value = {
@@ -48,8 +48,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PostMapping
-	public UserDTO AdicionarPokemon(@Valid @RequestBody UserCreateDTO pokemon){
-		return userService.AdicionarUser(pokemon);
+	public UserDTO adicionarUser(@Valid @RequestBody UserCreateDTO pokemon){
+		return userService.adicionarUser(pokemon);
 	}
 	
 	@ApiOperation(value = "Remove um Users")
@@ -59,8 +59,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@DeleteMapping(path = "/{id_user}")
-	public void RemoverPokemon(@PathVariable("id_user") int idUser) throws RegraDeNegocioException {
-		userService.RemoverUser(idUser);
+	public void removerUser(@PathVariable("id_user") int idUser) throws RegraDeNegocioException {
+		userService.removerUser(idUser);
 	}
 	@ApiOperation(value = "Recebe um User e um ID")
     @ApiResponses(value = {
@@ -69,7 +69,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PutMapping
-	public UserDTO editarPokemon(@Valid @RequestBody UserCreateDTO createDTO,
+	public UserDTO editarUser(@Valid @RequestBody UserCreateDTO createDTO,
 								 @RequestParam(value = "id_user")Integer idUser) throws RegraDeNegocioException {
 		return userService.editarUser(createDTO, idUser);
 	}
