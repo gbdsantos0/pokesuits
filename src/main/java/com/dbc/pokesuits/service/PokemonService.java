@@ -110,10 +110,14 @@ public class PokemonService {
 		return pokemonDTO;
 	}
 
-	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
+	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
 		log.info("Chamado metodo editarPokemon;");
 		
-		PokemonEntity byId = getById(id);
+		PokemonEntity byId = getPokemonsByIdUser(idUser)
+				.stream()
+				.filter(p -> p.getIdPokemon()==idPokemon)
+				.findFirst()
+				.orElseThrow(()->new RegraDeNegocioException("Pokemon com o id passado não existe"));
 		
 		byId.setLevel(createDTO.getLevel());
 		byId.setNome(createDTO.getNome());
@@ -133,5 +137,11 @@ public class PokemonService {
 	public PokemonEntity getById(Integer idPokemon) throws RegraDeNegocioException{
 		log.info("Chamado metodo getById do Pokemon;");
 		return pokemonRepository.findById(idPokemon).orElseThrow(()-> new RegraDeNegocioException("O ID do Pokemon Passado não existe"));
+	}
+	
+	public List<PokemonEntity> getPokemonsByIdUser(Integer idUser) throws RegraDeNegocioException{
+		log.info("Chamado metodo getPokemonsByIdUser do Pokemon;");
+//		return mochilaService.getMochilaCompleta(idUser);	
+		return null;
 	}
 }
