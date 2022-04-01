@@ -214,4 +214,13 @@ public class MochilaService {
 
         return mochilaEntity;
     }
+
+    public MochilaDTO getMochilaPeloId(Integer id) throws RegraDeNegocioException {
+        MochilaEntity mochila = this.getById(id);
+        return objectMapper.convertValue(mochila, MochilaDTO.class);
+    }
+
+    public void deletarMochilaPeloId(Integer id) throws RegraDeNegocioException {
+        MochilaEntity mochila = this.getById(id);
+        this.mochilaRepository.deleteById(mochila.getIdMochila());
 }
