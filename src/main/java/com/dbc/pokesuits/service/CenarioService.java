@@ -5,9 +5,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.entity.UserEntity;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.cenario.CenarioDTO;
@@ -16,6 +13,7 @@ import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonGeradoDTO;
 import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
+import com.dbc.pokesuits.entity.UserEntity;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
@@ -28,6 +26,7 @@ import com.dbc.pokesuits.model.pokebolas.Pokebola;
 import com.dbc.pokesuits.repository.CenarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 @Service

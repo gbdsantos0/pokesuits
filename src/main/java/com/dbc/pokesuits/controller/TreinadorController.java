@@ -66,7 +66,7 @@ public class TreinadorController {
 
 
 
-    @ApiOperation(value = "Retorna um treinador pelo seu ID")
+    @ApiOperation(value = "Retorna um treinador pelo User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Treinador retornado com sucesso"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),

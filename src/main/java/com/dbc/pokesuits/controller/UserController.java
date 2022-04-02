@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(path = "/user-logado")
+@RequestMapping(path = "/user")
 @Validated
 public class UserController {
 	@Autowired

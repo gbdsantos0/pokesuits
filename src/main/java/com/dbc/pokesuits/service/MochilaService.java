@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +16,7 @@ import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.entity.TreinadorEntity;
+import com.dbc.pokesuits.entity.UserEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.MochilaRepository;
@@ -32,7 +32,6 @@ public class MochilaService {
 
     private final MochilaRepository mochilaRepository;
     private final ObjectMapper objectMapper;
-    private final TreinadorService treinadorService;
     private final UserService userService;
 
     public Page<MochilaDTO> listAll(Integer pagina) {
@@ -53,7 +52,7 @@ public class MochilaService {
 
         UserEntity userEntity = this.userService.getById(idUser);
 
-        TreinadorEntity treinadorEntity = userService.getById(idUser).getTreinador();
+        TreinadorEntity treinadorEntity = userEntity.getTreinador();
 
         if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
 

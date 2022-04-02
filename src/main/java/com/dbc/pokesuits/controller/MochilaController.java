@@ -2,9 +2,12 @@ package com.dbc.pokesuits.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.service.MochilaService;
+import com.dbc.pokesuits.service.PokemonService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,33 +30,12 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping("/mochila-admin")
+@RequestMapping("/mochila")
 @AllArgsConstructor
 public class MochilaController {
 
     private MochilaService mochilaService;
-
-//    @ApiOperation(value = "Retorna todas as mochilas")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Retornou todas as mochilas com sucesso!"),
-//            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
-//            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
-//    })
-//    @GetMapping
-//    public Page<MochilaDTO> listAll(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina){
-//        return mochilaService.listAll(pagina);
-//    }
-
-//    @ApiOperation(value = "Retorna uma mochila pelo id, com todos seus pokemons")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Retornou a mochila com sucesso!"),
-//            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
-//            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
-//    })
-//    @GetMapping("/{id_mochila}")
-//    public MochilaCompletaDTO getMochilaCompleta(@PathVariable("id_mochila") Integer id) throws Exception {
-//        return mochilaService.getMochilaCompleta(id);
-//    }
+    private PokemonService pokemonService;
     
     @ApiOperation(value = "Adiciona uma mochila a um treinador")
     @ApiResponses(value = {
@@ -88,5 +74,39 @@ public class MochilaController {
         Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.mochilaService.deletarMochilaLogado(Integer.parseInt((String) userb));
     }
-
+    
+    @ApiOperation(value = "Recebe um id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Remove o Pokemons com o id passado"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+    })
+	@DeleteMapping(path = "/{id}")
+	public void RemoverPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
+		pokemonService.removerPokemon(id);
+	}
+	
+	@ApiOperation(value = "Recebe um id e um pokemon")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "substitui os dados do pokemon com id passado pelos dados do pokemon passado"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+    })
+	@PutMapping("/editar-pokemon")
+	public PokemonDTO editarPokemon(@Valid @RequestBody PokemonCreateDTO createDTO, Integer id) throws Exception {
+		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return pokemonService.editarPokemon(createDTO, id, Integer.parseInt((String)userb));
+	}
+    
+	@ApiOperation(value = "Devolve os Pokemons do User")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Devolve uma lista de Pokemons"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+    })
+	@GetMapping("/listar-pokemons")
+	public Page<PokemonDTO> ListarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina) throws Exception{
+		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return pokemonService.listarPokemonsPorUser(pagina,Integer.parseInt((String)userb));
+	}
 }

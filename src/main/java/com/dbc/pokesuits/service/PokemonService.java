@@ -109,7 +109,27 @@ public class PokemonService {
 		
 		return pokemonDTO;
 	}
-
+	
+	public PokemonDTO removerPokemonPorUserLogado(Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
+		log.info("Chamado metodo removerPokemon;");
+		
+		PokemonEntity pokemonRemovido = getPokemonsByIdUser(idUser)
+				.stream()
+				.filter(p -> p.getIdPokemon()==idPokemon)
+				.findFirst()
+				.orElseThrow(()->new RegraDeNegocioException("Pokemon com o id passado não existe"));
+		
+		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
+		pokemonDTO.setIdMochila(pokemonRemovido.getMochilaPokemon().getIdMochila());
+		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
+		
+		pokemonRepository.deleteById(idPokemon);
+		
+		log.info("Persistido as mudanças no Pokemon de ID: " + idPokemon);
+		
+		return pokemonDTO;
+	}
+	
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
 		log.info("Chamado metodo editarPokemon;");
 		
@@ -141,7 +161,6 @@ public class PokemonService {
 	
 	public List<PokemonEntity> getPokemonsByIdUser(Integer idUser) throws RegraDeNegocioException{
 		log.info("Chamado metodo getPokemonsByIdUser do Pokemon;");
-//		return mochilaService.getMochilaCompleta(idUser);	
-		return null;
+		return mochilaService.getMochilaPeloIdUser(idUser).getPokemons().stream().toList();	
 	}
 }
