@@ -61,6 +61,7 @@ public class MochilaService {
         if (mochilaEntity == null) {
             mochilaEntity = objectMapper.convertValue(mochilaCreateDTO, MochilaEntity.class);
             mochilaEntity.setTreinador(treinadorEntity);
+            mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
             this.mochilaRepository.save(mochilaEntity);
 
             return objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
@@ -73,6 +74,7 @@ public class MochilaService {
     	log.info("Chamado metodo adicionarPokebola");
 
         MochilaEntity mochila = this.getMochilaPeloIdUser(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)){
             case "greatball":
@@ -119,6 +121,7 @@ public class MochilaService {
     	log.info("Chamado metodo usarPokebola");
 
         MochilaEntity mochila = this.getMochilaPeloIdUser(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)) {
             case "greatball":
@@ -161,6 +164,7 @@ public class MochilaService {
 
     public MochilaDTO getMochilaLogado(Integer idUser) throws RegraDeNegocioException {
         MochilaEntity mochilaEntity = this.getMochilaPeloIdUser(idUser);
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
         return objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
     }
 
@@ -206,6 +210,7 @@ public class MochilaService {
         if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
 
         MochilaEntity mochilaEntity = treinadorEntity.getMochila();
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
 
         if (mochilaEntity == null) {
             throw new RegraDeNegocioException("Mochila não existe.");
@@ -216,6 +221,7 @@ public class MochilaService {
 
     public MochilaDTO getMochilaPeloId(Integer id) throws RegraDeNegocioException {
         MochilaEntity mochila = this.getById(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
         return objectMapper.convertValue(mochila, MochilaDTO.class);
     }
 
