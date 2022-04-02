@@ -52,6 +52,8 @@ public class CenarioService {
         Random r = new Random();
 
         UserEntity userEntity = userService.getById(idUser);
+        
+        System.out.println(userEntity.getTreinador().getNome());
 
         MochilaEntity mochila = userEntity.getTreinador().getMochila();
 
@@ -81,7 +83,7 @@ public class CenarioService {
                 throw new InvalidCenarioException("Tipo de pokebola inválida, favor utilizar uma das disponíveis (PokeBall, GreatBall, NetBall, HeavyBall ou MasterBall)");
         }
         //jogar pokebola
-        mochilaService.usarPokebola(mochila.getIdMochila(),tipoPokebola);
+        mochilaService.usarPokebola(userEntity.getId(),tipoPokebola);
         //testar chance
         if(r.nextInt(100) <= pokebola.calcularChance(ultimoPokemonEncontrado)){
             //mapeando pokemon para adicionar na mochila

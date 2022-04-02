@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.entity.PokemonEntity;
+import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +54,14 @@ public class PokemonService {
 		
 		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10, Sort.by("idPokemon"));
 		
-		List<PokemonDTO> collect = userService.getById(user).getTreinador().getMochila().getPokemons()
+		 TreinadorEntity treinador = userService.getById(user).getTreinador();
+		 if(treinador == null )throw new RegraDeNegocioException("o treinador não foi criado");
+		 
+		 MochilaEntity mochila = treinador.getMochila();
+		 
+		 if(mochila == null )throw new RegraDeNegocioException("A mochila não foi criada");
+		
+		List<PokemonDTO> collect = mochila.getPokemons()
 				.stream()
 				.map(pokemon -> {
 					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);

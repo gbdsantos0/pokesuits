@@ -54,7 +54,7 @@ public class UserService {
 	public UserDTO ciraUser(UserCreateDTO createDTO) throws Exception {
 		log.info("Chamado metodo AdicionarUser;");
 		
-		findByUsername(createDTO.getUsername()).orElseThrow(() ->new RegraDeNegocioException("Usuário já cadastrado no sistema"));
+		if(findByUsername(createDTO.getUsername()).isPresent())throw new RegraDeNegocioException("deu pau");
 		
 		// buscando grupos
 		Set<RegraEntity> regraEntitySet = new HashSet<>();
