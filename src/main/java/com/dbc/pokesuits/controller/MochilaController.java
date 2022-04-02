@@ -36,7 +36,19 @@ public class MochilaController {
 
     private MochilaService mochilaService;
     private PokemonService pokemonService;
-    
+
+    @ApiOperation(value = "Retorna a mochila do usuário logado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "retorna a mochila do usuário logado!"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção")
+    })
+    @GetMapping
+    public MochilaDTO pegarMochila() throws Exception {
+        Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.mochilaService.getMochilaLogado(Integer.parseInt((String) userb));
+    }
+
     @ApiOperation(value = "Adiciona uma mochila a um treinador")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
