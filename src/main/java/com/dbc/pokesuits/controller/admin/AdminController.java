@@ -94,9 +94,9 @@ public class AdminController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
-	@GetMapping("/listar-pokemons-por-user")
-	public Page<PokemonDTO> listarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina, 
-			@RequestParam(value = "id_user") Integer idUser) throws RegraDeNegocioException{
+	@GetMapping("/listar-pokemons-por-user/{id_user}")
+	public Page<PokemonDTO> listarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina,
+										   @RequestParam(value = "id_user") Integer idUser) throws RegraDeNegocioException{
 		return pokemonService.listarPokemonsPorUser(pagina, idUser);
 	}
 	
