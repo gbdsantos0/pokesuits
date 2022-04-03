@@ -31,6 +31,11 @@ public class TreinadorService {
     public TreinadorDTO create(TreinadorCreateDTO treinadorCreate, Integer idUser)throws Exception{
         log.info("chamou o método crate do Treinador!");
         UserEntity userEntity = userService.getById(idUser);//busca usuario
+
+        if(userEntity.getTreinador()!=null){
+
+        }
+
         TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);//converte para TreinadorEntity
         treinador.setUser(userEntity);//seta usuario
         TreinadorEntity treinadorCriado = treinadorRepository.save(treinador);//salva treinador no banco
