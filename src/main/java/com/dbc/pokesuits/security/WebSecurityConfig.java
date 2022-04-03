@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/user/**", "/treinador/**", "/mochila/**", "/cenario/**").hasAnyRole("USER")
+                .antMatchers("/user/**", "/treinador/**", "/mochila/**", "/cenario/**").hasAnyRole("USER", "LEAGUE_CHAMPION")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
