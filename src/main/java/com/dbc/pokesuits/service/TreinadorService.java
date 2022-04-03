@@ -33,7 +33,7 @@ public class TreinadorService {
         UserEntity userEntity = userService.getById(idUser);//busca usuario
 
         if(userEntity.getTreinador()!=null){
-
+            throw new RegraDeNegocioException("O usuário já possui um treinador");
         }
 
         TreinadorEntity treinador = objectMapper.convertValue(treinadorCreate, TreinadorEntity.class);//converte para TreinadorEntity
@@ -48,6 +48,10 @@ public class TreinadorService {
         log.info("chamou o método update do Treinador!");
 
         UserEntity userEntity = userService.getById(idUser);
+
+        if(userEntity.getTreinador()==null){
+            throw new RegraDeNegocioException("O usuário não possui um treinador");
+        }
 
         TreinadorEntity treinadorEntity = userEntity.getTreinador();//busca treinador no banco para verificar se existe para atualizar
         treinadorEntity.setNome(treinadorAtualizar.getNome());//seta nome
@@ -75,13 +79,25 @@ public class TreinadorService {
         return treinadorDTO;
     }
 
+
+    //todo consertar delete(parece que preciso salvar o user entity após remover, pois o jpa não deixa remover uma entidade que já está relacionada à outra carregada no sistema)
     public TreinadorDTO deleteByIdUser(Integer idUser) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
 
-        UserEntity userEntity = userService.getById(idUser);
+        UserEntity userEntity = userService.getById(idUser);//busca usuario
+
+        if(userEntity.getTreinador()==null){
+            throw new RegraDeNegocioException("O usuário não possui um treinador");
+        }
 
         TreinadorEntity treinadorDeletado = userEntity.getTreinador();//busca a entrada no banco para retorno
-        treinadorRepository.deleteById(treinadorDeletado.getIdTreinador());//deleta o dado do banco
+
+        Integer idTreinadorDelete = treinadorDeletado.getIdTreinador();
+        log.info("ID to treinador deletado: "+idTreinadorDelete);
+
+        TreinadorEntity treinadorParaDelete = getById(idTreinadorDelete);
+        treinadorRepository.delete(treinadorParaDelete);
+//        treinadorRepository.deleteById(idTreinadorDelete);//deleta o dado do banco
         TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);//converte o dado retornado do banco para TreinadorDTO
         return treinadorDTO;
     }

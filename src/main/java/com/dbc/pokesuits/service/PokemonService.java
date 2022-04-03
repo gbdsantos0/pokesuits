@@ -170,6 +170,6 @@ public class PokemonService {
 	
 	public List<PokemonEntity> getPokemonsByIdUser(Integer idUser) throws RegraDeNegocioException{
 		log.info("Chamado metodo getPokemonsByIdUser do Pokemon;");
-		return mochilaService.getMochilaPeloIdUser(idUser).getPokemons().stream().toList();	
+		return mochilaService.getMochilaPeloIdUser(idUser).getPokemons().stream().collect(Collectors.toList());
 	}
 }
