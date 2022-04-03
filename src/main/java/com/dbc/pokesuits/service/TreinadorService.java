@@ -75,9 +75,7 @@ public class TreinadorService {
         treinadorRepository.deleteById(id);//deleta o dado do banco
         return objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
     }
-
-
-    //todo consertar delete(parece que preciso salvar o user entity após remover, pois o jpa não deixa remover uma entidade que já está relacionada à outra carregada no sistema)
+    
     public void deleteByIdUser(Integer idUser) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
 

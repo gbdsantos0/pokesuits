@@ -123,7 +123,7 @@ public class PokemonService {
 		byId.setLevel(createDTO.getLevel()==null? byId.getLevel() : createDTO.getLevel());
 		byId.setNome(createDTO.getNome()==null? byId.getNome() : createDTO.getNome());
 
-		
+
 		if(!(createDTO.getLevel()==null && createDTO.getNome()==null)){
 			PokemonEntity pokemonAtualizado = pokemonRepository.save(byId);
 			log.info("Persistido as mudanças no Pokemon de ID: "+ byId.getIdPokemon());
