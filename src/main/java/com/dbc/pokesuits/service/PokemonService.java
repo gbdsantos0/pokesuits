@@ -1,8 +1,10 @@
 package com.dbc.pokesuits.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.dto.pokemon.PokemonEditDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -32,23 +34,6 @@ public class PokemonService {
     private final MochilaService mochilaService;
 	private final ObjectMapper objectMapper;
 	
-//	public Page<PokemonDTO> listarPokemons(Integer pagina) {
-//		log.info("Chamado metodo listarPokemons;");
-//		
-//		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 20, Sort.by("idPokemon"));
-//		
-//		List<PokemonDTO> collect = pokemonRepository.findAll(pageable)
-//				.stream()
-//				.map(pokemon -> {
-//					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);
-//					pokemonDTO.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
-//					if(pokemon.getNome() == null)pokemonDTO.setNome("Não Nomeado");
-//					return pokemonDTO;
-//				}).collect(Collectors.toList());
-//		
-//		return new PageImpl<>(collect);
-//	}
-	
 	public Page<PokemonDTO> listarPokemonsPorUser(Integer pagina, Integer user) throws RegraDeNegocioException {
 		log.info("Chamado metodo listarPokemons;");
 		
@@ -73,19 +58,6 @@ public class PokemonService {
 		return new PageImpl<>(collect, pageable, collect.size());
 	}
 	
-	public List<PokemonDTO> listarPokemonsPorUserSemPage(Integer user) throws RegraDeNegocioException {
-		log.info("Chamado metodo listarPokemons;");
-		
-		return userService.getById(user).getTreinador().getMochila().getPokemons()
-				.stream()
-				.map(pokemon -> {
-					PokemonDTO pokemonDTO = objectMapper.convertValue(pokemon, PokemonDTO.class);
-					pokemonDTO.setIdMochila(pokemon.getMochilaPokemon().getIdMochila());
-					if(pokemon.getNome() == null)pokemonDTO.setNome("Não Nomeado");
-					return pokemonDTO;
-				}).collect(Collectors.toList());
-	}
-	
 	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) throws RegraDeNegocioException {
 		log.info("Chamado metodo adicionarPokemon;");
 		
@@ -94,7 +66,7 @@ public class PokemonService {
 		
 		PokemonEntity pokemonAtualizado = pokemonRepository.save(PokemonConvertido);
 		
-		log.info("Persistido o Pokemon de ID: ", PokemonConvertido.getIdPokemon());
+		log.info("Persistido o Pokemon de ID: "+ PokemonConvertido.getIdPokemon());
 		
 		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
 		pokemonDTO.setIdMochila(pokemonAtualizado.getMochilaPokemon().getIdMochila());
@@ -114,7 +86,7 @@ public class PokemonService {
 		
 		pokemonRepository.deleteById(id);
 		
-		log.info("Persistido as mudanças no Pokemon de ID: ", id);
+		log.info("Persistido as mudanças no Pokemon de ID: "+ id);
 		
 		return pokemonDTO;
 	}
@@ -126,7 +98,7 @@ public class PokemonService {
 		
 		PokemonEntity pokemonRemovido = mochilaPeloIdUser.getPokemons()
 				.stream()
-				.filter(p -> p.getIdPokemon()==idPokemon)
+				.filter(p -> p.getIdPokemon().equals(idPokemon))
 				.findFirst()
 				.orElseThrow(()->new RegraDeNegocioException("Pokemon com o id passado não existe"));
 		Integer idPokemon2 = pokemonRemovido.getIdPokemon();
@@ -139,28 +111,29 @@ public class PokemonService {
 		
 	}
 	
-	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
+	public PokemonDTO editarPokemon(PokemonEditDTO createDTO, Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
 		log.info("Chamado metodo editarPokemon;");
 		
 		PokemonEntity byId = getPokemonsByIdUser(idUser)
 				.stream()
-				.filter(p -> p.getIdPokemon()==idPokemon)
+				.filter(p -> p.getIdPokemon().equals(idPokemon))
 				.findFirst()
 				.orElseThrow(()->new RegraDeNegocioException("Pokemon com o id passado não existe"));
+
+		byId.setLevel(createDTO.getLevel()==null? byId.getLevel() : createDTO.getLevel());
+		byId.setNome(createDTO.getNome()==null? byId.getNome() : createDTO.getNome());
+
 		
-		byId.setLevel(createDTO.getLevel());
-		byId.setNome(createDTO.getNome());
-		byId.setPeso(createDTO.getPeso());
-		
-		PokemonEntity pokemonAtualizado = pokemonRepository.save(byId);
-		
-		log.info("Persistido as mudanças no Pokemon de ID: ", byId.getIdPokemon());
-		
-		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
-		pokemonDTO.setIdMochila(pokemonAtualizado.getMochilaPokemon().getIdMochila());
-		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
-		
-		return pokemonDTO;
+		if(!(createDTO.getLevel()==null && createDTO.getNome()==null)){
+			PokemonEntity pokemonAtualizado = pokemonRepository.save(byId);
+			log.info("Persistido as mudanças no Pokemon de ID: "+ byId.getIdPokemon());
+			PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonAtualizado, PokemonDTO.class);
+			pokemonDTO.setIdMochila(pokemonAtualizado.getMochilaPokemon().getIdMochila());
+			if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
+
+			return pokemonDTO;
+		}
+		return null;
 	}
 	
 	public PokemonEntity getById(Integer idPokemon) throws RegraDeNegocioException{
@@ -170,6 +143,6 @@ public class PokemonService {
 	
 	public List<PokemonEntity> getPokemonsByIdUser(Integer idUser) throws RegraDeNegocioException{
 		log.info("Chamado metodo getPokemonsByIdUser do Pokemon;");
-		return mochilaService.getMochilaPeloIdUser(idUser).getPokemons().stream().collect(Collectors.toList());
+		return new ArrayList<>(mochilaService.getMochilaPeloIdUser(idUser).getPokemons());
 	}
 }

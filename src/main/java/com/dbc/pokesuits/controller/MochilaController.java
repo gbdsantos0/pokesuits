@@ -2,6 +2,7 @@ package com.dbc.pokesuits.controller;
 
 import javax.validation.Valid;
 
+import com.dbc.pokesuits.dto.pokemon.PokemonEditDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -106,9 +107,9 @@ public class MochilaController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@PutMapping("/editar-pokemon")
-	public PokemonDTO editarPokemon(@Valid @RequestBody PokemonCreateDTO createDTO, Integer id) throws Exception {
+	public PokemonDTO editarPokemon(@Valid @RequestBody PokemonEditDTO createDTO, Integer id) throws Exception {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return pokemonService.editarPokemon(createDTO, id, Integer.parseInt((String)userb));
+		return pokemonService.editarPokemon(createDTO, Integer.parseInt((String)userb), id);
 	}
     
 	@ApiOperation(value = "Devolve os Pokemons do User")

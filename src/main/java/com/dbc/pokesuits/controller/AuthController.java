@@ -58,7 +58,7 @@ public class AuthController {
     })
     @PostMapping("/sign-up")
     public LoginExecutadoDTO signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws Exception{
-        userService.ciraUser(userCreateDTO);
+        userService.criaUser(userCreateDTO);
         LoginExecutadoDTO loginExecutadoDTO = new LoginExecutadoDTO();
         loginExecutadoDTO.setLogin(userCreateDTO.getUsername());
 

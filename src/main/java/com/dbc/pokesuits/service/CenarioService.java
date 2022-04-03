@@ -112,8 +112,8 @@ public class CenarioService {
             }
         }
 
-        throw new InvalidCenarioException("Pokemon não capturado");//todo informar alguma outra coisa ao inves de uma excessao?
-    };
+        throw new InvalidCenarioException("Pokemon não capturado");
+    }
 
     public PokemonGeradoDTO gerarPokemon() throws Exception{
         Random r = new Random();
@@ -230,8 +230,7 @@ public class CenarioService {
     }
 
     public  CenarioDTO cenarioAtual() throws Exception{
-        CenarioDTO cenarioDTO = objectMapper.convertValue(cenarioRepository.getById(cenarioAtual), CenarioDTO.class);
-        return cenarioDTO;
+        return objectMapper.convertValue(cenarioRepository.getById(cenarioAtual), CenarioDTO.class);
     }
 
     public List<CenarioDTO> listAll(){

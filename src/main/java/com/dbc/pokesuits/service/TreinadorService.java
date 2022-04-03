@@ -57,9 +57,7 @@ public class TreinadorService {
         treinadorEntity.setNome(treinadorAtualizar.getNome());//seta nome
         treinadorEntity.setSexo(treinadorAtualizar.getSexo());//seta sexo
         TreinadorEntity treinadorAtualizado = treinadorRepository.save(treinadorEntity);//insere alteracao no banco
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);//converte o treinador para dto
-
-        return treinadorDTO;
+        return objectMapper.convertValue(treinadorAtualizado,TreinadorDTO.class);//converte o treinador para dto
     }
 
     public Page<TreinadorDTO> list(Integer pagina){
@@ -75,8 +73,7 @@ public class TreinadorService {
         log.info("chamou o metodo delete do Treinador!");
         TreinadorEntity treinadorDeletado = getById(id);//busca a entrada no banco para retorno
         treinadorRepository.deleteById(id);//deleta o dado do banco
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);//converte o dado retornado do banco para TreinadorDTO
-        return treinadorDTO;
+        return objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
     }
 
 
@@ -97,14 +94,7 @@ public class TreinadorService {
 
     public TreinadorEntity getById(Integer id)throws Exception{
         log.info("chamou o método getById do Treinador!");
-        TreinadorEntity treinadorChamado = treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));//recebe TreinadorEntity do banco
-        return treinadorChamado;
-    }
-
-    public TreinadorDTO getTreinadorDTOById(Integer idTreinador) throws Exception {
-        log.info("chamou o método getTreinadorDTOById do Treinador!");
-        
-        return objectMapper.convertValue(getById(idTreinador), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
+        return treinadorRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado não existe"));
     }
 
     public TreinadorDTO getTreinadorDTOByIdUser(Integer idUser) throws Exception {

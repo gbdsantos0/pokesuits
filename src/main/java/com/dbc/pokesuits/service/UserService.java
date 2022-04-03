@@ -34,8 +34,7 @@ public class UserService {
 	public UserDTO userLogado(Integer idUser) throws RegraDeNegocioException {
 		log.info("Chamado metodo tranformarDto do User");
 		UserEntity byId = getById(idUser);
-		UserDTO userDTO = new UserDTO(byId.getId(), byId.getNome(), byId.getEmail(), byId.getUsername());
-		return userDTO;
+		return new UserDTO(byId.getId(), byId.getNome(), byId.getEmail(), byId.getUsername());
 	}
 
 	public Page<UserDTO> listarUsers(Integer pagina) {
@@ -43,15 +42,14 @@ public class UserService {
 
 		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
 
-		List<UserDTO> collect = userRepository.findAll(pageable).stream().map(user -> {
-			UserDTO convertValue = new UserDTO(user.getId(), user.getNome(), user.getEmail(), user.getUsername());
-			return convertValue;
-		}).collect(Collectors.toList());
+		List<UserDTO> collect = userRepository.findAll(pageable).stream()
+				.map(user -> new UserDTO(user.getId(), user.getNome(), user.getEmail(), user.getUsername()))
+				.collect(Collectors.toList());
 
 		return new PageImpl<>(collect);
 	}
 
-	public UserDTO ciraUser(UserCreateDTO createDTO) throws Exception {
+	public void criaUser(UserCreateDTO createDTO) throws Exception {
 		log.info("Chamado metodo AdicionarUser;");
 		
 		if(findByUsername(createDTO.getUsername()).isPresent())throw new RegraDeNegocioException("deu pau");
@@ -70,11 +68,6 @@ public class UserService {
 
 		UserEntity userAtualizado = userRepository.save(userEntity);
 		log.info("Criado o User de ID: " + userAtualizado.getId());
-
-		UserDTO userDTO = new UserDTO(userAtualizado.getId(), userAtualizado.getNome(), userAtualizado.getEmail(), userAtualizado.getUsername());
-		userDTO.setId(userAtualizado.getId());
-		
-		return userDTO;
 	}
 
 	public void removerUser(int id) throws RegraDeNegocioException {
@@ -98,9 +91,7 @@ public class UserService {
 		UserEntity userAtualizado = userRepository.save(userConvertido);
 		log.info("Persistido as mudanças no User de ID: " + userAtualizado.getId());
 
-		UserDTO userDTO = new UserDTO(userAtualizado.getId(), userAtualizado.getNome(), userAtualizado.getEmail(), userAtualizado.getUsername());
-
-		return userDTO;
+		return new UserDTO(userAtualizado.getId(), userAtualizado.getNome(), userAtualizado.getEmail(), userAtualizado.getUsername());
 	}
 
 	public UserEntity getById(Integer idUser) throws RegraDeNegocioException {
