@@ -15,12 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.user.UserCreateDTO;
 import com.dbc.pokesuits.dto.user.UserDTO;
+import com.dbc.pokesuits.dto.user.UserEditDto;
 import com.dbc.pokesuits.entity.RegraEntity;
 import com.dbc.pokesuits.entity.UserEntity;
-import com.dbc.pokesuits.enums.NomesRegras;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,9 +28,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class UserService {
-
 	private final UserRepository userRepository;
-	private final ObjectMapper objectMapper;
 	private final RegraService regraService;
 
 	public UserDTO userLogado(Integer idUser) throws RegraDeNegocioException {
@@ -47,23 +44,17 @@ public class UserService {
 		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10);
 
 		List<UserDTO> collect = userRepository.findAll(pageable).stream().map(user -> {
-			UserDTO convertValue = objectMapper.convertValue(user, UserDTO.class);
-			/*
-			 * convertValue.setTreinadores(user.getTreinadores() .stream() .map(treinador ->
-			 * objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
-			 * .collect(Collectors.toList()) );
-			 */
+			UserDTO convertValue = new UserDTO(user.getId(), user.getNome(), user.getEmail(), user.getUsername());
 			return convertValue;
 		}).collect(Collectors.toList());
 
 		return new PageImpl<>(collect);
 	}
 
-	public UserDTO adicionarUser(UserCreateDTO createDTO) throws Exception {
+	public UserDTO ciraUser(UserCreateDTO createDTO) throws Exception {
 		log.info("Chamado metodo AdicionarUser;");
-
 		
-		findByUsername(createDTO.getUsername()).orElseThrow(() ->new RegraDeNegocioException("Usuário já cadastrado no sistema"));
+		if(findByUsername(createDTO.getUsername()).isPresent())throw new RegraDeNegocioException("deu pau");
 		
 		// buscando grupos
 		Set<RegraEntity> regraEntitySet = new HashSet<>();
@@ -80,39 +71,34 @@ public class UserService {
 		UserEntity userAtualizado = userRepository.save(userEntity);
 		log.info("Criado o User de ID: " + userAtualizado.getId());
 
-		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
-//		userDTO.setTreinadores(new ArrayList<TreinadorCreateDTO>());
-
+		UserDTO userDTO = new UserDTO(userAtualizado.getId(), userAtualizado.getNome(), userAtualizado.getEmail(), userAtualizado.getUsername());
+		userDTO.setId(userAtualizado.getId());
+		
 		return userDTO;
 	}
 
-	public UserDTO removerUser(int id) throws RegraDeNegocioException {
+	public void removerUser(int id) throws RegraDeNegocioException {
 		log.info("Chamado metodo RemoverUser;");
-
-		UserEntity userRemovido = getById(id);
-
-		UserDTO userDTO = objectMapper.convertValue(userRemovido, UserDTO.class);
-		/*
-		 * userDTO.setTreinadores(userRemovido.getTreinadores() .stream() .map(treinador
-		 * -> objectMapper.convertValue(treinador, TreinadorCreateDTO.class))
-		 * .collect(Collectors.toList()) );
-		 */
-
+		
+		getById(id);
+		
 		userRepository.deleteById(id);
-		log.info("Removido o User de ID: " + userDTO.getId());
+		log.info("Removido o User de ID: " + id);
 
-		return userDTO;
 	}
 
-	public UserDTO editarUser(UserCreateDTO createDTO, Integer id) throws RegraDeNegocioException {
+	public UserDTO editarUser(UserEditDto editDTO, Integer id) throws RegraDeNegocioException {
 		log.info("Chamado metodo editarUser;");
 
-		UserEntity userConvertido = objectMapper.convertValue(createDTO, UserEntity.class);
-
+		UserEntity userConvertido = getById(id);
+		
+		userConvertido.setEmail(editDTO.getEmail());
+		userConvertido.setNome(editDTO.getNome());
+		
 		UserEntity userAtualizado = userRepository.save(userConvertido);
 		log.info("Persistido as mudanças no User de ID: " + userAtualizado.getId());
 
-		UserDTO userDTO = objectMapper.convertValue(userAtualizado, UserDTO.class);
+		UserDTO userDTO = new UserDTO(userAtualizado.getId(), userAtualizado.getNome(), userAtualizado.getEmail(), userAtualizado.getUsername());
 
 		return userDTO;
 	}

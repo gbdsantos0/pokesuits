@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.dbc.pokesuits.entity.MochilaEntity;
 
 @Repository
-public interface MochilaRepository extends JpaRepository<MochilaEntity, Integer> {}
+public interface MochilaRepository extends JpaRepository<MochilaEntity, Integer> {
+}

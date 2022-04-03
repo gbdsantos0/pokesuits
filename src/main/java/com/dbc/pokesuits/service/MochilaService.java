@@ -16,6 +16,7 @@ import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.entity.TreinadorEntity;
+import com.dbc.pokesuits.entity.UserEntity;
 import com.dbc.pokesuits.exceptions.InvalidCenarioException;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.MochilaRepository;
@@ -31,7 +32,7 @@ public class MochilaService {
 
     private final MochilaRepository mochilaRepository;
     private final ObjectMapper objectMapper;
-    private final TreinadorService treinadorService;
+    private final UserService userService;
 
     public Page<MochilaDTO> listAll(Integer pagina) {
     	log.info("Chamado metodo listAll");
@@ -46,26 +47,34 @@ public class MochilaService {
     	return new PageImpl<>(mochilas);
     }
 
-    public MochilaDTO create(MochilaCreateDTO mochila, Integer idTreinador) throws Exception {
-    	log.info("Chamado metodo create");
+    public MochilaDTO createMochilaLogado(MochilaCreateDTO mochilaCreateDTO, Integer idUser) throws Exception {
+        log.info("Chamado metodo create");
 
-        MochilaEntity mochilaEntity = objectMapper.convertValue(mochila, MochilaEntity.class);
-        
-        TreinadorEntity treinador = treinadorService.getById(idTreinador);
-        mochilaEntity.setTreinador(treinador);
+        UserEntity userEntity = this.userService.getById(idUser);
 
-        MochilaEntity mochilaCriada = mochilaRepository.save(mochilaEntity);
-        
-        MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaCriada, MochilaDTO.class);
-        mochilaDTO.setIdTreinador(idTreinador);
+        TreinadorEntity treinadorEntity = userEntity.getTreinador();
 
-        return mochilaDTO;
+        if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
+
+        MochilaEntity mochilaEntity = treinadorEntity.getMochila();
+
+        if (mochilaEntity == null) {
+            mochilaEntity = objectMapper.convertValue(mochilaCreateDTO, MochilaEntity.class);
+            mochilaEntity.setTreinador(treinadorEntity);
+            mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
+            this.mochilaRepository.save(mochilaEntity);
+
+            return objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
+        }
+
+        throw new RegraDeNegocioException("Mochila já existe.");
     }
 
-    public MochilaDTO adicionarPokebola(Integer id,String tipoPokebola, Integer quantidadeAdicionada)throws Exception{
+    public MochilaDTO adicionarPokebola(Integer id, String tipoPokebola, Integer quantidadeAdicionada) throws Exception{
     	log.info("Chamado metodo adicionarPokebola");
 
-    	MochilaEntity mochila = getById(id);
+        MochilaEntity mochila = this.getMochilaPeloIdUser(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
 
         switch (tipoPokebola.toLowerCase(Locale.ROOT)){
             case "greatball":
@@ -111,7 +120,9 @@ public class MochilaService {
     public MochilaDTO usarPokebola(Integer id, String tipoPokebola) throws Exception {
     	log.info("Chamado metodo usarPokebola");
 
-        MochilaEntity mochila = getById(id);
+        MochilaEntity mochila = this.getMochilaPeloIdUser(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
+
         switch (tipoPokebola.toLowerCase(Locale.ROOT)) {
             case "greatball":
                 if(mochila.getQuantidadeGreatBalls()-1<0){
@@ -151,10 +162,16 @@ public class MochilaService {
         return mochilaDTO;
     }
 
+    public MochilaDTO getMochilaLogado(Integer idUser) throws RegraDeNegocioException {
+        MochilaEntity mochilaEntity = this.getMochilaPeloIdUser(idUser);
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
+        return objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
+    }
+
     public MochilaCompletaDTO getMochilaCompleta(Integer id) throws Exception {
     	log.info("Chamado metodo getMochilaCompleta");
-    	
-        MochilaEntity mochila = getById(id);
+
+        MochilaEntity mochila = this.getMochilaPeloIdUser(id);
         
         MochilaCompletaDTO mochilaDTO = new MochilaCompletaDTO();
         mochilaDTO.setQuantidadeGreatBalls(mochila.getQuantidadeGreatBalls());
@@ -176,8 +193,40 @@ public class MochilaService {
         
         return mochilaDTO;
     }
+
+    public void deletarMochilaLogado(Integer idUser) throws RegraDeNegocioException {
+        log.info("Chamado metodo deleteMochilaLogado");
+        MochilaEntity mochila = this.getMochilaPeloIdUser(idUser);
+        this.mochilaRepository.deleteById(mochila.getIdMochila());
+    }
     
     public MochilaEntity getById(Integer id) throws RegraDeNegocioException {
     	return mochilaRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("O id Passado Não Existe"));
+    }
+
+    public MochilaEntity getMochilaPeloIdUser(Integer idUser) throws RegraDeNegocioException {
+        TreinadorEntity treinadorEntity = userService.getById(idUser).getTreinador();
+
+        if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
+
+        MochilaEntity mochilaEntity = treinadorEntity.getMochila();
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
+
+        if (mochilaEntity == null) {
+            throw new RegraDeNegocioException("Mochila não existe.");
+        }
+
+        return mochilaEntity;
+    }
+
+    public MochilaDTO getMochilaPeloId(Integer id) throws RegraDeNegocioException {
+        MochilaEntity mochila = this.getById(id);
+        mochila.setIdTreinador(mochila.getIdTreinador());
+        return objectMapper.convertValue(mochila, MochilaDTO.class);
+    }
+
+    public void deletarMochilaPeloId(Integer id) throws RegraDeNegocioException {
+        MochilaEntity mochila = this.getById(id);
+        this.mochilaRepository.deleteById(mochila.getIdMochila());
     }
 }

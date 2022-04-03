@@ -94,6 +94,7 @@ public class TreinadorService {
 
     public TreinadorDTO getTreinadorDTOById(Integer idTreinador) throws Exception {
         log.info("chamou o método getTreinadorDTOById do Treinador!");
+        
         return objectMapper.convertValue(getById(idTreinador), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
     }
 
@@ -101,7 +102,10 @@ public class TreinadorService {
         log.info("chamou o método getTreinadorDTOById do Treinador!");
 
         UserEntity userEntity = userService.getById(idUser);
+        
+        TreinadorEntity treinador = userEntity.getTreinador();
+        if(treinador == null )throw new RegraDeNegocioException("o treinador não foi criado");
 
-        return objectMapper.convertValue(userEntity.getTreinador(), TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
+        return objectMapper.convertValue(treinador, TreinadorDTO.class);//converte um TreinadorEntity para TreinadorDTO e retorna
     }
 }

@@ -2,21 +2,22 @@ package com.dbc.pokesuits.controller;
 
 import javax.validation.Valid;
 
-import com.dbc.pokesuits.dto.user.LoginExecutadoDTO;
-import com.dbc.pokesuits.dto.user.UserCreateDTO;
-import com.dbc.pokesuits.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.pokesuits.dto.user.LoginDTO;
+import com.dbc.pokesuits.dto.user.LoginExecutadoDTO;
+import com.dbc.pokesuits.dto.user.UserCreateDTO;
 import com.dbc.pokesuits.security.TokenService;
+import com.dbc.pokesuits.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public LoginExecutadoDTO signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws Exception{
-        userService.adicionarUser(userCreateDTO);
+        userService.ciraUser(userCreateDTO);
         LoginExecutadoDTO loginExecutadoDTO = new LoginExecutadoDTO();
         loginExecutadoDTO.setLogin(userCreateDTO.getUsername());
 
