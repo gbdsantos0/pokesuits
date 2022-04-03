@@ -49,7 +49,7 @@ public class MochilaController {
         return this.mochilaService.getMochilaLogado(Integer.parseInt((String) userb));
     }
 
-    @ApiOperation(value = "Adiciona uma mochila a um treinador")
+    @ApiOperation(value = "Adiciona uma mochila ao treinador do uisuario logado")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Cadastra uma mochila em um treinador e a devolve!"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
@@ -93,8 +93,8 @@ public class MochilaController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
-	@DeleteMapping(path = "/{id}")
-	public void RemoverPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
+	@DeleteMapping(path = "/remover-pokemon/{id}")
+	public void removerPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
 		pokemonService.removerPokemon(id);
 	}
 	
@@ -117,7 +117,7 @@ public class MochilaController {
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
 	@GetMapping("/listar-pokemons")
-	public Page<PokemonDTO> ListarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina) throws Exception{
+	public Page<PokemonDTO> listarPokemons(@RequestParam(value = "pagina_solicitada", required = false) Integer pagina) throws Exception{
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return pokemonService.listarPokemonsPorUser(pagina,Integer.parseInt((String)userb));
 	}
