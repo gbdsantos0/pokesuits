@@ -203,6 +203,7 @@ public class MochilaService {
     public void deletarMochilaLogado(Integer idUser) throws RegraDeNegocioException {
         log.info("Chamado metodo deleteMochilaLogado");
         MochilaEntity mochila = this.getMochilaPeloIdUser(idUser);
+        mochila.setTreinador(null);
         this.mochilaRepository.deleteById(mochila.getIdMochila());
     }
     
