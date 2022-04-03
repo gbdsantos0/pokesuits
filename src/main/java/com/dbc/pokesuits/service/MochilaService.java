@@ -216,11 +216,10 @@ public class MochilaService {
         if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
 
         MochilaEntity mochilaEntity = treinadorEntity.getMochila();
-        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
 
-        if (mochilaEntity == null) {
-            throw new RegraDeNegocioException("Mochila não existe.");
-        }
+        if (mochilaEntity == null)throw new RegraDeNegocioException("Mochila não existe.");
+        
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
 
         return mochilaEntity;
     }

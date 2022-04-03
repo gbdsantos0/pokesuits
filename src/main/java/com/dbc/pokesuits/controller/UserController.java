@@ -28,9 +28,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@ApiOperation(value = "Devolve o Users Logado")
+	@ApiOperation(value = "Devolve o User Logado")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Devolve um Users"),
+            @ApiResponse(code = 200, message = "Devolve um User"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })

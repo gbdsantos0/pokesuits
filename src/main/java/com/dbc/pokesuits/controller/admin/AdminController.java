@@ -67,9 +67,9 @@ public class AdminController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
-    @GetMapping("/treinador/{id_treinador}")
-    public TreinadorDTO getTreinadorByIdUser(@PathVariable("id_treinador") Integer idTreinador) throws Exception{
-        return treinadorService.getTreinadorDTOByIdUser(idTreinador);
+    @GetMapping("/treinador/{id_user}")
+    public TreinadorDTO getTreinadorByIdUser(@PathVariable("id_user") Integer idUser) throws Exception{
+        return treinadorService.getTreinadorDTOByIdUser(idUser);
     }
 	
 	@ApiOperation(value = "Deleta e retorna um treinador pelo id")
@@ -124,9 +124,9 @@ public class AdminController {
 		return mochilaService.getMochilaLogado(idUser);
 	}
 	
-	@ApiOperation(value = "Recebe Um ID de Pokemon")
+	@ApiOperation(value = "Recebe Um ID de Mochila")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Remove o Pokemon com o id passado"),
+            @ApiResponse(code = 200, message = "Remove a mochila com o id passado"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
     })
