@@ -60,8 +60,8 @@ public class TreinadorController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
     })
     @DeleteMapping
-    public TreinadorDTO delete() throws Exception{
-        return treinadorService.deleteByIdUser(Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+    public void delete() throws Exception{
+        treinadorService.deleteByIdUser(Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
     }
 
 

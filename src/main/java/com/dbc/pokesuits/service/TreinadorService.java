@@ -81,7 +81,7 @@ public class TreinadorService {
 
 
     //todo consertar delete(parece que preciso salvar o user entity após remover, pois o jpa não deixa remover uma entidade que já está relacionada à outra carregada no sistema)
-    public TreinadorDTO deleteByIdUser(Integer idUser) throws Exception{
+    public void deleteByIdUser(Integer idUser) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
 
         UserEntity userEntity = userService.getById(idUser);//busca usuario
@@ -89,17 +89,10 @@ public class TreinadorService {
         if(userEntity.getTreinador()==null){
             throw new RegraDeNegocioException("O usuário não possui um treinador");
         }
+        Integer idTreinador = userEntity.getTreinador().getIdTreinador();
+        userEntity.setTreinador(null);
 
-        TreinadorEntity treinadorDeletado = userEntity.getTreinador();//busca a entrada no banco para retorno
-
-        Integer idTreinadorDelete = treinadorDeletado.getIdTreinador();
-        log.info("ID to treinador deletado: "+idTreinadorDelete);
-
-        TreinadorEntity treinadorParaDelete = getById(idTreinadorDelete);
-        treinadorRepository.delete(treinadorParaDelete);
-//        treinadorRepository.deleteById(idTreinadorDelete);//deleta o dado do banco
-        TreinadorDTO treinadorDTO = objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);//converte o dado retornado do banco para TreinadorDTO
-        return treinadorDTO;
+        treinadorRepository.deleteById(idTreinador);//deleta o dado do banco
     }
 
     public TreinadorEntity getById(Integer id)throws Exception{

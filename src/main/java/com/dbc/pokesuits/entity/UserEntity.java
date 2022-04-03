@@ -49,10 +49,10 @@ public class UserEntity implements UserDetails {
 	private String password;
 	@Column(name = "username")
 	private String username;
-	@JsonIgnore
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private TreinadorEntity treinador;	
 	
+	@JsonIgnore
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private TreinadorEntity treinador;	
 	
 	@ManyToMany
     @JoinTable(
