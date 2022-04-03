@@ -95,7 +95,8 @@ public class MochilaController {
     })
 	@DeleteMapping(path = "/remover-pokemon/{id}")
 	public void removerPokemon(@PathVariable("id") int id) throws RegraDeNegocioException {
-		pokemonService.removerPokemon(id);
+    	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		pokemonService.removerPokemonPorUserLogado(Integer.parseInt((String) userb), id);
 	}
 	
 	@ApiOperation(value = "Recebe um id e um pokemon")

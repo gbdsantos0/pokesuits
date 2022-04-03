@@ -18,10 +18,10 @@ import com.dbc.pokesuits.repository.TreinadorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 
 @Service
-@Log
+@Log4j2
 @RequiredArgsConstructor
 public class TreinadorService {
     private final TreinadorRepository treinadorRepository;

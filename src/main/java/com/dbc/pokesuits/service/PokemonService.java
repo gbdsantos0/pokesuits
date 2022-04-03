@@ -52,7 +52,7 @@ public class PokemonService {
 	public Page<PokemonDTO> listarPokemonsPorUser(Integer pagina, Integer user) throws RegraDeNegocioException {
 		log.info("Chamado metodo listarPokemons;");
 		
-		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10, Sort.by("idPokemon"));
+		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10, Sort.by("idPokemon").descending());
 		
 		 TreinadorEntity treinador = userService.getById(user).getTreinador();
 		 if(treinador == null )throw new RegraDeNegocioException("o treinador não foi criado");
@@ -119,24 +119,24 @@ public class PokemonService {
 		return pokemonDTO;
 	}
 	
-	public PokemonDTO removerPokemonPorUserLogado(Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
+	public void removerPokemonPorUserLogado(Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
 		log.info("Chamado metodo removerPokemon;");
 		
-		PokemonEntity pokemonRemovido = getPokemonsByIdUser(idUser)
+		MochilaEntity mochilaPeloIdUser = mochilaService.getMochilaPeloIdUser(idUser);
+		
+		PokemonEntity pokemonRemovido = mochilaPeloIdUser.getPokemons()
 				.stream()
 				.filter(p -> p.getIdPokemon()==idPokemon)
 				.findFirst()
 				.orElseThrow(()->new RegraDeNegocioException("Pokemon com o id passado não existe"));
+		Integer idPokemon2 = pokemonRemovido.getIdPokemon();
 		
-		PokemonDTO pokemonDTO = objectMapper.convertValue(pokemonRemovido, PokemonDTO.class);
-		pokemonDTO.setIdMochila(pokemonRemovido.getMochilaPokemon().getIdMochila());
-		if(pokemonDTO.getNome() == null)pokemonDTO.setNome("Não Nomeado");
+		mochilaPeloIdUser.getPokemons().remove(pokemonRemovido);
 		
-		pokemonRepository.deleteById(idPokemon);
+		pokemonRepository.deleteById(idPokemon2);
 		
 		log.info("Persistido as mudanças no Pokemon de ID: " + idPokemon);
 		
-		return pokemonDTO;
 	}
 	
 	public PokemonDTO editarPokemon(PokemonCreateDTO createDTO, Integer idUser, Integer idPokemon) throws RegraDeNegocioException {

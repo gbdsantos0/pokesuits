@@ -61,11 +61,10 @@ public class MochilaService {
         if (mochilaEntity == null) {
             mochilaEntity = objectMapper.convertValue(mochilaCreateDTO, MochilaEntity.class);
             mochilaEntity.setTreinador(treinadorEntity);
-            mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
-            this.mochilaRepository.save(mochilaEntity);
-
+            MochilaEntity save = this.mochilaRepository.save(mochilaEntity);
+            
             MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
-            mochilaDTO.setIdMochila(mochilaEntity.getIdMochila());
+            mochilaDTO.setIdTreinador(save.getTreinador().getIdTreinador());
             return mochilaDTO;
         }
 
@@ -202,9 +201,20 @@ public class MochilaService {
 
     public void deletarMochilaLogado(Integer idUser) throws RegraDeNegocioException {
         log.info("Chamado metodo deleteMochilaLogado");
-        MochilaEntity mochila = this.getMochilaPeloIdUser(idUser);
-        mochila.setTreinador(null);
-        this.mochilaRepository.deleteById(mochila.getIdMochila());
+        
+        TreinadorEntity treinadorEntity = userService.getById(idUser).getTreinador();
+
+        if (treinadorEntity == null) throw new RegraDeNegocioException("Treinador não criado.");
+
+        MochilaEntity mochilaEntity = treinadorEntity.getMochila();
+
+        if (mochilaEntity == null)throw new RegraDeNegocioException("Mochila não existe.");
+        
+        mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
+        
+        treinadorEntity.setMochila(null);
+        
+        this.mochilaRepository.deleteById(mochilaEntity.getIdMochila());
     }
     
     public MochilaEntity getById(Integer id) throws RegraDeNegocioException {
