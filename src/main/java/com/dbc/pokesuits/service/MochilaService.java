@@ -64,7 +64,9 @@ public class MochilaService {
             mochilaEntity.setIdTreinador(mochilaEntity.getIdTreinador());
             this.mochilaRepository.save(mochilaEntity);
 
-            return objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
+            MochilaDTO mochilaDTO = objectMapper.convertValue(mochilaEntity, MochilaDTO.class);
+            mochilaDTO.setIdMochila(mochilaEntity.getIdMochila());
+            return mochilaDTO;
         }
 
         throw new RegraDeNegocioException("Mochila já existe.");
@@ -72,6 +74,10 @@ public class MochilaService {
 
     public MochilaDTO adicionarPokebola(Integer id, String tipoPokebola, Integer quantidadeAdicionada) throws Exception{
     	log.info("Chamado metodo adicionarPokebola");
+
+        if (quantidadeAdicionada <= 0) {
+            throw new RegraDeNegocioException("O valor adicionado não pode ser menor ou igual a zero.");
+        }
 
         MochilaEntity mochila = this.getMochilaPeloIdUser(id);
         mochila.setIdTreinador(mochila.getIdTreinador());
@@ -197,6 +203,7 @@ public class MochilaService {
     public void deletarMochilaLogado(Integer idUser) throws RegraDeNegocioException {
         log.info("Chamado metodo deleteMochilaLogado");
         MochilaEntity mochila = this.getMochilaPeloIdUser(idUser);
+        mochila.setTreinador(null);
         this.mochilaRepository.deleteById(mochila.getIdMochila());
     }
     
