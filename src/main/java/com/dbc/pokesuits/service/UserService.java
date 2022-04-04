@@ -52,7 +52,7 @@ public class UserService {
 	public void criaUser(UserCreateDTO createDTO) throws Exception {
 		log.info("Chamado metodo AdicionarUser;");
 		
-		if(findByUsername(createDTO.getUsername()).isPresent())throw new RegraDeNegocioException("deu pau");
+		if(findByUsername(createDTO.getUsername()).isPresent())throw new RegraDeNegocioException("Username não encontrado");
 		
 		// buscando grupos
 		Set<RegraEntity> regraEntitySet = new HashSet<>();
