@@ -75,7 +75,7 @@ public class TreinadorService {
         treinadorRepository.deleteById(id);//deleta o dado do banco
         return objectMapper.convertValue(treinadorDeletado, TreinadorDTO.class);
     }
-    
+
     public void deleteByIdUser(Integer idUser) throws Exception{
         log.info("chamou o metodo delete do Treinador!");
 
