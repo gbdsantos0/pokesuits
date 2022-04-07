@@ -1,5 +1,7 @@
 package com.dbc.pokesuits;
 
+import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
+import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.service.MochilaService;
@@ -60,5 +62,26 @@ public class MochilaServiceTest {
         });
 
         assertTrue(exception.getMessage().contains("Treinador não criado."));
+    }
+
+    @Test()
+    public void testaCriacaoDeMochilaEmTreinadorNaoExistente() {
+        MochilaCreateDTO mochilaCreateDTO = new MochilaCreateDTO();
+        mochilaCreateDTO.setQuantidadeGreatBalls(0);
+        mochilaCreateDTO.setQuantidadeHeavyBalls(0);
+        mochilaCreateDTO.setQuantidadeMasterBalls(0);
+        mochilaCreateDTO.setQuantidadeNetBalls(0);
+        mochilaCreateDTO.setQuantidadePokeBalls(0);
+
+        try {
+            Exception exception = assertThrows(RegraDeNegocioException.class, () -> {
+                MochilaDTO mochila = this.mochilaService.createMochilaLogado(mochilaCreateDTO, 2);
+            });
+
+            assertNotNull(mochilaCreateDTO);
+            assertTrue(exception.getMessage().contains("Treinador não criado."));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
