@@ -29,11 +29,9 @@ import com.dbc.pokesuits.service.TreinadorService;
 import com.dbc.pokesuits.service.UserService;
 import org.springframework.test.util.ReflectionTestUtils;
 
-//@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class TreinadorServiceTest {
     @InjectMocks
-//    @Autowired
     private TreinadorService treinadorService;
 
     @Mock
@@ -48,31 +46,8 @@ public class TreinadorServiceTest {
         ReflectionTestUtils.setField(treinadorService,"objectMapper",objectMapper);
     }
 
-    /*@Test
-    public void testaTreinadorComNomeAtualizado(){
-        try {
-            TreinadorEntity treinador = treinadorService.getById(4);
-            TreinadorCreateDTO treinadorUpdate = new TreinadorCreateDTO();
-
-            String nomeGeradoAleatoriamente = RandomStringUtils.randomAlphabetic(10);
-
-            treinadorUpdate.setNome(nomeGeradoAleatoriamente);
-            treinadorUpdate.setSexo(treinador.getSexo());
-            treinadorService.update(treinador.getIdUser(),treinadorUpdate);
-
-            TreinadorEntity treinador2 = treinadorService.getById(4);
-
-            //atualiza o nome para o assert equals
-            treinador.setNome(nomeGeradoAleatoriamente);
-            assertEquals(treinador.getNome(), treinador2.getNome());
-            //teste
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     @Test
-    public void acessoAoCreate(){
+    public void acessoAoCreateOk(){
         try {
 
             UserEntity userEntity = UserEntity.builder()
@@ -93,7 +68,86 @@ public class TreinadorServiceTest {
 
             TreinadorDTO treinadorCriado = treinadorService.create(treinadorCreateDTO, 1);
             assertEquals(treinadorSalvo.getNome(), treinadorCriado.getNome());
-            System.out.println(treinadorSalvo.getNome()+" / "+ treinadorCriado.getNome());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void acessoAoUpdateOk(){
+        try {
+            UserEntity userEntity = UserEntity.builder()
+                    .id(1)
+                    .username("string")
+                    .password("string")
+                    .email("string@string.com")
+                    .nome("string").build();
+            TreinadorEntity treinador = TreinadorEntity.builder().idTreinador(1).idUser(1).user(userEntity).nome("string").sexo(Utils.FEMININO).build();
+            userEntity.setTreinador(treinador);
+
+            when(userService.getById(any(Integer.class))).thenReturn(userEntity);
+
+            //update no treinadorEntity
+            treinador.setNome("string2");
+            when(treinadorRepository.save(any(TreinadorEntity.class))).thenReturn(treinador);
+
+            TreinadorCreateDTO treinadorCreateDTO = new TreinadorDTO();
+            treinadorCreateDTO.setNome("string2");
+            treinadorCreateDTO.setSexo(Utils.FEMININO);
+
+            TreinadorDTO treinadorAtualizado = treinadorService.update(1,treinadorCreateDTO);
+            assertEquals(treinador.getNome(), treinadorAtualizado.getNome());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void acessoAoCreateFailTreinadorJaExiste(){
+        try {
+            UserEntity userEntity = UserEntity.builder()
+                    .id(1)
+                    .username("string")
+                    .password("string")
+                    .email("string@string.com")
+                    .nome("string").build();
+            TreinadorEntity treinadorSalvo = TreinadorEntity.builder().idTreinador(1).idUser(1).user(userEntity).nome("string").sexo(Utils.FEMININO).build();
+            userEntity.setTreinador(treinadorSalvo);
+
+            TreinadorCreateDTO treinadorCreateDTO = new TreinadorDTO();
+            treinadorCreateDTO.setNome("string");
+            treinadorCreateDTO.setSexo(Utils.FEMININO);
+
+            when(userService.getById(any(Integer.class))).thenReturn(userEntity);
+
+            RegraDeNegocioException exception =
+                    assertThrows(RegraDeNegocioException.class, ()->treinadorService.create(treinadorCreateDTO,0));
+            assertTrue(exception.getMessage().contains("O usuário já possui um treinador"));
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void acessoAoUpdateFailSemTreinador(){
+        try {
+            UserEntity userEntity = UserEntity.builder()
+                    .id(1)
+                    .username("string")
+                    .password("string")
+                    .email("string@string.com")
+                    .nome("string").build();
+            TreinadorCreateDTO treinadorCreateDTO = new TreinadorDTO();
+            treinadorCreateDTO.setNome("string");
+            treinadorCreateDTO.setSexo(Utils.FEMININO);
+
+            when(userService.getById(any(Integer.class))).thenReturn(userEntity);
+
+            RegraDeNegocioException exception =
+                    assertThrows(RegraDeNegocioException.class, ()->treinadorService.update(0,treinadorCreateDTO));
+            assertTrue(exception.getMessage().contains("O usuário não possui um treinador"));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
