@@ -1,6 +1,6 @@
 package com.dbc.pokesuits;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -8,6 +8,7 @@ import java.util.Optional;
 
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
