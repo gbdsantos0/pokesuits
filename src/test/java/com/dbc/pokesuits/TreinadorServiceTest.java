@@ -8,6 +8,7 @@ import java.util.Optional;
 
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import com.dbc.pokesuits.repository.TreinadorRepository;
 import com.dbc.pokesuits.repository.UserRepository;
 import com.dbc.pokesuits.service.TreinadorService;
 import com.dbc.pokesuits.service.UserService;
+import org.springframework.test.util.ReflectionTestUtils;
 
 //@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -37,12 +39,12 @@ public class TreinadorServiceTest {
     private TreinadorRepository treinadorRepository;
     @Mock
     private UserService userService;
-    @Mock
-    private UserRepository userRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
-    public void init(){
-        MockitoAnnotations.openMocks(this);
+    public void BeforeEach() {
+        ReflectionTestUtils.setField(treinadorService,"objectMapper",objectMapper);
     }
 
     /*@Test
@@ -68,22 +70,21 @@ public class TreinadorServiceTest {
         }
     }*/
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void acessoAoCreate(){
         try {
-            TreinadorEntity treinadorSalvo = TreinadorEntity.builder().idTreinador(1).idUser(1).nome("string").sexo(Utils.FEMININO).build();
+
             UserEntity userEntity = UserEntity.builder()
                     .id(1)
                     .username("string")
                     .password("string")
                     .email("string@string.com")
-                    .nome("string")
-                    /*.treinador(treinadorSalvo)*/.build();
-            treinadorSalvo.setUser(userEntity);
+                    .nome("string").build();
+            TreinadorEntity treinadorSalvo = TreinadorEntity.builder().idTreinador(1).idUser(1).user(userEntity).nome("string").sexo(Utils.FEMININO).build();
 
-            when(userRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(userEntity));
             when(userService.getById(any(Integer.class))).thenReturn(userEntity);
             when(treinadorRepository.save(any(TreinadorEntity.class))).thenReturn(treinadorSalvo);
+
 
             TreinadorCreateDTO treinadorCreateDTO = new TreinadorDTO();
             treinadorCreateDTO.setNome("string");
@@ -91,16 +92,17 @@ public class TreinadorServiceTest {
 
             TreinadorDTO treinadorCriado = treinadorService.create(treinadorCreateDTO, 1);
             assertEquals(treinadorSalvo.getNome(), treinadorCriado.getNome());
+            System.out.println(treinadorSalvo.getNome()+" / "+ treinadorCriado.getNome());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    @Test
-//    public void getTreinadorIdInexistente(){
-//        RegraDeNegocioException exception =
-//                assertThrows(RegraDeNegocioException.class, ()->treinadorService.getById(0),
-//                        "Testou getById com id inexistente que deveria propagar uma RegraDeNegocioException, mas não devolveu");
-//        assertTrue(exception.getMessage().contains("O id Passado não existe"));
-//    }
+    @Test
+    public void getTreinadorIdInexistente(){
+        RegraDeNegocioException exception =
+                assertThrows(RegraDeNegocioException.class, ()->treinadorService.getById(0),
+                        "Testou getById com id inexistente que deveria propagar uma RegraDeNegocioException, mas não devolveu");
+        assertTrue(exception.getMessage().contains("O id Passado não existe"));
+    }
 }
