@@ -35,12 +35,12 @@ public class PokemonService {
 	private final ObjectMapper objectMapper;
 	
 	public Page<PokemonDTO> listarPokemonsPorUser(Integer pagina, Integer user) throws RegraDeNegocioException {
-		log.info("Chamado metodo listarPokemons;");
+		log.info("Chamado metodo listar Pokemons;");
 		
 		Pageable pageable = PageRequest.of(pagina == null ? 0 : pagina, 10, Sort.by("idPokemon").descending());
 		
 		 TreinadorEntity treinador = userService.getById(user).getTreinador();
-		 if(treinador == null )throw new RegraDeNegocioException("o treinador não foi criado");
+		 if(treinador == null )throw new RegraDeNegocioException("O treinador não foi criado");
 		 
 		 MochilaEntity mochila = treinador.getMochila();
 		 
@@ -59,7 +59,7 @@ public class PokemonService {
 	}
 	
 	public PokemonDTO adicionarPokemon(PokemonCreateDTO createDTO) throws RegraDeNegocioException {
-		log.info("Chamado metodo adicionarPokemon;");
+		log.info("Chamado metodo adicionar Pokemon;");
 		
 		PokemonEntity PokemonConvertido = objectMapper.convertValue(createDTO, PokemonEntity.class);
 		PokemonConvertido.setMochilaPokemon(mochilaService.getById(createDTO.getIdMochila()));
@@ -76,7 +76,7 @@ public class PokemonService {
 	}
 
 	public PokemonDTO removerPokemon(Integer id) throws RegraDeNegocioException {
-		log.info("Chamado metodo removerPokemon;");
+		log.info("Chamado metodo remover Pokemon;");
 		
 		PokemonEntity pokemonRemovido = getById(id);
 		
@@ -92,7 +92,7 @@ public class PokemonService {
 	}
 	
 	public void removerPokemonPorUserLogado(Integer idUser, Integer idPokemon) throws RegraDeNegocioException {
-		log.info("Chamado metodo removerPokemon;");
+		log.info("Chamado metodo remover Pokemon;");
 		
 		MochilaEntity mochilaPeloIdUser = mochilaService.getMochilaPeloIdUser(idUser);
 		

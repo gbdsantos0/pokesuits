@@ -28,20 +28,21 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class TreinadorServiceTest {
-    @InjectMocks
+//    @InjectMocks
+    @Autowired
     private TreinadorService treinadorService;
 
-    @Mock
+    /*@Mock
     private TreinadorRepository treinadorRepository;
     @Mock
-    private UserService userService;
+    private UserService userService;*/
 
-    @BeforeEach
+    /*@BeforeEach
     public void init(){
         MockitoAnnotations.openMocks(this);
-    }
+    }*/
 
-    /*@Test
+    @Test
     void testaTreinadorComNomeAtualizado(){
         try {
             TreinadorEntity treinador = treinadorService.getById(4);
@@ -62,9 +63,9 @@ public class TreinadorServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
-    @Test
+    /*@Test
     void acessoAoCreate(){
         try {
             TreinadorEntity treinadorSalvo = TreinadorEntity.builder().idTreinador(1).idUser(1).nome("string").sexo(Utils.FEMININO).build();
@@ -89,7 +90,7 @@ public class TreinadorServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Test
     void getTreinadorIdInexistente(){
