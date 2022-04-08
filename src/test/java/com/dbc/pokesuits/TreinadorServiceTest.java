@@ -1,33 +1,29 @@
 package com.dbc.pokesuits;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.dbc.pokesuits.dto.treinador.TreinadorCreateDTO;
 import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.entity.TreinadorEntity;
 import com.dbc.pokesuits.entity.UserEntity;
 import com.dbc.pokesuits.enums.Utils;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.TreinadorRepository;
-import com.dbc.pokesuits.repository.UserRepository;
 import com.dbc.pokesuits.service.TreinadorService;
 import com.dbc.pokesuits.service.UserService;
-import org.springframework.test.util.ReflectionTestUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TreinadorServiceTest {
