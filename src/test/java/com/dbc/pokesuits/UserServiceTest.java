@@ -46,7 +46,7 @@ public class UserServiceTest {
 
             when(userService.getById(anyInt())).thenReturn(userEntity);
         	
-        	UserDTO userLogado = this.userService.userLogado(1);
+        	UserDTO userLogado = this.userService.userLogado(10);
         	
         	System.out.println(userLogado.getId());
 
