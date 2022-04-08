@@ -7,12 +7,16 @@ import com.dbc.pokesuits.entity.UserEntity;
 import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.TreinadorRepository;
+import com.dbc.pokesuits.repository.UserRepository;
 import com.dbc.pokesuits.service.TreinadorService;
 import com.dbc.pokesuits.service.UserService;
 import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,29 +25,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+//@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class TreinadorServiceTest {
-//    @InjectMocks
-    @Autowired
+    @InjectMocks
+//    @Autowired
     private TreinadorService treinadorService;
 
-    /*@Mock
+    @Mock
     private TreinadorRepository treinadorRepository;
     @Mock
-    private UserService userService;*/
+    private UserService userService;
+    /*@Mock
+    private UserRepository userRepository;*/
 
-    /*@BeforeEach
+    @Before
     public void init(){
         MockitoAnnotations.openMocks(this);
-    }*/
+    }
 
-    @Test
-    void testaTreinadorComNomeAtualizado(){
+    /*@Test
+    public void testaTreinadorComNomeAtualizado(){
         try {
             TreinadorEntity treinador = treinadorService.getById(4);
             TreinadorCreateDTO treinadorUpdate = new TreinadorCreateDTO();
@@ -63,10 +72,10 @@ public class TreinadorServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    /*@Test
-    void acessoAoCreate(){
+    @Test
+    public void acessoAoCreate(){
         try {
             TreinadorEntity treinadorSalvo = TreinadorEntity.builder().idTreinador(1).idUser(1).nome("string").sexo(Utils.FEMININO).build();
             UserEntity userEntity = UserEntity.builder()
@@ -75,11 +84,12 @@ public class TreinadorServiceTest {
                     .password("string")
                     .email("string@string.com")
                     .nome("string")
-                    .treinador(treinadorSalvo).build();
+                    /*.treinador(treinadorSalvo)*/.build();
             treinadorSalvo.setUser(userEntity);
 
-            when(treinadorRepository.save(any(TreinadorEntity.class))).thenReturn(treinadorSalvo);
+//            when(userRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(userEntity));
             when(userService.getById(any(Integer.class))).thenReturn(userEntity);
+            when(treinadorRepository.save(any(TreinadorEntity.class))).thenReturn(treinadorSalvo);
 
             TreinadorCreateDTO treinadorCreateDTO = new TreinadorDTO();
             treinadorCreateDTO.setNome("string");
@@ -90,10 +100,10 @@ public class TreinadorServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     @Test
-    void getTreinadorIdInexistente(){
+    public void getTreinadorIdInexistente(){
         RegraDeNegocioException exception =
                 assertThrows(RegraDeNegocioException.class, ()->treinadorService.getById(0),
                         "Testou getById com id inexistente que deveria propagar uma RegraDeNegocioException, mas não devolveu");

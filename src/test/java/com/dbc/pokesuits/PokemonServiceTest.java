@@ -15,7 +15,7 @@ public class PokemonServiceTest {
     private PokemonService pokemonService;
 
     @Test
-    void userNaoExiste(){
+    public void userNaoExiste(){
         RegraDeNegocioException exception =
                 assertThrows(RegraDeNegocioException.class, ()->pokemonService.listarPokemonsPorUser(null,0),
                         "Testou listarPokemonsPorUser com id inexistente que deveria propagar uma RegraDeNegocioException, mas não devolveu");
@@ -23,7 +23,7 @@ public class PokemonServiceTest {
     }
 
     @Test
-    void pokemonNaoExiste(){
+    public void pokemonNaoExiste(){
         RegraDeNegocioException exception =
                 assertThrows(RegraDeNegocioException.class, ()->pokemonService.getById(0),
                         "Testou getById com id inexistente que deveria propagar uma RegraDeNegocioException, mas não devolveu");
