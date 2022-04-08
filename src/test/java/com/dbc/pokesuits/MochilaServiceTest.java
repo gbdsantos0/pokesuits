@@ -15,11 +15,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -149,8 +151,57 @@ public class MochilaServiceTest {
         }
     }
 
-    @Test()
-    public void testaCriacaoDeMochilaEmTreinadorNaoExistente() {
+    @Test
+    public void testaSeMochilaFoiCriada() {
+        UserEntity userEntity = UserEntity.builder()
+                .id(1)
+                .username("string")
+                .password("string")
+                .email("string@string.com")
+                .nome("string")
+                .build();
+        TreinadorEntity treinadorEntity = TreinadorEntity.builder()
+                .idTreinador(1)
+                .idUser(1)
+                .user(userEntity)
+                .nome("string")
+                .sexo(Utils.FEMININO)
+                .build();
+
+        userEntity.setTreinador(treinadorEntity);
+
+        try {
+            when(this.mochilaRepository.save(any())).thenReturn(any());
+
+            MochilaCreateDTO mochilaCreateDTO = new MochilaCreateDTO();
+            mochilaCreateDTO.setQuantidadeGreatBalls(0);
+            mochilaCreateDTO.setQuantidadeHeavyBalls(0);
+            mochilaCreateDTO.setQuantidadeMasterBalls(0);
+            mochilaCreateDTO.setQuantidadeNetBalls(0);
+            mochilaCreateDTO.setQuantidadePokeBalls(0);
+
+            MochilaEntity mochila = MochilaEntity.builder()
+                    .idMochila(1)
+                    .idTreinador(1)
+                    .quantidadeGreatBalls(mochilaCreateDTO.getQuantidadeGreatBalls())
+                    .quantidadeHeavyBalls(mochilaCreateDTO.getQuantidadeHeavyBalls())
+                    .quantidadeMasterBalls(mochilaCreateDTO.getQuantidadeMasterBalls())
+                    .quantidadeNetBalls(mochilaCreateDTO.getQuantidadeNetBalls())
+                    .quantidadePokeBalls(mochilaCreateDTO.getQuantidadePokeBalls())
+                    .treinador(treinadorEntity)
+                    .pokemons(null)
+                    .build();
+
+            this.mochilaRepository.save(mochila);
+
+            verify(mochilaRepository, Mockito.times(1)).save(mochila);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testaExceptionCriacaoDeMochilaEmTreinadorNaoExistente() {
         UserEntity userEntity = UserEntity.builder()
                 .id(1)
                 .username("string")
