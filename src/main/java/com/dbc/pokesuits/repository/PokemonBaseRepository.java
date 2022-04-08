@@ -2,7 +2,10 @@ package com.dbc.pokesuits.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import org.springframework.stereotype.Repository;
 
 import com.dbc.pokesuits.enums.Dificuldades;
@@ -163,6 +166,18 @@ public class PokemonBaseRepository {
 
     public List<PokemonBase> listAll(){
         return listaPokemonBase;
+    }
+
+    public void addPokemon(PokemonBase pokemonBase) throws Exception {
+        if(listaPokemonBase.stream().filter(p->p.getIdPokemonBase().equals(pokemonBase.getIdPokemonBase())).collect(Collectors.toList()).isEmpty()){
+            listaPokemonBase.add(pokemonBase);
+            return;
+        }
+        throw new RegraDeNegocioException("Pokemon já presente na lista");
+    }
+
+    public void setListaPokemonBase(List<PokemonBase> listaPokemonBase){
+        PokemonBaseRepository.listaPokemonBase = listaPokemonBase;
     }
 
     public PokemonBase getById(Integer id){
