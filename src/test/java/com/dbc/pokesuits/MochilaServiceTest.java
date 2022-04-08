@@ -1,36 +1,84 @@
 package com.dbc.pokesuits;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
-import com.dbc.pokesuits.dto.mochila.MochilaDTO;
 import com.dbc.pokesuits.entity.MochilaEntity;
+import com.dbc.pokesuits.entity.TreinadorEntity;
+import com.dbc.pokesuits.entity.UserEntity;
+import com.dbc.pokesuits.enums.Utils;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
+import com.dbc.pokesuits.repository.MochilaRepository;
 import com.dbc.pokesuits.service.MochilaService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.dbc.pokesuits.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class MochilaServiceTest {
+    @Mock
+    private UserService userService;
 
-    @Autowired
+    @Mock
+    private MochilaRepository mochilaRepository;
+
+    @InjectMocks
     private MochilaService mochilaService;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Before
+    public void BeforeEach() {
+        ReflectionTestUtils.setField(mochilaService,"objectMapper",objectMapper);
+    }
 
     @Test
     public void testaSeAPokebolaFoiRetirada() {
+        UserEntity userEntity = UserEntity.builder()
+                .id(1)
+                .username("string")
+                .password("string")
+                .email("string@string.com")
+                .nome("string")
+                .build();
+        TreinadorEntity treinadorEntity = TreinadorEntity.builder()
+                .idTreinador(1)
+                .idUser(1)
+                .user(userEntity)
+                .nome("string")
+                .sexo(Utils.FEMININO)
+                .build();
+        MochilaEntity mochilaEntity = MochilaEntity.builder()
+                .idMochila(1)
+                .idTreinador(1)
+                .treinador(treinadorEntity)
+                .quantidadeGreatBalls(0)
+                .quantidadeHeavyBalls(6)
+                .quantidadePokeBalls(12)
+                .quantidadeMasterBalls(1)
+                .quantidadeNetBalls(0)
+                .build();
+
+        userEntity.setTreinador(treinadorEntity);
+        treinadorEntity.setMochila(mochilaEntity);
+
         try {
-            String pokebola = "pokeball";
+            when(this.userService.getById(any(Integer.class))).thenReturn(userEntity);
+            when(this.mochilaRepository.save(any(MochilaEntity.class))).thenReturn(mochilaEntity);
 
-            this.mochilaService.adicionarPokebola(6, pokebola, 1);
+            int valorInicial = mochilaService.getMochilaPeloIdUser(1).getQuantidadePokeBalls();
 
-            Integer quantidadeInicial = this.mochilaService.getMochilaPeloIdUser(6).getQuantidadePokeBalls();
+            this.mochilaService.usarPokebola(1, "pokeball");
 
-            this.mochilaService.usarPokebola(6, pokebola);
-            MochilaEntity mochilaComValorRetirado = this.mochilaService.getMochilaPeloIdUser(6);
-
-            assertTrue((quantidadeInicial - 1) == mochilaComValorRetirado.getQuantidadePokeBalls());
-        } catch (RegraDeNegocioException e) {
-            System.out.println(e.getMessage());
+            assertEquals(valorInicial - 1, this.mochilaService.getMochilaPeloIdUser(1).getQuantidadePokeBalls());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,34 +86,79 @@ public class MochilaServiceTest {
 
     @Test
     public void testaSeAQuantidadeDePokebolasFoiIncrementadaNaMochila() {
+        UserEntity userEntity = UserEntity.builder()
+                .id(1)
+                .username("string")
+                .password("string")
+                .email("string@string.com")
+                .nome("string")
+                .build();
+        TreinadorEntity treinadorEntity = TreinadorEntity.builder()
+                .idTreinador(1)
+                .idUser(1)
+                .user(userEntity)
+                .nome("string")
+                .sexo(Utils.FEMININO)
+                .build();
+        MochilaEntity mochilaEntity = MochilaEntity.builder()
+                .idMochila(1)
+                .idTreinador(1)
+                .treinador(treinadorEntity)
+                .quantidadeGreatBalls(0)
+                .quantidadeHeavyBalls(6)
+                .quantidadePokeBalls(12)
+                .quantidadeMasterBalls(1)
+                .quantidadeNetBalls(0)
+                .build();
+
+        userEntity.setTreinador(treinadorEntity);
+        treinadorEntity.setMochila(mochilaEntity);
+
         try {
-            String pokebola = "pokeball";
-            Integer quantidadeInicial = this.mochilaService.getMochilaPeloIdUser(6).getQuantidadePokeBalls();
-            Integer quantidadeAdicionada = 1;
+            when(this.userService.getById(any(Integer.class))).thenReturn(userEntity);
+            when(this.mochilaRepository.save(any(MochilaEntity.class))).thenReturn(mochilaEntity);
 
-            this.mochilaService.adicionarPokebola(6, pokebola, quantidadeAdicionada);
-            MochilaEntity mochilaComValorIncrementado = this.mochilaService.getMochilaPeloIdUser(6);
+            int valorInicial = this.mochilaService.getMochilaPeloIdUser(1).getQuantidadePokeBalls();
 
-            assertTrue((quantidadeInicial + quantidadeAdicionada) == mochilaComValorIncrementado.getQuantidadePokeBalls());
-        } catch (RegraDeNegocioException e) {
-            System.out.println(e.getMessage());
+            this.mochilaService.adicionarPokebola(1, "pokeball", 2);
+
+            assertEquals(valorInicial + 2, this.mochilaService.getMochilaPeloIdUser(1).getQuantidadePokeBalls());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     @Test
     public void testaSeTreinadorDaMochilaNaoExiste() {
-        Exception exception = assertThrows(RegraDeNegocioException.class, () -> {
-            this.mochilaService.getMochilaPeloIdUser(1);
-        });
+        UserEntity userEntity = UserEntity.builder()
+                .id(1)
+                .username("string")
+                .password("string")
+                .email("string@string.com")
+                .nome("string")
+                .build();
 
-        assertTrue(exception.getMessage().contains("Treinador não criado."));
+        try {
+            when(this.userService.getById(any(Integer.class))).thenReturn(userEntity);
+
+            Exception exception = assertThrows(RegraDeNegocioException.class, () -> this.mochilaService.getMochilaPeloIdUser(1));
+
+            assertTrue(exception.getMessage().contains("Treinador não criado."));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test()
     public void testaCriacaoDeMochilaEmTreinadorNaoExistente() {
+        UserEntity userEntity = UserEntity.builder()
+                .id(1)
+                .username("string")
+                .password("string")
+                .email("string@string.com")
+                .nome("string")
+                .build();
+
         MochilaCreateDTO mochilaCreateDTO = new MochilaCreateDTO();
         mochilaCreateDTO.setQuantidadeGreatBalls(0);
         mochilaCreateDTO.setQuantidadeHeavyBalls(0);
@@ -74,9 +167,9 @@ public class MochilaServiceTest {
         mochilaCreateDTO.setQuantidadePokeBalls(0);
 
         try {
-            Exception exception = assertThrows(RegraDeNegocioException.class, () -> {
-                MochilaDTO mochila = this.mochilaService.createMochilaLogado(mochilaCreateDTO, 2);
-            });
+            when(this.userService.getById(any(Integer.class))).thenReturn(userEntity);
+
+            Exception exception = assertThrows(RegraDeNegocioException.class, () -> this.mochilaService.createMochilaLogado(mochilaCreateDTO, 1));
 
             assertNotNull(mochilaCreateDTO);
             assertTrue(exception.getMessage().contains("Treinador não criado."));
