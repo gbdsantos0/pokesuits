@@ -19,20 +19,23 @@ import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.repository.UserRepository;
 import com.dbc.pokesuits.service.UserService;
 
+import java.util.Optional;
+
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
     @Mock
     private UserRepository userRepository;
 //    @Mock
 //    private RegraService regraService;
 
-    @Before
-    public void BeforeEach() {
-        MockitoAnnotations.openMocks(this);
-    }
+//    @Before
+//    public void BeforeEach() {
+//        MockitoAnnotations.openMocks(this);
+//    }
     
     @Test
     public void testaSeUsuarioExiste() {
@@ -44,13 +47,10 @@ public class UserServiceTest {
                     .email("string@string.com")
                     .nome("string").build();
 
-            when(userService.getById(anyInt())).thenReturn(userEntity);
-        	
-        	UserDTO userLogado = this.userService.userLogado(1);
-        	
-        	System.out.println(userLogado.getId());
+            when(userRepository.findById(1)).thenReturn(Optional.ofNullable(userEntity));
+//            when(userService.getById(1)).thenReturn(userEntity);
 
-            assertNotNull(userLogado);
+            assertNotNull(this.userService.getById(1));
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
         }
