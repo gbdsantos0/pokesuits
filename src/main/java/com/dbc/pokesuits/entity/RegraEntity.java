@@ -24,7 +24,7 @@ public class RegraEntity implements Serializable, GrantedAuthority {
     private String nome;
 
     @ManyToMany(mappedBy = "regras")
-    private List<UserEntity> grupos;
+    private List<UserEntity> users;
 
     @Override
     public String getAuthority() {
