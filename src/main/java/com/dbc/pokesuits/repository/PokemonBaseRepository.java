@@ -126,7 +126,7 @@ public class PokemonBaseRepository {
                 .tipo2(null)
                 .raridade(Raridades.SUPER_RARO)
                 .build());
-        listaPokemonBase.add(PokemonBase.builder()
+        /*listaPokemonBase.add(PokemonBase.builder()
                 .id(74)
                 .racaPokemon("Geodude")
                 .pesoMinimo(20.0)
@@ -161,7 +161,7 @@ public class PokemonBaseRepository {
                 .tipo1(TipoPokemon.ROCK)
                 .tipo2(TipoPokemon.GROUND)
                 .raridade(Raridades.SUPER_RARO)
-                .build());
+                .build());*/
     }
 
     public List<PokemonBase> listAll(){

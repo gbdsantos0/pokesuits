@@ -1,5 +1,8 @@
 package com.dbc.pokesuits.controller.admin;
 
+import com.dbc.pokesuits.client.PokemonBaseClient;
+import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
+import com.dbc.pokesuits.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,15 +17,14 @@ import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
 import com.dbc.pokesuits.dto.treinador.TreinadorDTO;
 import com.dbc.pokesuits.dto.user.UserDTO;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
-import com.dbc.pokesuits.service.MochilaService;
-import com.dbc.pokesuits.service.PokemonService;
-import com.dbc.pokesuits.service.TreinadorService;
-import com.dbc.pokesuits.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Validated
 @RestController
@@ -33,6 +35,7 @@ public class AdminController {
 	private final PokemonService pokemonService;
 	private final TreinadorService treinadorService;
 	private final MochilaService mochilaService;
+	private final PokemonBaseService pokemonBaseService;
 	
 	//inicio da parte de user do admin
 	@ApiOperation(value = "Devolve uma lista de Users")
@@ -135,4 +138,39 @@ public class AdminController {
 		mochilaService.deletarMochilaPeloId(idMochila);
 	}
 	//fim da parte da mochila do admin
+
+	//parte de repopular base dos pokemons
+	@ApiOperation(value = "Repopula o jogo com os pokemons da API externa")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Repopulado com sucesso"),
+			@ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+			@ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+	})
+	@PostConstruct
+	@GetMapping("/repopular")
+	public void repop() throws Exception{
+		pokemonBaseService.repopulateDB();
+	}
+
+	@ApiOperation(value = "Lista os pokemons base no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lista devolvida com sucesso"),
+			@ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+			@ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+	})
+	@GetMapping("pokemons-locais")
+	public List<PokemonBaseDTO> getLocalAll(){
+		return pokemonBaseService.getAll();
+	}
+
+	@ApiOperation(value = "Lista os pokemons base no sistema externo")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lista devolvida com sucesso"),
+			@ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+			@ApiResponse(code = 500, message = "Devolve a ecxessao gerada"),
+	})
+	@GetMapping("pokemons-api-externa")
+	public List<PokemonBaseDTO> getAll(){
+		return pokemonBaseService.getAllExternal();
+	}
 }
