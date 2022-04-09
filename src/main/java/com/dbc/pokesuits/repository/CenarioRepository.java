@@ -42,6 +42,12 @@ public class CenarioRepository {
                 .levelMedio(7)
                 .idPokemonsDisponiveis(Arrays.asList(4,5,6,74,75,76))
                 .build());
+        listaCenarios.add(Cenario.builder()//TESTE COM 1 POKEMONSTRO
+                .idCenario(COUNTER.incrementAndGet())
+                .terreno(TiposTerreno.CAVERNA)
+                .levelMedio(7)
+                .idPokemonsDisponiveis(Arrays.asList(1))
+                .build());
     }
 
     public List<Cenario> listAll(){

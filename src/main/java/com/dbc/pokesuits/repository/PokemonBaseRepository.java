@@ -19,7 +19,7 @@ public class PokemonBaseRepository {
 
     public PokemonBaseRepository(){
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(1)
+                .id(1)
                 .racaPokemon("Bulbasaur")
                 .pesoMinimo(6.7)
                 .pesoMaximo(11.0)
@@ -31,7 +31,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.COMUM)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(2)
+                .id(2)
                 .racaPokemon("Ivysaur")
                 .pesoMinimo(13.0)
                 .pesoMaximo(20.0)
@@ -43,7 +43,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(3)
+                .id(3)
                 .racaPokemon("Venusaur")
                 .pesoMinimo(100.0)
                 .pesoMaximo(150.0)
@@ -55,7 +55,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.SUPER_RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(4)
+                .id(4)
                 .racaPokemon("Charmander")
                 .pesoMinimo(8.5)
                 .pesoMaximo(15.5)
@@ -67,7 +67,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.COMUM)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(5)
+                .id(5)
                 .racaPokemon("Charmeleon")
                 .pesoMinimo(19.0)
                 .pesoMaximo(36.0)
@@ -79,7 +79,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(6)
+                .id(6)
                 .racaPokemon("Charizard")
                 .pesoMinimo(90.5)
                 .pesoMaximo(142.5)
@@ -91,7 +91,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.SUPER_RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(7)
+                .id(7)
                 .racaPokemon("Squirtle")
                 .pesoMinimo(9.0)
                 .pesoMaximo(17.0)
@@ -103,7 +103,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.COMUM)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(8)
+                .id(8)
                 .racaPokemon("Wartortle")
                 .pesoMinimo(22.5)
                 .pesoMaximo(37.5)
@@ -115,7 +115,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(9)
+                .id(9)
                 .racaPokemon("Blastoise")
                 .pesoMinimo(85.5)
                 .pesoMaximo(120.0)
@@ -127,7 +127,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.SUPER_RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(74)
+                .id(74)
                 .racaPokemon("Geodude")
                 .pesoMinimo(20.0)
                 .pesoMaximo(38.0)
@@ -139,7 +139,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.COMUM)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(75)
+                .id(75)
                 .racaPokemon("Graveler")
                 .pesoMinimo(105.0)
                 .pesoMaximo(170.0)
@@ -151,7 +151,7 @@ public class PokemonBaseRepository {
                 .raridade(Raridades.RARO)
                 .build());
         listaPokemonBase.add(PokemonBase.builder()
-                .idPokemonBase(76)
+                .id(76)
                 .racaPokemon("Golem")
                 .pesoMinimo(300.0)
                 .pesoMaximo(420.0)
@@ -169,7 +169,7 @@ public class PokemonBaseRepository {
     }
 
     public void addPokemon(PokemonBase pokemonBase) throws Exception {
-        if(listaPokemonBase.stream().filter(p->p.getIdPokemonBase().equals(pokemonBase.getIdPokemonBase())).collect(Collectors.toList()).isEmpty()){
+        if(listaPokemonBase.stream().filter(p->p.getId().equals(pokemonBase.getId())).collect(Collectors.toList()).isEmpty()){
             listaPokemonBase.add(pokemonBase);
             return;
         }
@@ -182,7 +182,7 @@ public class PokemonBaseRepository {
 
     public PokemonBase getById(Integer id){
         PokemonBase pokemonBase = listaPokemonBase.stream()
-                .filter(pb -> pb.getIdPokemonBase().equals(id))
+                .filter(pb -> pb.getId().equals(id))
                 .findFirst()
                 .orElse(null);
         return pokemonBase;

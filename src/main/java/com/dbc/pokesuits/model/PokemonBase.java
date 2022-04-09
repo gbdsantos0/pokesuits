@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class PokemonBase {
-    private Integer idPokemonBase;
+    private Integer id;
     private String racaPokemon;
     private Double pesoMinimo;
     private Double pesoMaximo;

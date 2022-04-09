@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 public class PokemonBaseDTO {
-    @ApiModelProperty(value="Id da pessoa")
-    private Integer idPokemonBase;
+    @ApiModelProperty(value="Id do pokemon")
+    private Integer id;
     @ApiModelProperty(value="Raça do pokemon")
     private String racaPokemon;
     @ApiModelProperty(value="Peso mínimo do pokemon")
