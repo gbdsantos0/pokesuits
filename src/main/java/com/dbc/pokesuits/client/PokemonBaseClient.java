@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value="pokemonbase", url="https://pokesuits-base.herokuapp.com/pokemonbase")
+@FeignClient(value="pokemonbase", url="https://pokesuits-base.herokuapp.com")
 @Headers("Content-Type: application/json")
 public interface PokemonBaseClient {
 
     /*@RequestLine("GET /get-by-id")
     PokemonBaseDTO get(@Param("id_pokemon_base")Integer idPokemonBase);*/
-    @RequestMapping(method = RequestMethod.GET, value = "/todos-pokemonbase")
+    @RequestLine("GET /pokemonbase/todos-pokemonbase")
     List<PokemonBaseDTO> todosPokemonBase();
 }
