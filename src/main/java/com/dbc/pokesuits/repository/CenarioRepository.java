@@ -46,7 +46,7 @@ public class CenarioRepository {
                 .idCenario(COUNTER.incrementAndGet())
                 .terreno(TiposTerreno.CAVERNA)
                 .levelMedio(7)
-                .idPokemonsDisponiveis(Arrays.asList(1))
+                .idPokemonsDisponiveis(Arrays.asList(1000))
                 .build());
     }
 

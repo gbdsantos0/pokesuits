@@ -20,7 +20,10 @@ public class PokemonBaseService {
     private final PokemonBaseClient pokemonBaseClient;
 
     public PokemonBaseDTO getById(Integer idPokemonBase){
-        return objectMapper.convertValue(pokemonBaseRepository.getById(idPokemonBase),PokemonBaseDTO.class);
+
+        PokemonBase pokemonBase = pokemonBaseRepository.getById(idPokemonBase);
+
+        return objectMapper.convertValue(pokemonBase,PokemonBaseDTO.class);
     }
 
     public List<PokemonBaseDTO> getAll(){

@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import org.springframework.stereotype.Service;
 
 import com.dbc.pokesuits.dto.cenario.CenarioDTO;
@@ -150,17 +151,21 @@ public class CenarioService {
         }
 
         List<PokemonBaseDTO> superRaros = cenarioRepository.getIdPokemonsDisponiveis(cenarioAtual).stream()
-                .filter(c -> pokemonBaseService.getById(c).getRaridade() == Raridades.SUPER_RARO)
+                .filter(c -> pokemonBaseService.getById(c)!=null && pokemonBaseService.getById(c).getRaridade() == Raridades.SUPER_RARO)
                 .map(c->pokemonBaseService.getById(c))
                 .collect(Collectors.toList());
         List<PokemonBaseDTO> raros = cenarioRepository.getIdPokemonsDisponiveis(cenarioAtual).stream()
-                .filter(c -> pokemonBaseService.getById(c).getRaridade() == Raridades.RARO)
+                .filter(c -> pokemonBaseService.getById(c)!=null && pokemonBaseService.getById(c).getRaridade() == Raridades.RARO)
                 .map(c->pokemonBaseService.getById(c))
                 .collect(Collectors.toList());
         List<PokemonBaseDTO> comuns = cenarioRepository.getIdPokemonsDisponiveis(cenarioAtual).stream()
-                .filter(c -> pokemonBaseService.getById(c).getRaridade() == Raridades.COMUM)
+                .filter(c -> pokemonBaseService.getById(c)!=null && pokemonBaseService.getById(c).getRaridade() == Raridades.COMUM)
                 .map(c->pokemonBaseService.getById(c))
                 .collect(Collectors.toList());
+
+        if(superRaros.isEmpty() && raros.isEmpty() && comuns.isEmpty()){
+            throw new RegraDeNegocioException("Nenhum pokemon válido na base de dados local disponível");
+        }
 
         Random r = new Random();
 
