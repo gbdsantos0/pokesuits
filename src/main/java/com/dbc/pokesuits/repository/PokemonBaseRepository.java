@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dbc.pokesuits.dto.pokemonbase.PokemonBaseDTO;
-import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import org.springframework.stereotype.Repository;
 
 import com.dbc.pokesuits.enums.Dificuldades;
 import com.dbc.pokesuits.enums.Raridades;
 import com.dbc.pokesuits.enums.TipoPokemon;
+import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.model.PokemonBase;
 
 @Repository
@@ -188,3 +187,4 @@ public class PokemonBaseRepository {
         return pokemonBase;
     }
 }
+

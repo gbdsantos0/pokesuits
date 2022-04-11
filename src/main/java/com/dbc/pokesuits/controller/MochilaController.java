@@ -2,7 +2,6 @@ package com.dbc.pokesuits.controller;
 
 import javax.validation.Valid;
 
-import com.dbc.pokesuits.dto.pokemon.PokemonEditDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.pokesuits.dto.mochila.MochilaCreateDTO;
 import com.dbc.pokesuits.dto.mochila.MochilaDTO;
-import com.dbc.pokesuits.dto.pokemon.PokemonCreateDTO;
 import com.dbc.pokesuits.dto.pokemon.PokemonDTO;
+import com.dbc.pokesuits.dto.pokemon.PokemonEditDTO;
 import com.dbc.pokesuits.exceptions.RegraDeNegocioException;
 import com.dbc.pokesuits.service.MochilaService;
 import com.dbc.pokesuits.service.PokemonService;

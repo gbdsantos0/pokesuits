@@ -31,7 +31,10 @@ public class PokemonBaseService {
     }
 
     public void repopulateDB() throws Exception{
-        List<PokemonBase> listaExterna = pokemonBaseClient.todosPokemonBase().stream().map(pb -> objectMapper.convertValue(pb, PokemonBase.class)).collect(Collectors.toList());
+        List<PokemonBase> listaExterna = pokemonBaseClient.todosPokemonBase()
+        		.stream()
+        		.map(pb -> objectMapper.convertValue(pb, PokemonBase.class))
+        		.collect(Collectors.toList());
         if(listaExterna.isEmpty()){
             throw new RegraDeNegocioException("Lista externa vazia");
         }
@@ -42,3 +45,4 @@ public class PokemonBaseService {
         return pokemonBaseClient.todosPokemonBase();
     }
 }
+
